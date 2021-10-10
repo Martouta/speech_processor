@@ -1,5 +1,12 @@
 # Speech Processor
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/152b7d7c3208b39b8b0a/maintainability)](https://codeclimate.com/github/Martouta/speech_processor/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/152b7d7c3208b39b8b0a/test_coverage)](https://codeclimate.com/github/Martouta/speech_processor/test_coverage)
+
+[![CircleCI](https://circleci.com/gh/Martouta/speech_processor.svg?style=svg)](https://app.circleci.com/pipelines/github/Martouta/speech_processor)
+
+
 ## How does it work
 
 ### Install dependencies
