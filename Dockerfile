@@ -7,3 +7,5 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y autoremove \
 
 WORKDIR /usr/src/app
 COPY . /usr/src/app
+
+CMD ["python3", "-u" , "."]
