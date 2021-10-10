@@ -1,0 +1,35 @@
+version: 2.1
+
+####### YAML ANCHORS #######
+
+mongodb-container: &mongodb-container
+  image: circleci/mongo:4.4.5
+
+####### CIRCLECI JOBS #######
+
+jobs:
+  speech-processor:
+    resource_class: small
+    docker:
+      - image: martouta/python_audio_google_cloud:v2
+      - *mongodb-container
+    environment:
+      GOOGLE_LOCAL: '1'
+      SPEECH_ENV: 'test'
+      MONGO_DB: speech_processor_test
+    steps:
+      - checkout
+      - run:
+          name: "Run Tests"
+          command: cd /root/project && python3 -u -m pytest tests --tb=native -rP
+
+####### CIRCLECI WORKFLOWS #######
+
+workflows:
+  speech-processor-workflow:
+    jobs:
+      - hold:
+          type: approval
+      - speech-processor:
+          requires:
+            - hold
