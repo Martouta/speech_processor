@@ -11,7 +11,7 @@ jobs:
   speech-processor:
     resource_class: small
     docker:
-      - image: cimg/python:3.10.0
+      - image: python:3.10-slim
       - *mongodb-container
     environment:
       GOOGLE_LOCAL: '1'
@@ -24,7 +24,7 @@ jobs:
           command: pip3 install --no-cache-dir -r requirements-dev.txt
       - run:
           name: "Install ffmpeg"
-          command: sudo apt-get -y update && sudo apt-get install -y ffmpeg
+          command: apt-get -y update && apt-get install -y ffmpeg
       - run:
           name: "Run Tests"
           command: python3 -u -m pytest tests --tb=native -rP
