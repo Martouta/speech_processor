@@ -11,7 +11,7 @@ jobs:
   speech-processor:
     resource_class: small
     docker:
-      - image: martouta/python_audio_google_cloud:v2
+      - image: python:3.10-slim
       - *mongodb-container
     environment:
       GOOGLE_LOCAL: '1'
@@ -20,8 +20,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Install Python Development requirements"
+          command: pip3 install --no-cache-dir -r requirements-dev.txt
+      - run:
+          name: "Install ffmpeg"
+          command: apt-get -y update && apt-get install -y ffmpeg
+      - run:
           name: "Run Tests"
-          command: cd /root/project && python3 -u -m pytest tests --tb=native -rP
+          command: python3 -u -m pytest tests --tb=native -rP
 
 ####### CIRCLECI WORKFLOWS #######
 
