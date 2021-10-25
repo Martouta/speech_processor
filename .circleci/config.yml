@@ -5,6 +5,22 @@ version: 2.1
 mongodb-container: &mongodb-container
   image: circleci/mongo:4.4.5
 
+zookeeper-container: &zookeeper-container
+  image: confluentinc/cp-zookeeper:6.2.0
+  environment:
+    ZOOKEEPER_CLIENT_PORT: 2181
+    ZOOKEEPER_TICK_TIME: 2000
+
+kafka-container: &kafka-container
+  image: confluentinc/cp-kafka:6.2.0
+  environment:
+    KAFKA_BROKER_ID: 1
+    KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092,PLAINTEXT_HOST://localhost:9092
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
 ####### CIRCLECI JOBS #######
 
 jobs:
@@ -13,10 +29,15 @@ jobs:
     docker:
       - image: python:3.10-slim
       - *mongodb-container
+      - *kafka-container
+      - *zookeeper-container
     environment:
       GOOGLE_LOCAL: '1'
       SPEECH_ENV: 'test'
       MONGO_DB: speech_processor_test
+      MONGO_URL: 'localhost:27017'
+      KAFKA_URL: 'localhost:9092'
+      KAFKA_RESOURCE_TOPIC: speech_processor_resource_test
     steps:
       - checkout
       - run:
