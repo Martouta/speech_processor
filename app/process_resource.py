@@ -11,7 +11,8 @@ from .resource_audio import ResourceAudio
 
 def process_resource(json_parsed):
     try:
-        return __process_resource(json_parsed)
+        recognition_id = generate_recognition_id(json_parsed)
+        return __process_resource(json_parsed, recognition_id)
     except Exception as exc:
         message = __error_msg((type(exc), exc, traceback.format_exc()))
         if os.environ['SPEECH_ENV'] != 'test':
@@ -19,36 +20,43 @@ def process_resource(json_parsed):
         return {'status': 'error', 'error': exc}
 
 
-def __process_resource(json_parsed):
-    thread_id = threading.get_ident()
-    datetime_now = datetime.utcnow().strftime('%m-%d.%H:%M:%S%f')
-    recognition_id = f"{thread_id}-{json_parsed['id']}-{datetime_now}"
-    total_steps = '6'
-    logging.info(
-        '[1/%s] Downloading multimedia from URL ... [%s]', total_steps, recognition_id)
+def __process_resource(json_parsed, recognition_id):
+    log_step(0, recognition_id)
     filepath = download_multimedia_from_url(recognition_id, json_parsed)
-    logging.info(
-        '[2/%s] Saving audio as WAP ... [%s]', total_steps, recognition_id)
+    log_step(1, recognition_id)
     resource_audio = ResourceAudio.save_as_wav(recognition_id, filepath)
-    logging.info(
-        '[3/%s] Spliting into chunks ... [%s]', total_steps, recognition_id)
+    log_step(2, recognition_id)
     resource_audio.split_into_chunks()
-    logging.info(
-        '[4/%s] Recognizing chunks ... [%s]', total_steps, recognition_id)
+    log_step(3, recognition_id)
     subtitle = resource_audio.recognize_chunks(json_parsed['language_code'])
-    logging.info(
-        '[5/%s] Saving subtitles ... [%s]', total_steps, recognition_id)
+    log_step(4, recognition_id)
     subs_location = subtitle.save_subs(json_parsed['id'])
-    logging.info(
-        '[6/%s] Cleaning up temporary generated files ... [%s]', total_steps, recognition_id)
+    log_step(5, recognition_id)
     cleanup_temporary_files(recognition_id, filepath)
-    logging.info('[DONE] [%s]', recognition_id)
+    log_step(6, recognition_id)
     response = {
         'status': 'ok',
         'recognition_id': recognition_id,
     }
     return {**response, **subs_location}
 
+def generate_recognition_id(json_parsed):
+    thread_id = threading.get_ident()
+    datetime_now = datetime.utcnow().strftime('%m-%d.%H:%M:%S%f')
+    return f"{thread_id}-{json_parsed['id']}-{datetime_now}"
+
+def log_step(step_number, recognition_id):
+    total_steps = 6
+    steps = [
+        f"[1/{total_steps}] Downloading multimedia from URL ... [{recognition_id}]",
+        f"[2/{total_steps}] Saving audio as WAP ... [{recognition_id}]",
+        f"[3/{total_steps}] Spliting into chunks ... [{recognition_id}]",
+        f"[4/{total_steps}] Recognizing chunks ... [{recognition_id}]",
+        f"[5/{total_steps}] Saving subtitles ... [{recognition_id}]",
+        f"[6/{total_steps}] Cleaning up temporary generated files ... [{recognition_id}]",
+        f"[DONE] [{recognition_id}]"
+    ]
+    logging.info(steps[step_number])
 
 def __error_msg(exc_tuple):
     text = """{type} : {value}

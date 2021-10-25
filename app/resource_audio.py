@@ -27,8 +27,7 @@ class ResourceAudio:
         return ResourceAudio(recognition_id, AudioSegment.from_wav(new_path))
 
     def split_into_chunks(self):
-        sp_path = Path(__file__).resolve().parent.parent
-        path_chunks = f"{sp_path}/audio_chunks/{os.environ['SPEECH_ENV']}/{self.recognition_id}"
+        path_chunks = self.__path_chunks()
 
         try:
             os.mkdir(path_chunks)
@@ -47,25 +46,26 @@ class ResourceAudio:
         return {'number': len(chunks), 'path': path_chunks}
 
     def recognize_chunks(self, language):
-        sp_path = Path(__file__).resolve().parent.parent
-        path_chunks = f"{sp_path}/audio_chunks/{os.environ['SPEECH_ENV']}/{self.recognition_id}"
-
-        google_local = os.getenv('GOOGLE_LOCAL', '1') == '1'
-
+        path_chunks = self.__path_chunks()
         all_recognitions = []
 
         for filename in sorted(os.listdir(path_chunks)):
             filepath = f"{path_chunks}/{filename}"
-            if google_local:
-                response = ResourceAudio.__recognize_local(filepath, language)
-                all_recognitions.append(response)
-            else:
-                response = ResourceAudio.__recognize_cloud(filepath, language)
-                for result in response.results:
-                    transcript = result.alternatives[0].transcript
-                    all_recognitions.append(transcript)
+            line = self.__recognize_chunk(filepath, language)
+            all_recognitions.append(line)
 
         return Subtitle(self.recognition_id, all_recognitions, language)
+
+    def __recognize_chunk(self, filepath, language):
+        if (os.getenv('GOOGLE_LOCAL', '1') == '1'):
+            return ResourceAudio.__recognize_local(filepath, language)
+        else:
+            response = ResourceAudio.__recognize_cloud(filepath, language)
+            return response.results[0].alternatives[0].transcript
+
+    def __path_chunks(self):
+        sp_path = Path(__file__).resolve().parent.parent
+        return f"{sp_path}/audio_chunks/{os.environ['SPEECH_ENV']}/{self.recognition_id}"
 
     @staticmethod
     def __recognize_local(filepath, language):
