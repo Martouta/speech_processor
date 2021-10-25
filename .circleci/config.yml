@@ -55,8 +55,4 @@ jobs:
 workflows:
   speech-processor-workflow:
     jobs:
-      - hold:
-          type: approval
-      - speech-processor:
-          requires:
-            - hold
+      - speech-processor
