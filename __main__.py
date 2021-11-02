@@ -1,6 +1,5 @@
 import app
 import concurrent.futures
-import json
 import logging
 import os
 import sys
@@ -14,16 +13,13 @@ def process_threaded_inputs():
     max_workers = int(os.getenv('MAX_THREADS', '5'))
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         for msg in fetch_input_messages():
-            executor.submit(app.process_resource, message_to_json(msg))
+            executor.submit(app.process_resource, app.resource_message_to_json(msg))
 
 def fetch_input_messages():
     if os.getenv('INPUT_FILE'):
         return app.json_input_resources(os.getenv('INPUT_FILE'))
     else:
         return app.kafka_consumer_configured()
-
-def message_to_json(msg):
-    return msg if (type(msg) is dict) else json.loads(msg.value)
 
 def config_logs():
     logFilePath = f"log/{os.environ['SPEECH_ENV']}.log"
