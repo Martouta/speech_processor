@@ -3,7 +3,7 @@ SpeechRecognition==3.8.1
 protobuf==3.19.1
 google-cloud-speech==2.11.1
 kafka-python==2.0.2
-pymongo==3.12.1
+pymongo==4.0
 mako==1.1.6
 pytube==11.0.1
 
