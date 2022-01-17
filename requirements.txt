@@ -1,6 +1,6 @@
 pydub==0.25.1
 SpeechRecognition==3.8.1
-protobuf==3.19.1
+protobuf==3.19.3
 google-cloud-speech==2.11.1
 kafka-python==2.0.2
 pymongo==4.0.1
