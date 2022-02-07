@@ -7,6 +7,6 @@ pymongo==4.0.1
 mako==1.1.6
 pytube==11.0.2
 
-pytest==6.2.5
+pytest==7.0.0
 requests-mock==1.9.3
 httpretty==1.1.4
