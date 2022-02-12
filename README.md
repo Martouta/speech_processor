@@ -13,7 +13,7 @@
 Install [Python version 3.8.0 or newer](https://www.python.org/downloads/).
 Python is already installed by default in Linux and Mac but no idea about Windows. To know the version, run in the Terminal: `python3 -V` or `python -V`.
 Then install the dependencies (external libraries necessary for this program to work). With this command in the Terminal:
-`pip3 install --no-cache-dir -r requirements.txt`
+`pip3 install --no-cache-dir -r requirements.txt --user`
 
 For developers, you can also use Docker. And the requirements for development/test are in `requirements-dev.txt`
 
@@ -58,7 +58,7 @@ It must follow these characteristics:
 
 Then run the following command in the Terminal from the directory where you have this program, given that MAX_THREADS is the number of videos/audios you want to be processed at once and that INPUT_FILE is the path/location of the JSON file mentioned above.
 ```bash
-MAX_THREADS=8 INPUT_FILE='example_input.json' SPEECH_ENV='production' SUBS_LOCATION='file' python3 -u .
+MAX_THREADS=8 INPUT_FILE='example_input.json' SPEECH_ENV='production' SUBS_LOCATION='file' python3 -u . --user
 ```
 
 They will be saved inside this program folder, in `subtitles/production`.
