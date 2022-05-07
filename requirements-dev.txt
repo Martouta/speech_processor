@@ -5,8 +5,7 @@ google-cloud-speech==2.12.0
 kafka-python==2.0.2
 pymongo==4.1.1
 mako==1.2.0
-pytube==12.0.0
-
+pytube==12.0.0 git+https://github.com/jmsmg/pytube.git
 pytest==7.1.2
 requests-mock==1.9.3
 httpretty==1.1.4
