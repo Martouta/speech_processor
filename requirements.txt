@@ -6,3 +6,4 @@ kafka-python==2.0.2
 pymongo==4.1.1
 mako==1.2.0
 pytube==12.1.0
+pyyaml==6.0
