@@ -21,7 +21,7 @@ class TestDownloadMultimediaFromURL:
     def test_download_multimedia_from_url_for_youtube(self):
         actual_path = app.download_multimedia_from_url(
             'recognition_id', {'id': 1, 'youtube_reference_id': 'zWQJqt_D-vo'})
-        expected_path = f"{os.getcwd()}/videos/test/recognition_id-zWQJqt_D-vo.mp4"
+        expected_path = f"{os.getcwd()}/audios/test/recognition_id-zWQJqt_D-vo.mp4"
         assert actual_path == expected_path
 
     def test_download_multimedia_from_url_for_video(self):

@@ -15,7 +15,7 @@ def download_multimedia_from_url(recognition_id, json_parsed):
 
     if 'youtube_reference_id' in json_parsed and json_parsed['youtube_reference_id']:
         fp_tuple = filepath_tuple(
-            f"{recognition_id}-{json_parsed['youtube_reference_id']}")
+            f"{recognition_id}-{json_parsed['youtube_reference_id']}", 'audio')
         dir_path, filename = fp_tuple
         __download_youtube_video(json_parsed['youtube_reference_id'], fp_tuple)
     else:
@@ -33,9 +33,9 @@ def download_multimedia_from_url(recognition_id, json_parsed):
 def __download_youtube_video(youtube_reference_id, fp_tuple):
     YouTube(f"youtube.com/watch?v={youtube_reference_id}") \
         .streams \
-        .filter(progressive=True, file_extension='mp4') \
-        .order_by('resolution') \
-        .asc() \
+        .filter(only_audio=True, file_extension='mp4') \
+        .order_by('abr') \
+        .desc() \
         .first() \
         .download(output_path=fp_tuple[0], filename=fp_tuple[1])
 
