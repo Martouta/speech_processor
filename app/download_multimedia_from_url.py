@@ -15,7 +15,7 @@ def download_multimedia_from_url(recognition_id, json_parsed):
 
     if 'youtube_reference_id' in json_parsed and json_parsed['youtube_reference_id']:
         fp_tuple = filepath_tuple(
-            f"{recognition_id}-{json_parsed['youtube_reference_id']}")
+            f"{recognition_id}-{json_parsed['youtube_reference_id']}", 'audio')
         dir_path, filename = fp_tuple
         __download_youtube_video(json_parsed['youtube_reference_id'], fp_tuple)
     else:
