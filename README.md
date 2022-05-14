@@ -10,7 +10,7 @@
 ## How does it work
 
 ### Install dependencies
-Install [Python version 3.8.0 or newer](https://www.python.org/downloads/).
+Install [Python version 3.10 or newer](https://www.python.org/downloads/).
 Python is already installed by default in Linux and Mac but no idea about Windows. To know the version, run in the Terminal: `python3 -V` or `python -V`.
 Then install the dependencies (external libraries necessary for this program to work). With this command in the Terminal:
 `pip3 install --no-cache-dir -r requirements.txt --user`
