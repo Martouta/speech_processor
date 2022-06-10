@@ -7,10 +7,10 @@ cd '..'
 
 echo "
 ********************************************************************************
-*** Running Test for SpeechProcessor
+*** Running Development for SpeechProcessor
 ********************************************************************************"
 
-SPEECH_ENV=test python3 -m pytest tests --tb=native --show-capture=all --verbosity=1 -rP -k tiktok
+MAX_THREADS=3 INPUT_FILE='example_input.json' SPEECH_ENV='development' SUBS_LOCATION='file' python3 -v .
 ((exit_code+=$?))
 
 exit $exit_code
