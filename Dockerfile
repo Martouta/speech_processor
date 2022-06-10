@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM martouta/ubuntu_python_playwright:v1.0.0
 
 SHELL ["/bin/bash", "-c"]
 
@@ -13,7 +13,6 @@ COPY subtitles subtitles
 COPY videos videos
 
 RUN pip3 install --no-cache-dir -r requirements.txt \
-    && apt-get -y update && apt-get -y upgrade && apt-get -y autoremove \
     && apt-get install -y ffmpeg \
     && apt-get install -y -q --no-install-recommends -o Dpkg::Options::="--force-confold" netcat \
     && mkdir /usr/src/app/log

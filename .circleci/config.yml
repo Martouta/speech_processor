@@ -27,7 +27,7 @@ jobs:
   speech-processor:
     resource_class: small
     docker:
-      - image: python:3.10-slim
+      - image: martouta/ubuntu_python_playwright:v1.0.0
       - *mongodb-container
       - *kafka-container
       - *zookeeper-container
