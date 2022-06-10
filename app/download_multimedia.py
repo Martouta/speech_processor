@@ -4,7 +4,7 @@ import requests
 from pytube import YouTube
 
 
-def download_multimedia_from_url(recognition_id, json_parsed):
+def download_multimedia(recognition_id, json_parsed):
     '''
     Download video or audio from URL and returns the path where it has been saved.
     If there is a video, it downloads it, otherwise, it goes for the audio.
