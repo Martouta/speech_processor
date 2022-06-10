@@ -49,7 +49,7 @@ class TestProcessResource:
 
         mongodb_config = app.mongodb_client_configured()
         fname, ext = ('example', 'mp4')
-        resource_url = f"http://localhost:3000/{fname}.{ext}"
+        resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
             'id': TestProcessResource.RESOURCE_ID,
             'language_code': 'ar',
@@ -105,7 +105,7 @@ class TestProcessResource:
         )
 
         fname, ext = ('example', 'mp4')
-        resource_url = f"http://localhost:3000/{fname}.{ext}"
+        resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
             'id': TestProcessResource.RESOURCE_ID,
             'language_code': 'ar',
@@ -143,7 +143,7 @@ class TestProcessResource:
             assert subfile.read().split("\n") == expected_recognition
 
     def test_process_resource_error(self):
-        resource_url = 'http://localhost:3000/example.mp4'
+        resource_url = 'http://localhost/example.mp4'
         json_parsed = {
             'id': 42,
             'language_code': 'ar',
