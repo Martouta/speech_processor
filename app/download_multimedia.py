@@ -3,6 +3,7 @@ from pathlib import Path
 import requests
 from pytube import YouTube
 from TikTokApi import TikTokApi
+from .tiktok_cookie_configured import tiktok_cookie_configured
 
 
 def download_multimedia(recognition_id, json_parsed):
@@ -47,7 +48,8 @@ def __download_youtube_video(reference_id, fp_tuple):
 
 
 def __download_tiktok_video(reference_id, fp_tuple):
-    with TikTokApi() as api:
+    cookie = tiktok_cookie_configured()
+    with TikTokApi(custom_verify_fp=cookie['s_v_web_id']) as api:
         video = api.video(id=reference_id)
         video_data = video.bytes()
         with open(f"{fp_tuple[0]}/{fp_tuple[1]}", 'wb') as output_file:
