@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import requests
 from pytube import YouTube
+from TikTokApi import TikTokApi
 
 
 def download_multimedia(recognition_id, json_parsed):
@@ -18,6 +19,11 @@ def download_multimedia(recognition_id, json_parsed):
             f"{recognition_id}-{json_parsed['youtube_reference_id']}", 'audio')
         dir_path, filename = fp_tuple
         __download_youtube_video(json_parsed['youtube_reference_id'], fp_tuple)
+    elif 'tiktok_reference_id' in json_parsed and json_parsed['tiktok_reference_id']:
+        fp_tuple = filepath_tuple(
+            f"{recognition_id}-{json_parsed['tiktok_reference_id']}", 'video')
+        dir_path, filename = fp_tuple
+        __download_tiktok_video(json_parsed['tiktok_reference_id'], fp_tuple)
     else:
         resource_data, resource_type = __attachment_data(json_parsed)
         dir_path, filename = filepath_tuple(
@@ -38,6 +44,14 @@ def __download_youtube_video(reference_id, fp_tuple):
         .desc() \
         .first() \
         .download(output_path=fp_tuple[0], filename=fp_tuple[1])
+
+
+def __download_tiktok_video(reference_id, fp_tuple):
+    with TikTokApi() as api:
+        video = api.video(id=reference_id)
+        video_data = video.bytes()
+        with open(f"{fp_tuple[0]}/{fp_tuple[1]}", 'wb') as output_file:
+            output_file.write(video_data)
 
 
 def __dowload_hosted_multimedia(url, filepath):
