@@ -44,9 +44,6 @@ jobs:
           name: "Install Python Development requirements"
           command: pip3 install --no-cache-dir -r requirements-dev.txt
       - run:
-          name: "Install ffmpeg"
-          command: apt-get -y update && apt-get install -y ffmpeg
-      - run:
           name: "Run Tests"
           command: python3 -m pytest tests --tb=native --verbosity=1 --disable-pytest-warnings
 

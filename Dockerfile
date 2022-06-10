@@ -13,7 +13,6 @@ COPY subtitles subtitles
 COPY videos videos
 
 RUN pip3 install --no-cache-dir -r requirements.txt \
-    && apt-get install -y ffmpeg \
     && apt-get install -y -q --no-install-recommends -o Dpkg::Options::="--force-confold" netcat \
     && mkdir /usr/src/app/log
 
