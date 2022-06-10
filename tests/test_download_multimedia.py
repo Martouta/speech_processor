@@ -10,12 +10,10 @@ class TestDownloadMultimedia:
     def teardown_method(self):
         for resource_type in ['audios', 'videos']:
             for extension in ['mp3', 'mp4', 'example']:
-                path = f"{os.getcwd()}/{resource_type}/test/recognition_id-example.{extension}"
-                if os.path.exists(path):
-                    os.remove(path)
-        for path in [f"{os.getcwd()}/videos/recognition_id-zWQJqt_D-vo.mp4", f"{os.getcwd()}/videos/test/recognition_id-7105531486224370946.mp4"]:
-            if os.path.exists(path):
-                os.remove(path)
+                for filename in ['recognition_id-example', 'recognition_id-zWQJqt_D-vo', 'recognition_id-7105531486224370946']:
+                    path = f"{os.getcwd()}/{resource_type}/test/{filename}.{extension}"
+                    if os.path.exists(path):
+                        os.remove(path)
 
     @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_download_multimedia_for_youtube(self):
