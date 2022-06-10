@@ -7,10 +7,10 @@ cd '..'
 
 echo "
 ********************************************************************************
-*** Running Test for SpeechProcessor
+*** Running Tests for SpeechProcessor
 ********************************************************************************"
 
-SPEECH_ENV=test python3 -m pytest tests --tb=native --show-capture=all --verbosity=1 -rP -k tiktok
+MONGO_DB=speech_processor_test KAFKA_RESOURCE_TOPIC=speech_processor_resource_test SPEECH_ENV=test python3 -m pytest tests --tb=native -rP
 ((exit_code+=$?))
 
 exit $exit_code
