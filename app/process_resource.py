@@ -5,7 +5,7 @@ import traceback
 import threading
 
 from .cleanup_temporary_files import cleanup_temporary_files
-from .download_multimedia_from_url import download_multimedia_from_url
+from .download_multimedia import download_multimedia
 from .resource_audio import ResourceAudio
 
 
@@ -22,7 +22,7 @@ def process_resource(json_parsed):
 
 def __process_resource(json_parsed, recognition_id):
     log_step(0, recognition_id)
-    filepath = download_multimedia_from_url(recognition_id, json_parsed)
+    filepath = download_multimedia(recognition_id, json_parsed)
     log_step(1, recognition_id)
     resource_audio = ResourceAudio.save_as_wav(recognition_id, filepath)
     log_step(2, recognition_id)

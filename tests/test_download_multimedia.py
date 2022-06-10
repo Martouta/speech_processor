@@ -6,7 +6,7 @@ import requests
 import requests_mock
 
 
-class TestDownloadMultimediaFromURL:
+class TestDownloadMultimedia:
     def teardown_method(self):
         for resource_type in ['audios', 'videos']:
             for extension in ['mp3', 'mp4', 'example']:
@@ -18,29 +18,29 @@ class TestDownloadMultimediaFromURL:
             os.remove(path)
 
     @pytest.mark.skip(reason="no idea how to mock real HTTP requests for PyTube")
-    def test_download_multimedia_from_url_for_youtube(self):
-        actual_path = app.download_multimedia_from_url(
+    def test_download_multimedia_for_youtube(self):
+        actual_path = app.download_multimedia(
             'recognition_id', {'id': 1, 'youtube_reference_id': 'zWQJqt_D-vo'})
         expected_path = f"{os.getcwd()}/audios/test/recognition_id-zWQJqt_D-vo.mp4"
         assert actual_path == expected_path
 
-    def test_download_multimedia_from_url_for_video(self):
-        self.correct_download_multimedia_from_url('example.mp4', '')
+    def test_download_multimedia_for_video(self):
+        self.correct_download_multimedia('example.mp4', '')
 
-    def test_download_multimedia_from_url_for_audio(self):
-        self.correct_download_multimedia_from_url('', 'example.mp3')
+    def test_download_multimedia_for_audio(self):
+        self.correct_download_multimedia('', 'example.mp3')
 
-    def test_download_multimedia_from_url_for_video_and_audio(self):
-        self.correct_download_multimedia_from_url('example.mp4', 'example.mp3')
+    def test_download_multimedia_for_video_and_audio(self):
+        self.correct_download_multimedia('example.mp4', 'example.mp3')
 
-    def correct_download_multimedia_from_url(self, video_path, audio_path):
+    def correct_download_multimedia(self, video_path, audio_path):
         web_root_uri = 'http://localhost:3000'
         video_url = f"{web_root_uri}/{video_path}"
         audio_url = f"{web_root_uri}/{audio_path}"
         with requests_mock.Mocker() as req_mock:
             req_mock.get(video_url, json={"a": "b"})
             req_mock.get(audio_url, json={"a": "b"})
-            filepath = app.download_multimedia_from_url(
+            filepath = app.download_multimedia(
                 'recognition_id', self.method_params(video_url=video_url, audio_url=audio_url))
             with open(filepath, 'r') as file:
                 assert file.read().replace('\n', '') == '{"a": "b"}'
