@@ -24,6 +24,7 @@ class TestDownloadMultimedia:
         expected_path = f"{os.getcwd()}/audios/test/recognition_id-zWQJqt_D-vo.mp4"
         assert actual_path == expected_path
 
+    @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_download_multimedia_for_tiktok(self):
         actual_path = app.download_multimedia(
             'recognition_id', {'id': 1, 'tiktok_reference_id': '7105531486224370946'})
