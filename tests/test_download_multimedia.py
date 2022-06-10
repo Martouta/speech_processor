@@ -17,7 +17,7 @@ class TestDownloadMultimedia:
         if os.path.exists(path):
             os.remove(path)
 
-    @pytest.mark.skip(reason="no idea how to mock real HTTP requests for PyTube")
+    @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_download_multimedia_for_youtube(self):
         actual_path = app.download_multimedia(
             'recognition_id', {'id': 1, 'youtube_reference_id': 'zWQJqt_D-vo'})
