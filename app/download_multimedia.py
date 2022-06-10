@@ -30,8 +30,8 @@ def download_multimedia(recognition_id, json_parsed):
     return f"{dir_path}/{filename}"
 
 
-def __download_youtube_video(youtube_reference_id, fp_tuple):
-    YouTube(f"youtube.com/watch?v={youtube_reference_id}") \
+def __download_youtube_video(reference_id, fp_tuple):
+    YouTube(f"youtube.com/watch?v={reference_id}") \
         .streams \
         .filter(only_audio=True, file_extension='mp4') \
         .order_by('abr') \
