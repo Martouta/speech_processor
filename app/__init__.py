@@ -1,6 +1,7 @@
 from .cleanup_temporary_files import cleanup_temporary_files
 from .download_multimedia import download_multimedia
 from .download_tiktok_video import download_tiktok_video
+from .download_youtube_video import download_youtube_video
 from .json_input_resources import json_input_resources
 from .kafka_consumer_configured import kafka_consumer_configured
 from .mongodb_client_configured import mongodb_client_configured
