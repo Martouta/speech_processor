@@ -1,7 +1,6 @@
 import app
-import os
-import pytest
 import kafka
+import pytest
 
 
 class TestKafkaConsumerConfigured:

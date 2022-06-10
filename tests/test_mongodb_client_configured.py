@@ -1,8 +1,6 @@
-import pytest
 import app
-import os
 import pymongo
-import yaml
+import pytest
 
 
 class TestMongoDBClientConfigured:
