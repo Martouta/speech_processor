@@ -32,3 +32,6 @@ __pycache__/
 
 /log/*
 !/log/.keep
+
+/tmp/*
+!/tmp/.keep
