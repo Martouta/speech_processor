@@ -15,7 +15,7 @@ Python is already installed by default in Linux and Mac but no idea about Window
 Then install the dependencies (external libraries necessary for this program to work). With this command in the Terminal:
 `pip3 install --no-cache-dir -r requirements.txt --user`
 
-If you are going to process 'TikTok' videos, you also need to run `python3 -m playwright install` and even in that case, it does not work that easily in all operating systems.
+If you are going to process 'TikTok' videos, you also need to run `python3 -m playwright install --with-deps` and even in that case, it does not work that easily in all operating systems.
 
 For developers, you can also use Docker (which is using an image with the dependency that work for TikTok :wink: ). And the requirements for development/test are in `requirements-dev.txt`
 
