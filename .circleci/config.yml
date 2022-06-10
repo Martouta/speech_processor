@@ -48,7 +48,7 @@ jobs:
           command: apt-get -y update && apt-get install -y ffmpeg
       - run:
           name: "Run Tests"
-          command: python3 -u -m pytest tests --tb=native -rP
+          command: python3 -m pytest tests --tb=native --verbosity=1
 
 ####### CIRCLECI WORKFLOWS #######
 
