@@ -18,7 +18,7 @@ Then install the dependencies (external libraries necessary for this program to 
 For developers, you can also use Docker. And the requirements for development/test are in `requirements-dev.txt`
 
 ### Run the program
-Have a file with extension `.json` in your laptop with the following format:
+Have a file with extension `.json` in your computer with the following format:
 ```json
 [
   {"id": "id_zWQJqt_D-vo", "youtube_reference_id": "zWQJqt_D-vo", "language_code": "ar"},
