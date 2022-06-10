@@ -15,14 +15,17 @@ Python is already installed by default in Linux and Mac but no idea about Window
 Then install the dependencies (external libraries necessary for this program to work). With this command in the Terminal:
 `pip3 install --no-cache-dir -r requirements.txt --user`
 
-For developers, you can also use Docker. And the requirements for development/test are in `requirements-dev.txt`
+If you are going to process 'TikTok' videos, you also need to run `python3 -m playwright install` and even in that case, it does not work that easily in all operating systems.
+
+For developers, you can also use Docker (which is using an image with the dependency that work for TikTok :wink: ). And the requirements for development/test are in `requirements-dev.txt`
 
 ### Run the program
 Have a file with extension `.json` in your computer with the following format:
 ```json
 [
-  {"id": "id_zWQJqt_D-vo", "youtube_reference_id": "zWQJqt_D-vo", "language_code": "ar"},
-  {"id": "id_CNHe4qXqsck", "youtube_reference_id": "CNHe4qXqsck", "language_code": "ar"},
+  {"id": "yt_zWQJqt_D-vo", "youtube_reference_id": "zWQJqt_D-vo", "language_code": "ar"},
+  {"id": "yt_CNHe4qXqsck", "youtube_reference_id": "CNHe4qXqsck", "language_code": "ar"},
+  {"id": "tiktok_7105531486224370946", "tiktok_reference_id": "7105531486224370946", "language_code": "en-au"},
   {
     "id": "example_mp4",
     "video": {
@@ -51,6 +54,8 @@ It must follow these characteristics:
 - **language_code** must be a language code from the list in [Documentation of Language Support of Google Cloud Speech-To-Text](https://cloud.google.com/speech-to-text/docs/languages). Plus, for Arabic fus7a is just "ar".
 
 - **youtube_reference_id** must only be provided for youtube videos and it is the *id* of the video. For example, for a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
+
+- **tiktok_reference_id** must only be provided for tiktok videos and it is the *id* of the video. For example, for a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, this would be just `7105531486224370946`.
 
 - **video** is only provided when the resource is a video that you can directly 'save' from the URL and it must be a 'mp4'. Then it contains **url** with the URL, **filename** with whatever unique name you want and **extension** 'mp4'.
 
