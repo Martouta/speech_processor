@@ -41,6 +41,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Install GIT"
+          command: apt-get update && apt-get install -y git
+      - run:
           name: "Install Python Development requirements"
           command: pip3 install --no-cache-dir -r requirements-dev.txt
       - run:
