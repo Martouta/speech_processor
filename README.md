@@ -21,8 +21,9 @@ For developers, you can also use Docker. And the requirements for development/te
 Have a file with extension `.json` in your computer with the following format:
 ```json
 [
-  {"id": "id_zWQJqt_D-vo", "youtube_reference_id": "zWQJqt_D-vo", "language_code": "ar"},
-  {"id": "id_CNHe4qXqsck", "youtube_reference_id": "CNHe4qXqsck", "language_code": "ar"},
+  {"id": "yt_zWQJqt_D-vo", "youtube_reference_id": "zWQJqt_D-vo", "language_code": "ar"},
+  {"id": "yt_CNHe4qXqsck", "youtube_reference_id": "CNHe4qXqsck", "language_code": "ar"},
+  {"id": "tiktok_7105531486224370946", "tiktok_reference_id": "7105531486224370946", "language_code": "en-au"},
   {
     "id": "example_mp4",
     "video": {
@@ -49,6 +50,8 @@ It must follow these characteristics:
 - **id** can be whatever you want as long as it is not empty and it is unique for each video/audio for all those resources running at the same time.
 
 - **language_code** must be a language code from the list in [Documentation of Language Support of Google Cloud Speech-To-Text](https://cloud.google.com/speech-to-text/docs/languages). Plus, for Arabic fus7a is just "ar".
+
+- **tiktok_reference_id** must only be provided for tiktok videos and it is the *id* of the video. For example, for a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, this would be just `7105531486224370946`.
 
 - **youtube_reference_id** must only be provided for youtube videos and it is the *id* of the video. For example, for a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
 
