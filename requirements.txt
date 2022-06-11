@@ -4,6 +4,6 @@ mako==1.2.0
 protobuf==4.21.1
 pydub==0.25.1
 pymongo==4.1.1
-pytube==12.1.0
+pytube @ git+https://github.com/martouta/pytube@master
 pyyaml==6.0
 SpeechRecognition==3.8.1
