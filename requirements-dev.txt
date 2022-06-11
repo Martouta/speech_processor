@@ -1,4 +1,4 @@
-google-cloud-speech==2.14.0
+google-cloud-speech==2.14.1
 kafka-python==2.0.2
 mako==1.2.0
 protobuf==4.21.1
