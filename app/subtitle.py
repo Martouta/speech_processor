@@ -19,11 +19,13 @@ class Subtitle:
 
     def save_subs(self, resource_id):
         subs_location = os.getenv('SUBS_LOCATION', 'mongodb')
-        id_location = None
-        if subs_location == 'mongodb':
-            id_location = self.save_in_mongodb(resource_id)
-        elif subs_location == 'file':
-            id_location = self.save_in_file()
+        match os.getenv('SUBS_LOCATION', 'mongodb'):
+            case 'mongodb':
+                id_location = self.save_in_mongodb(resource_id)
+            case 'file':
+                id_location = self.save_in_file()
+            case _:
+                raise ValueError('Invalid value for ENV var SUBS_LOCATION')
         return {'subtitles_location': subs_location, 'id_location': id_location}
 
     def save_in_mongodb(self, resource_id):
