@@ -15,67 +15,142 @@ Please, use a release instead. Preferably, the latest.
 
 🐞 When there is an error for any item being processed (non-system-exiting exceptions), it just logs the information of the error/exception and carries on to the next item.
 
-## How does it work
+## Table of Contents
 
-### Install dependencies
-Install [Python version 3.10 or newer](https://www.python.org/downloads/).
-Python is already installed by default in Linux and Mac but no idea about Windows. To know the version, run in the Terminal: `python3 -V` or `python -V`.
-Then install the dependencies (external libraries necessary for this program to work). With this command in the Terminal:
+- [Speech Processor](#speech-processor)
+  - [Table of Contents](#table-of-contents)
+  - [Install dependencies](#install-dependencies)
+  - [Expected input](#expected-input)
+    - [Origin of videos/audios](#origin-of-videos-audios)
+      - [Fetch videos/audios from a file](#fetch-videos-audios-from-a-file)
+      - [Fetch videos/audios from Kafka](#fetch-videos-audios-from-kafka)
+    - [Additional input information through ENV vars](#additional-input-information-through-env-vars)
+    - [Input Format](#input-format)
+  - [Expected output](#expected-output)
+    - [Destination](#destination)
+      - [Save in a file](#save-in-a-file)
+      - [Save in MongoDB](#save-in-mongodb)
+    - [Output Format](#output-format)
+
+## Install dependencies
+
+1. Install [Python version 3.10 or newer](https://www.python.org/downloads/).
+2. Install the dependencies (external libraries necessary for this program to work). With this command in the Terminal:
 `pip3 install --no-cache-dir -r requirements.txt --user`
 
-For developers, you can also use Docker. And the requirements for development/test are in `requirements-dev.txt`
+You can also use Docker. And the requirements for development/test are in `requirements-dev.txt`
 
-### Run the program
-Have a file with extension `.json` in your computer with the following format:
+## Expected input
+
+### Origin of videos/audios
+
+The input data can come from either a __file__ or __kafka__ . If the environment variable __INPUT_FILE__ is provided, it assumes it comes from a file. Otherwise, it expects to come from Kafka.
+The project for now it is assuming that you pass this data correctly.
+
+#### Fetch videos/audios from a file
+
+The environment variable __INPUT_FILE__ must be the path of the file in your HDD.
+The project for now it is assuming that the file is actually there and the program has reading permissions for this file.
+
+#### Fetch videos/audios from Kafka
+
+It uses the environment variables __KAFKA_URL__ (if not provided, it defaults to __localhost:9092__) and it requires __KAFKA_RESOURCE_TOPIC__.
+It will read the kafka messages from that URI and that topic and partition/group_id number 1.
+If KAFKA is not running in the provided URI, it just sleeps/wait until it is available.
+
+### Additional input information through ENV vars
+
+- __MAX_THREADS__ is how many items run at once. It is optional and by default it is 5.
+- __SPEECH_ENV__ is the environment the project is running in. It is required. It must be either __production__, __test__ or __development__ . I'm assuming that it is being passed correctly.
+
+### Input Format
+
+The project for now it is assuming that you pass this data correctly.
+Example of a JSON type with multiple items having all possible inputs:
+
 ```json
 [
-  {"id": "yt_zWQJqt_D-vo", "youtube_reference_id": "zWQJqt_D-vo", "language_code": "ar"},
-  {"id": "yt_CNHe4qXqsck", "youtube_reference_id": "CNHe4qXqsck", "language_code": "ar"},
-  {"id": "tiktok_7105531486224370946", "tiktok_reference_id": "7105531486224370946", "language_code": "en-au"},
   {
-    "id": "example_mp4",
-    "video": {
-      "url": "https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4",
-      "filename": "example_mp4",
-      "extension": "mp4"
-    },
-    "language_code": "en-US"
+    "type": "youtube",
+    "id": "zWQJqt_D-vo",
+    "language_code": "ar",
+    "resource_id": 1
   },
   {
-    "id": "example_mp3",
-    "audio": {
-      "url": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
-      "filename": "example_mp3",
-      "extension": "mp3"
-    },
-    "language_code": "en-US"
+    "type": "youtube",
+    "id": "CNHe4qXqsck",
+    "language_code": "ar",
+    "resource_id": 2
+  },
+  {
+    "type": "tiktok",
+    "id": "7105531486224370946",
+    "language_code": "en-au",
+    "resource_id": 3
+  },
+  {
+    "type": "hosted_video",
+    "url": "https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4",
+    "filename": "example_mp4",
+    "extension": "mp4",
+    "language_code": "en-US",
+    "resource_id": 4
+  },
+  {
+    "type": "hosted_audio",
+    "url": "https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3",
+    "filename": "example_mp3",
+    "extension": "mp3",
+    "language_code": "en-US",
+    "resource_id": 5
   }
 ]
 ```
-Each line there is a resource (video or audio) that you want to be processed.
-It must follow these characteristics:
 
-- **id** can be whatever you want as long as it is not empty and it is unique for each video/audio for all those resources running at the same time.
+For each item, each of those parameters are mandatory. This is what they mean:
 
-- **language_code** must be a language code from the list in [Documentation of Language Support of Google Cloud Speech-To-Text](https://cloud.google.com/speech-to-text/docs/languages). Plus, for Arabic fus7a is just "ar".
+- __type__ must be one of these options: __youtube__, __tiktok__, __hosted_video__ or __hosted_audio__ . The 2 latter mean that it is directly downloadable from that link, and it is either a video (with audio in the video) or an audio.
 
-- **tiktok_reference_id** must only be provided for tiktok videos and it is the *id* of the video. For example, for a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, this would be just `7105531486224370946`.
+- __id__ is used for items that are located in either tiktok or youtube. It is the the __id__ of the video in those websites. For example:
+  - For __tiktok__, given a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, the __id__ would be just `7105531486224370946`.
+  - For __youtube__, given a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
 
-- **youtube_reference_id** must only be provided for youtube videos and it is the *id* of the video. For example, for a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
+- __url__ is provided only for hosted items. It's the URL where you can directly download the item. No scrapping involved.
 
-- **video** is only provided when the resource is a video that you can directly 'save' from the URL and it must be a 'mp4'. Then it contains **url** with the URL, **filename** with whatever unique name you want and **extension** 'mp4'.
+- __filename__ is provided only for hosted items. It is whatever name you want for this item to be saved (temporarily). It must be nique among the items being processed at the same time.
 
-- **audio** is exactly like *video* but for an audio. The extension must be either 'mp3' or 'wav'.
+- __extension__ is provided only for hosted items. It is the extension of the file being downloaded. For video it must be __mp4__ and for audio it must be either __mp3__ or __wav__.
 
-Then run the following command in the Terminal from the directory where you have this program, given that MAX_THREADS is the number of videos/audios you want to be processed at once and that INPUT_FILE is the path/location of the JSON file mentioned above.
-```bash
-MAX_THREADS=8 INPUT_FILE='example_input.json' SPEECH_ENV='production' SUBS_LOCATION='file' python3 -u . --user
+- __language_code__ must be a language code from the list in [Documentation of Language Support of Google Cloud Speech-To-Text](https://cloud.google.com/speech-to-text/docs/languages). Plus, for Arabic fus7a is just "ar".
+
+- __resource_id__ is an optional parameter that should not matter to you unless you want the output to be saved in MongoDB. In this case, it must be an integer.
+
+## Expected output
+
+### Destination
+
+The output data can be saved in either a __file__ or __mongodb__ .
+The environment variable __SUBS_LOCATION__ can be either __mongodb__ or __file__ and by default it assumes __mongodb__.
+
+#### Save in a file
+
+It saves it inside this same project path, in __subtitles__, in one of its 3 subfolders: __development__, __test__ and __production__ depending on which environment you are in, which it takes from the environment variable __SPEECH_ENV__.
+
+#### Save in MongoDB
+
+It uses the environment variables __MONGO_URL__ (if not provided, it defaults to __localhost:27017__) and it requires __MONGO_DB__ for the database collection name.
+For mongodb, it assumes that you pass all the data correctly, that it is running and that you can actually connect and write there from this project.
+
+### Output Format
+
+- The format in the __file__ is just the text as it is.
+- The format in __mongodb__, it saves it in the following format:
+
+```javascript
+{
+  'resource_id': 1, // The resource_id provided in the input of the item. If not provided, it default to -1.
+  'lines': "example of text processed", // The text processed itself. It is saved in an array of strings.
+  'language_code': 'ar', // The same value as the 'language_code' of the input given for this item.
+  'created_at': 06/11/2022, 18:54:36 // It is a datetime value type. The current datetime (in UTC) at the moment the text is saved.
+}
 ```
-
-They will be saved inside this program folder, in `subtitles/production`.
-
-For developers:
-
-- The input can either be a json file as shown or it can be listening through kafka with the url `KAFKA_URL` and the topic `KAFKA_RESOURCE_TOPIC`.
-
-- The output can be either a file as shown or MongoDB with the url `MONGO_URL` and the database `MONGO_DB`.
