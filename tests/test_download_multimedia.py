@@ -1,8 +1,6 @@
 import app
-import builtins
 import pytest
 import os
-import requests
 import requests_mock
 
 
@@ -18,14 +16,14 @@ class TestDownloadMultimedia:
     @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_download_multimedia_for_youtube(self):
         actual_path = app.download_multimedia(
-            'recognition_id', {'id': 1, 'youtube_reference_id': 'zWQJqt_D-vo'})
+            'recognition_id', {'resource_id': 1, 'id': 'zWQJqt_D-vo', 'type': 'youtube'})
         expected_path = f"{os.getcwd()}/audios/test/recognition_id-zWQJqt_D-vo.mp4"
         assert actual_path == expected_path
 
     @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_download_multimedia_for_tiktok(self):
         actual_path = app.download_multimedia(
-            'recognition_id', {'id': 1, 'tiktok_reference_id': '7105531486224370946'})
+            'recognition_id', {'resource_id': 1, 'id': '7105531486224370946', 'type': 'tiktok'})
         expected_path = f"{os.getcwd()}/videos/test/recognition_id-7105531486224370946.mp4"
         assert actual_path == expected_path
 
@@ -50,9 +48,15 @@ class TestDownloadMultimedia:
             with open(filepath, 'r') as file:
                 assert file.read().replace('\n', '') == '{"a": "b"}'
 
-    def method_params(self, video_url='', audio_url='', filename='example', extension='example'):
+    def method_params(self, video_url=None, audio_url=None, filename='example', extension='example'):
+        resource_type = 'hosted_audio'
+        if video_url:
+            resource_type = 'hosted_video'
+
         return {
-            'id': 1,
-            'video': {'url': video_url, 'filename': filename, 'extension': extension},
-            'audio': {'url': audio_url, 'filename': filename, 'extension': extension}
+            'type': resource_type,
+            'resource_id': 1,
+            'url': video_url or audio_url or '',
+            'filename': filename,
+            'extension': extension
         }

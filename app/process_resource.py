@@ -30,7 +30,8 @@ def __process_resource(json_parsed, recognition_id):
     log_step(3, recognition_id)
     subtitle = resource_audio.recognize_chunks(json_parsed['language_code'])
     log_step(4, recognition_id)
-    subs_location = subtitle.save_subs(json_parsed['id'])
+    resource_id = int(json_parsed['resource_id'] or -1)
+    subs_location = subtitle.save_subs(resource_id)
     log_step(5, recognition_id)
     cleanup_temporary_files(recognition_id, filepath)
     log_step(6, recognition_id)
@@ -43,7 +44,8 @@ def __process_resource(json_parsed, recognition_id):
 def generate_recognition_id(json_parsed):
     thread_id = threading.get_ident()
     datetime_now = datetime.utcnow().strftime('%m-%d.%H:%M:%S%f')
-    return f"{thread_id}-{json_parsed['id']}-{datetime_now}"
+    resource_id = int(json_parsed['resource_id'] or -1)
+    return f"{thread_id}-{resource_id}-{datetime_now}"
 
 def log_step(step_number, recognition_id):
     total_steps = 6

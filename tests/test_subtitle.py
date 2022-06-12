@@ -26,7 +26,7 @@ class TestSubtitle:
             assert file.read().split("\n") == self.subtitle.lines
 
     def test_save_in_mongodb(self):
-        doc_id = self.subtitle.save_in_mongodb('42')
+        doc_id = self.subtitle.save_in_mongodb(42)
         config = app.mongodb_client_configured()
         document = config['collection'].find_one({'_id': doc_id})
         assert document['resource_id'] == 42

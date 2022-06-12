@@ -14,24 +14,23 @@ def download_multimedia(recognition_id, json_parsed):
 
     dir_path, filename = None, None
 
-    if 'youtube_reference_id' in json_parsed and json_parsed['youtube_reference_id']:
+    if json_parsed['type'] == 'youtube':
         fp_tuple = filepath_tuple(
-            f"{recognition_id}-{json_parsed['youtube_reference_id']}", 'audio')
+            f"{recognition_id}-{json_parsed['id']}", 'audio')
         dir_path, filename = fp_tuple
-        download_youtube_video(json_parsed['youtube_reference_id'], fp_tuple)
-    elif 'tiktok_reference_id' in json_parsed and json_parsed['tiktok_reference_id']:
+        download_youtube_video(json_parsed['id'], fp_tuple)
+    elif json_parsed['type'] == 'tiktok':
         fp_tuple = filepath_tuple(
-            f"{recognition_id}-{json_parsed['tiktok_reference_id']}", 'video')
+            f"{recognition_id}-{json_parsed['id']}", 'video')
         dir_path, filename = fp_tuple
-        download_tiktok_video(json_parsed['tiktok_reference_id'], fp_tuple)
+        download_tiktok_video(json_parsed['id'], fp_tuple)
     else:
-        resource_data, resource_type = __attachment_data(json_parsed)
         dir_path, filename = filepath_tuple(
-            f"{recognition_id}-{resource_data['filename']}",
-            resource_type=resource_type,
-            extension=resource_data['extension'])
+            f"{recognition_id}-{json_parsed['filename']}",
+            resource_type= 'audio' if (json_parsed['type'] == 'hosted_audio') else 'video',
+            extension=json_parsed['extension'])
         __dowload_hosted_multimedia(
-            resource_data['url'], f"{dir_path}/{filename}")
+            json_parsed['url'], f"{dir_path}/{filename}")
 
     return f"{dir_path}/{filename}"
 
@@ -45,10 +44,3 @@ def filepath_tuple(file_name, resource_type='video', extension='mp4'):
     dir_path = f"{project_root_path}/{resource_type}s/{os.environ['SPEECH_ENV']}"
     filename = f"{file_name}.{extension}"
     return (dir_path, filename)
-
-
-def __attachment_data(json_parsed):
-    if json_parsed.get('video') and json_parsed['video']['url']:
-        return (json_parsed['video'], 'video')
-
-    return (json_parsed['audio'], 'audio')
