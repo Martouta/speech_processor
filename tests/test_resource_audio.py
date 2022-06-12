@@ -46,7 +46,6 @@ class TestResourceAudio:
             './audio_chunks/test/recognition_id/chunk*wav')) == chunks_info['number']
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
-    @mock.patch.dict(os.environ, {'GOOGLE_LOCAL': '1'})
     def test_recognize_chunks_google_local(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.mp3"
         resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)

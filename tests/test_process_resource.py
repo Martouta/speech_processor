@@ -30,7 +30,6 @@ class TestProcessResource:
             os.remove(fname)
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
-    @mock.patch.dict(os.environ, {'GOOGLE_LOCAL': '1'})
     def test_process_resource_correctly(self):
         api_url = "http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
         httpretty.register_uri(
@@ -85,7 +84,6 @@ class TestProcessResource:
         assert doc['lines'] == expected_recognition
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
-    @mock.patch.dict(os.environ, {'GOOGLE_LOCAL': '1'})
     @mock.patch.dict(os.environ, {'SUBS_LOCATION': 'file'})
     def test_process_resource_save_in_file(self):
         api_url = "http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
