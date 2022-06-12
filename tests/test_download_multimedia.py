@@ -9,7 +9,7 @@ class TestDownloadMultimedia:
         for resource_type in ['audios', 'videos']:
             for extension in ['mp3', 'mp4', 'example']:
                 for filename in ['recognition_id-example', 'recognition_id-zWQJqt_D-vo', 'recognition_id-7105531486224370946']:
-                    path = f"{os.getcwd()}/{resource_type}/test/{filename}.{extension}"
+                    path = f"{os.getcwd()}/resources/{resource_type}/test/{filename}.{extension}"
                     if os.path.exists(path):
                         os.remove(path)
 
@@ -17,14 +17,14 @@ class TestDownloadMultimedia:
     def test_download_multimedia_for_youtube(self):
         actual_path = app.download_multimedia(
             'recognition_id', {'resource_id': 1, 'id': 'zWQJqt_D-vo', 'type': 'youtube'})
-        expected_path = f"{os.getcwd()}/audios/test/recognition_id-zWQJqt_D-vo.mp4"
+        expected_path = f"{os.getcwd()}/resources/audios/test/recognition_id-zWQJqt_D-vo.mp4"
         assert actual_path == expected_path
 
     @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_download_multimedia_for_tiktok(self):
         actual_path = app.download_multimedia(
             'recognition_id', {'resource_id': 1, 'id': '7105531486224370946', 'type': 'tiktok'})
-        expected_path = f"{os.getcwd()}/videos/test/recognition_id-7105531486224370946.mp4"
+        expected_path = f"{os.getcwd()}/resources/videos/test/recognition_id-7105531486224370946.mp4"
         assert actual_path == expected_path
 
     def test_download_multimedia_for_video(self):

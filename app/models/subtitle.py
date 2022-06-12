@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from pathlib import Path
-from .mongodb_client_configured import mongodb_client_configured
+from ..config_loaders.mongodb_client_configured import mongodb_client_configured
 
 
 class Subtitle:
@@ -49,8 +49,8 @@ class Subtitle:
         It prints each item of the array in a different line.
         '''
 
-        sp_path = Path(__file__).resolve().parent.parent
-        subs_dir = f"{sp_path}/subtitles/{os.environ['SPEECH_ENV']}"
+        sp_path = Path(__file__).resolve().parent.parent.parent
+        subs_dir = f"{sp_path}/resources/subtitles/{os.environ['SPEECH_ENV']}"
         subtitles_path = f"{subs_dir}/{self.recognition_id}-subs.txt"
 
         with open(subtitles_path, 'w') as file:

@@ -17,16 +17,16 @@ class TestProcessResource:
     def teardown_method(self):
         config = app.mongodb_client_configured()
         config['client'].drop_database(config['database'])
-        audio_chunks_root_dir = f"{os.getcwd()}/audio_chunks/test/"
+        audio_chunks_root_dir = f"{os.getcwd()}/resources/audio_chunks/test/"
         audio_chunks_dir_pattern = str(TestProcessResource.RESOURCE_ID) + r".*"
         for dir in os.listdir(audio_chunks_root_dir):
             if (re.search(audio_chunks_dir_pattern, dir)):
                 shutil.rmtree(audio_chunks_root_dir + dir)
-        for fname in glob.glob('videos/test/*.mp4'):
+        for fname in glob.glob('resources/videos/test/*.mp4'):
             os.remove(fname)
-        for fname in glob.glob('audios/test/*.wav'):
+        for fname in glob.glob('resources/audios/test/*.wav'):
             os.remove(fname)
-        for fname in glob.glob('subtitles/test/*.txt'):
+        for fname in glob.glob('resources/subtitles/test/*.txt'):
             os.remove(fname)
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
@@ -120,7 +120,7 @@ class TestProcessResource:
 
         assert 'ok' == processed_resource['status']
         assert 'file' == processed_resource['subtitles_location']
-        expected_subs_path_regex = f"{os.getcwd()}/subtitles/test/" \
+        expected_subs_path_regex = f"{os.getcwd()}/resources/subtitles/test/" \
             + r"\d+" \
             + '-' \
             + str(TestProcessResource.RESOURCE_ID) \

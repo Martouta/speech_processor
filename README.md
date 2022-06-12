@@ -128,7 +128,7 @@ The environment variable __SUBS_LOCATION__ can be either __mongodb__ or __file__
 
 #### Save in a file
 
-It saves it inside this same project path, in __subtitles__, in one of its 3 subfolders: __development__, __test__ and __production__ depending on which environment you are in, which it takes from the environment variable __SPEECH_ENV__.
+It saves it inside this same project path, in __resources/subtitles__, in one of its 3 subfolders: __development__, __test__ and __production__ depending on which environment you are in, which it takes from the environment variable __SPEECH_ENV__.
 
 #### Save in MongoDB
 
