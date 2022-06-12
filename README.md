@@ -6,6 +6,14 @@
 
 [![CircleCI](https://circleci.com/gh/Martouta/speech_processor.svg?style=svg)](https://app.circleci.com/pipelines/github/Martouta/speech_processor)
 
+📗 This project fetches videos and audios from the internet, then it tries to identify their texts through __Google Cloud Speech-To-Text__ and it saves the results.
+
+🧑‍💻 This documentation used to be mostly addressed to non-developers. Now, it is addressed only to developers. Otherwise, it would get crazy how much I would have to explain.
+
+⚠️ The main branch is used for development. It is not a stable branch for usage.
+Please, use a release instead. Preferably, the latest.
+
+🐞 When there is an error for any item being processed (non-system-exiting exceptions), it just logs the information of the error/exception and carries on to the next item.
 
 ## How does it work
 
