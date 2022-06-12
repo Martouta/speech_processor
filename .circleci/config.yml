@@ -32,7 +32,6 @@ jobs:
       - *kafka-container
       - *zookeeper-container
     environment:
-      GOOGLE_LOCAL: '1'
       SPEECH_ENV: 'test'
       MONGO_DB: speech_processor_test
       MONGO_URL: 'localhost:27017'
