@@ -1,5 +1,5 @@
 from TikTokAPI import TikTokAPI
-from .tiktok_cookie_configured import tiktok_cookie_configured
+from ..config_loaders.tiktok_cookie_configured import tiktok_cookie_configured
 
 def download_tiktok_video(reference_id, fp_tuple):
     '''

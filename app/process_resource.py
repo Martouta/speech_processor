@@ -5,8 +5,8 @@ import traceback
 import threading
 
 from .cleanup_temporary_files import cleanup_temporary_files
-from .download_multimedia import download_multimedia
-from .resource_audio import ResourceAudio
+from .downloaders.download_multimedia import download_multimedia
+from .models.resource_audio import ResourceAudio
 
 
 def process_resource(json_parsed):

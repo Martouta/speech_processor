@@ -13,7 +13,7 @@ def kafka_consumer_configured():
     It loads the YAML file and returns a kafka consumer configured accordingly.
     '''
     speech_env = os.environ['SPEECH_ENV']
-    path_kafka_yml = f"{Path(__file__).resolve().parent.parent}/config/kafka.yml.mako"
+    path_kafka_yml = f"{Path(__file__).resolve().parent.parent.parent}/config/kafka.yml.mako"
     with open(path_kafka_yml, 'r') as file:
         text = file.read()
         template_rendered = Template(text).render()

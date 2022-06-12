@@ -7,7 +7,7 @@ import os
 
 
 class TestSubtitle:
-    FILEPATH = f"{os.getcwd()}/subtitles/test/test_recognition_id-subs.txt"
+    FILEPATH = f"{os.getcwd()}/resources/subtitles/test/test_recognition_id-subs.txt"
 
     def setup_method(self):
         self.subtitle = Subtitle('test_recognition_id', ["مرحبا", "إسمي مارتا"], 'ar')

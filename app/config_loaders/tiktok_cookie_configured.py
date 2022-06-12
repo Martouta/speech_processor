@@ -12,7 +12,7 @@ def tiktok_cookie_configured():
     '''
 
     speech_env = os.environ['SPEECH_ENV']
-    path_yml = f"{Path(__file__).resolve().parent.parent}/config/tiktok_cookie.yml.mako"
+    path_yml = f"{Path(__file__).resolve().parent.parent.parent}/config/tiktok_cookie.yml.mako"
 
     config = {}
 

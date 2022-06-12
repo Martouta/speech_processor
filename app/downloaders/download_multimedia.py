@@ -40,7 +40,7 @@ def __dowload_hosted_multimedia(url, filepath):
 
 
 def filepath_tuple(file_name, resource_type='video', extension='mp4'):
-    project_root_path = Path(__file__).resolve().parent.parent
-    dir_path = f"{project_root_path}/{resource_type}s/{os.environ['SPEECH_ENV']}"
+    project_root_path = Path(__file__).resolve().parent.parent.parent
+    dir_path = f"{project_root_path}/resources/{resource_type}s/{os.environ['SPEECH_ENV']}"
     filename = f"{file_name}.{extension}"
     return (dir_path, filename)

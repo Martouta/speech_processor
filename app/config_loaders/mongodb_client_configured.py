@@ -13,7 +13,7 @@ def mongodb_client_configured():
     '''
 
     speech_env = os.environ['SPEECH_ENV']
-    path_mongodb_yml = f"{Path(__file__).resolve().parent.parent}/config/mongodb.yml.mako"
+    path_mongodb_yml = f"{Path(__file__).resolve().parent.parent.parent}/config/mongodb.yml.mako"
 
     config = {}
 

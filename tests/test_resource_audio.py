@@ -16,7 +16,7 @@ class TestResourceAudio:
         for filename in glob.glob('audios/test/*.wav'):
             os.remove(filename)
 
-        file_path = f"{os.getcwd()}/audio_chunks/test/recognition_id"
+        file_path = f"{os.getcwd()}/resources/audio_chunks/test/recognition_id"
         if os.path.exists(file_path):
             shutil.rmtree(file_path)
 
@@ -24,7 +24,7 @@ class TestResourceAudio:
         name = 'example'
         filepath = f"{os.getcwd()}/tests/fixtures/{name}.{format}"
         resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
-        assert os.path.exists(f"audios/test/{name}.wav") == 1
+        assert os.path.exists(f"resources/audios/test/{name}.wav") == 1
         assert type(resource_audio) == ResourceAudio
 
     def test_save_as_wav_for_mp3(self):
@@ -41,9 +41,9 @@ class TestResourceAudio:
         sound = AudioSegment.from_file(filepath)
         resource_audio = ResourceAudio('recognition_id', sound)
         chunks_info = resource_audio.split_into_chunks()
-        assert f"{os.getcwd()}/audio_chunks/test/recognition_id" == chunks_info['path']
+        assert f"{os.getcwd()}/resources/audio_chunks/test/recognition_id" == chunks_info['path']
         assert len(glob.glob(
-            './audio_chunks/test/recognition_id/chunk*wav')) == chunks_info['number']
+            './resources/audio_chunks/test/recognition_id/chunk*wav')) == chunks_info['number']
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_recognize_chunks_google_local(self):
