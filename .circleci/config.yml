@@ -40,17 +40,19 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install GIT"
-          command: apt-get update && apt-get install -y git
+          name: "Install system dependencies"
+          command: apt-get update && apt-get install --no-install-recommends -y gcc git ffmpeg python-dev 
       - run:
           name: "Install Python Development requirements"
           command: pip3 install --no-cache-dir -r requirements-dev.txt
       - run:
-          name: "Install ffmpeg"
-          command: apt-get -y update && apt-get install -y ffmpeg
-      - run:
-          name: "Run Tests"
-          command: python3 -m pytest tests --tb=native --verbosity=1
+          name: "Run Tests with coverage"
+          command: |
+            python3 -m coverage run -m pytest tests --tb=native --verbosity=1
+            python3 -m coverage report
+            python3 -m coverage html # open htmlcov/index.html in a browser
+      - store_artifacts:
+          path: htmlcov
 
 ####### CIRCLECI WORKFLOWS #######
 
