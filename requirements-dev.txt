@@ -3,8 +3,8 @@ kafka-python==2.0.2
 mako==1.2.0
 pydub==0.25.1
 pymongo==4.1.1
-PyTikTokAPI @ git+https://github.com/martouta/TikTokAPI-Python@master
-pytube @ git+https://github.com/martouta/pytube@master
+PyTikTokAPI @ git+https://github.com/martouta/TikTokAPI-Python@v0.0.5-martouta-1
+pytube @ git+https://github.com/martouta/pytube@v12.1.0-martouta-1
 pyyaml==6.0
 SpeechRecognition==3.8.1
 
