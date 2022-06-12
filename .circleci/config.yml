@@ -50,9 +50,7 @@ jobs:
           command: |
             python3 -m coverage run -m pytest tests --tb=native --verbosity=1
             python3 -m coverage report
-            python3 -m coverage html # open htmlcov/index.html in a browser
-      - store_artifacts:
-          path: htmlcov
+            coveralls
 
 ####### CIRCLECI WORKFLOWS #######
 
