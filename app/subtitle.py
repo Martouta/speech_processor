@@ -17,7 +17,7 @@ class Subtitle:
             attributes_str += '\n' + item_str
         return str(self.__class__) + '\n' + attributes_str
 
-    def save_subs(self, resource_id):
+    def save_subs(self, resource_id: int):
         subs_location = os.getenv('SUBS_LOCATION', 'mongodb')
         match os.getenv('SUBS_LOCATION', 'mongodb'):
             case 'mongodb':
@@ -28,13 +28,13 @@ class Subtitle:
                 raise ValueError('Invalid value for ENV var SUBS_LOCATION')
         return {'subtitles_location': subs_location, 'id_location': id_location}
 
-    def save_in_mongodb(self, resource_id):
+    def save_in_mongodb(self, resource_id: int):
         '''
         It connects to MongoDB and saves the subtitles there.
         '''
 
         subs_info = {
-            'resource_id': int(resource_id),
+            'resource_id': resource_id,
             'lines': self.lines,
             'language_code': self.language,
             'created_at': datetime.utcnow()

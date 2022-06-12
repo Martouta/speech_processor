@@ -51,13 +51,12 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'id': TestProcessResource.RESOURCE_ID,
+            'type': 'hosted_video',
+            'url': resource_url,
+            'filename': fname,
+            'extension': ext,
             'language_code': 'ar',
-            'video': {
-                'url': resource_url,
-                'filename': fname,
-                'extension': ext
-            }
+            'resource_id': TestProcessResource.RESOURCE_ID
         }
 
         processed_resource = {}
@@ -70,7 +69,7 @@ class TestProcessResource:
         assert 'mongodb' == processed_resource['subtitles_location']
         doc_id = processed_resource['id_location']
         doc = mongodb_config['collection'].find_one({'_id': doc_id})
-        assert json_parsed['id'] == doc['resource_id']
+        assert json_parsed['resource_id'] == doc['resource_id']
         expected_recognition_id_regex = r"\d+" \
             + '-' \
             + str(TestProcessResource.RESOURCE_ID) \
@@ -107,13 +106,12 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'id': TestProcessResource.RESOURCE_ID,
+            'type': 'hosted_video',
+            'url': resource_url,
+            'filename': fname,
+            'extension': ext,
             'language_code': 'ar',
-            'video': {
-                'url': resource_url,
-                'filename': fname,
-                'extension': ext
-            }
+            'resource_id': TestProcessResource.RESOURCE_ID
         }
 
         processed_resource = {}
@@ -145,13 +143,12 @@ class TestProcessResource:
     def test_process_resource_error(self):
         resource_url = 'http://localhost/example.mp4'
         json_parsed = {
-            'id': 42,
+            'type': 'hosted_video',
+            'url': resource_url,
+            'filename': 'example',
+            'extension': 'mp4',
             'language_code': 'ar',
-            'video': {
-                'url': resource_url,
-                'filename': 'example',
-                'extension': 'mp4'
-            }
+            'resource_id': 42
         }
 
         with requests_mock.Mocker() as req_mock:
