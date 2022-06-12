@@ -57,18 +57,6 @@ class ResourceAudio:
         return Subtitle(self.recognition_id, all_recognitions, language)
 
     def __recognize_chunk(self, filepath, language):
-        if (os.getenv('GOOGLE_LOCAL', '1') == '1'):
-            return ResourceAudio.__recognize_local(filepath, language)
-        else:
-            response = ResourceAudio.__recognize_cloud(filepath, language)
-            return response.results[0].alternatives[0].transcript
-
-    def __path_chunks(self):
-        sp_path = Path(__file__).resolve().parent.parent
-        return f"{sp_path}/audio_chunks/{os.environ['SPEECH_ENV']}/{self.recognition_id}"
-
-    @staticmethod
-    def __recognize_local(filepath, language):
         try:
             with sr.AudioFile(filepath) as audiofile:
                 recognizer = sr.Recognizer()
@@ -81,17 +69,6 @@ class ResourceAudio:
                 'Could not request results. check your internet connection')
             return ''
 
-    @staticmethod
-    def __recognize_cloud(filepath, language):
-        with io.open(filepath, 'rb') as audiofile:
-            info = mediainfo(filepath)
-            content = audiofile.read()
-            client = speech.SpeechClient()
-            audio = speech.RecognitionAudio(content=content)
-            config = speech.RecognitionConfig(
-                encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-                language_code=language,
-                sample_rate_hertz=int(info['sample_rate']),
-                audio_channel_count=int(info['channels'])
-            )
-            return client.recognize(config=config, audio=audio)
+    def __path_chunks(self):
+        sp_path = Path(__file__).resolve().parent.parent
+        return f"{sp_path}/audio_chunks/{os.environ['SPEECH_ENV']}/{self.recognition_id}"
