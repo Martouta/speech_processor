@@ -1,0 +1,19 @@
+FROM python:3.10-slim
+
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /usr/src/app
+
+ARG SPEECH_ENV=development
+
+ENV MONGO_DB="speech_processor_$SPEECH_ENV" \
+    KAFKA_RESOURCE_TOPIC="speech_processor_resource_$SPEECH_ENV"
+
+COPY requirements-dev.txt .
+
+RUN apt-get -y update && apt-get -y upgrade && apt-get -y autoremove \
+    && apt-get install -y git \
+    && pip3 install --no-cache-dir -r requirements-dev.txt \
+    && apt-get install -y ffmpeg \
+    && apt-get install -y -q --no-install-recommends -o Dpkg::Options::="--force-confold" netcat \
+    && rm requirements-dev.txt
