@@ -3,8 +3,6 @@ import pytest
 from unittest import mock
 import os
 import glob
-import requests
-import requests_mock
 import shutil
 from pydub import AudioSegment
 import app
@@ -13,7 +11,7 @@ from app import ResourceAudio
 
 class TestResourceAudio:
     def teardown_method(self):
-        for filename in glob.glob('audios/test/*.wav'):
+        for filename in glob.glob(f"{os.getcwd()}/multimedia/test/*.wav"):
             os.remove(filename)
 
         file_path = f"{os.getcwd()}/resources/audio_chunks/test/recognition_id"
@@ -24,7 +22,7 @@ class TestResourceAudio:
         name = 'example'
         filepath = f"{os.getcwd()}/tests/fixtures/{name}.{format}"
         resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
-        assert os.path.exists(f"resources/audios/test/{name}.wav") == 1
+        assert os.path.exists(f"resources/multimedia/test/{name}.wav") == 1
         assert type(resource_audio) == ResourceAudio
 
     def test_save_as_wav_for_mp3(self):
@@ -46,7 +44,7 @@ class TestResourceAudio:
             './resources/audio_chunks/test/recognition_id/chunk*wav')) == chunks_info['number']
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
-    def test_recognize_chunks_google_local(self):
+    def test_recognize_chunks_google(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.mp3"
         resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
         resource_audio.split_into_chunks()

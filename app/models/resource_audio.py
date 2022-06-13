@@ -22,7 +22,7 @@ class ResourceAudio:
         name = re.match("^.*\\/([^/]*)\\.(mp\\d+|wav)$",
                         original_file_path).group(1)
         sp_path = Path(__file__).resolve().parent.parent.parent
-        new_path = f"{sp_path}/resources/audios/{os.environ['SPEECH_ENV']}/{name}.wav"
+        new_path = f"{sp_path}/resources/multimedia/{os.environ['SPEECH_ENV']}/{name}.wav"
         sound.export(new_path, format='wav')
         return ResourceAudio(recognition_id, AudioSegment.from_wav(new_path))
 

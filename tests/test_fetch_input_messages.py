@@ -10,7 +10,8 @@ class TestFetchInputMessages:
     @mock.patch.dict(os.environ, {'INPUT_FILE': INPUT_FILE})
     def test_fetch_input_msgs_from_input_file(self):
         messages = app.fetch_input_messages()
-        assert messages == app.json_input_resources(TestFetchInputMessages.INPUT_FILE)
+        assert messages == app.json_input_resources(
+            TestFetchInputMessages.INPUT_FILE)
 
     def test_fetch_input_msgs_from_kafka(self):
         messages = app.fetch_input_messages()

@@ -21,7 +21,7 @@ class TestCleanupTemporaryFiles:
         recognition_id = 'recognition_id'
         multimedia_name = f"{recognition_id}-example.wav"
 
-        downloaded_multimedia_path = f"{os.getcwd()}/resources/audios/test/{multimedia_name}"
+        downloaded_multimedia_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}"
         audio_chunks_path = f"{os.getcwd()}/resources/audio_chunks/test/{recognition_id}"
 
         app.cleanup_temporary_files(recognition_id, downloaded_multimedia_path)
@@ -31,17 +31,14 @@ class TestCleanupTemporaryFiles:
     def assert_cleanup_temporary_files_when_they_exist(self, format):
         recognition_id = 'recognition_id'
         multimedia_name = f"{recognition_id}-example"
-        resource_type = 'video'
-        if format != 'mp4':
-            resource_type = 'audio'
 
-        downloaded_multimedia_path = f"{os.getcwd()}/resources/{resource_type}s/test/{multimedia_name}.{format}"
+        downloaded_multimedia_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}.{format}"
         shutil.copyfile(
             TestCleanupTemporaryFiles.VIDEO_FIXTURE_FILE_PATH, downloaded_multimedia_path)
         assert os.path.exists(downloaded_multimedia_path)
 
         ResourceAudio.save_as_wav(recognition_id, downloaded_multimedia_path)
-        generated_audio_path = f"{os.getcwd()}/resources/audios/test/{multimedia_name}.wav"
+        generated_audio_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}.wav"
         assert os.path.exists(generated_audio_path)
 
         audio_chunks_path = f"{os.getcwd()}/resources/audio_chunks/test/{recognition_id}"
