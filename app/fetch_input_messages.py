@@ -1,11 +1,13 @@
 import os
-from .json_input_resources import json_input_resources
+import json
 from .config_loaders.kafka_consumer_configured import kafka_consumer_configured
 
 
 def fetch_input_messages():
-    input_file = os.getenv('INPUT_FILE')
-    if input_file:
-        return json_input_resources(input_file)
+    filepath = os.getenv('INPUT_FILE')
+    if filepath:
+        with open(filepath, 'r') as file:
+            text = file.read()
+            return json.loads(text)
     else:
         return kafka_consumer_configured()
