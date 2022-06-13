@@ -83,7 +83,7 @@ Example of a JSON type with multiple items having all possible inputs:
     "resource_id": 3
   },
   {
-    "type": "hosted_video",
+    "type": "hosted",
     "url": "https://scontent-mad1-1.cdninstagram.com/v/t50.16885-16/286327419_404827821544713_6636671397284152039_n.mp4?efg=eyJ2ZW5jb2RlX3RhZyI6InZ0c192b2RfdXJsZ2VuLjcyMC5pZ3R2LmJhc2VsaW5lIiwicWVfZ3JvdXBzIjoiW1wiaWdfd2ViX2RlbGl2ZXJ5X3Z0c19vdGZcIl0ifQ&_nc_ht=scontent-mad1-1.cdninstagram.com&_nc_cat=109&_nc_ohc=FGWru4cNdLMAX_K4E5b&tn=VRHGuwVQgXScv-7F&edm=ALQROFkBAAAA&vs=546391373741490_1076324468&_nc_vs=HBksFQAYJEdIc0NFUkVKbFg5U01IQUJBT2NDSGlaNU1ScGNidlZCQUFBRhUAAsgBABUAGCRHRUgyQmhHSURDbDNpUWNDQUp2ODkxY04wS1puYnZWQkFBQUYVAgLIAQAoABgAGwGIB3VzZV9vaWwBMRUAACb6%2BOSmwr7VPxUCKAJDMywXQDiAAAAAAAAYEmRhc2hfYmFzZWxpbmVfMV92MREAdewHAA%3D%3D&ccb=7-5&oe=62A764B0&oh=00_AT_IQEa1RZ7hMDzWS9a5mvRrO09DPi_K8AqXglaNuP7JEg&_nc_sid=30a2ef",
     "filename": "example_mp4",
     "extension": "mp4",
@@ -91,7 +91,7 @@ Example of a JSON type with multiple items having all possible inputs:
     "resource_id": 4
   },
   {
-    "type": "hosted_audio",
+    "type": "hosted",
     "url": "https://file-examples.com/storage/fece7372cf62a47bc9626b9/2017/11/file_example_MP3_700KB.mp3",
     "filename": "example_mp3",
     "extension": "mp3",
