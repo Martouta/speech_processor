@@ -26,36 +26,18 @@ class TestDownloadMultimedia:
         expected_path = f"{os.getcwd()}/resources/multimedia/test/recognition_id-7105531486224370946.mp4"
         assert actual_path == expected_path
 
-    def test_download_multimedia_for_video(self):
-        self.correct_download_multimedia('example.mp4', '')
-
-    def test_download_multimedia_for_audio(self):
-        self.correct_download_multimedia('', 'example.mp3')
-
-    def test_download_multimedia_for_video_and_audio(self):
-        self.correct_download_multimedia('example.mp4', 'example.mp3')
-
-    def correct_download_multimedia(self, video_path, audio_path):
+    def test_download_multimedia_for_hosted(self):
         web_root_uri = 'http://localhost:3000'
-        video_url = f"{web_root_uri}/{video_path}"
-        audio_url = f"{web_root_uri}/{audio_path}"
+        url = f"{web_root_uri}/example.mp4"
         with requests_mock.Mocker() as req_mock:
-            req_mock.get(video_url, json={"a": "b"})
-            req_mock.get(audio_url, json={"a": "b"})
+            req_mock.get(url, json={"a": "b"})
             filepath = app.download_multimedia(
-                'recognition_id', self.method_params(video_url=video_url, audio_url=audio_url))
+                'recognition_id',
+                {
+                    'type': 'hosted',
+                    'resource_id': 1,
+                    'url': url,
+                    'extension': 'mp4'
+                })
             with open(filepath, 'r') as file:
                 assert file.read().replace('\n', '') == '{"a": "b"}'
-
-    def method_params(self, video_url=None, audio_url=None, filename='example', extension='example'):
-        resource_type = 'hosted_audio'
-        if video_url:
-            resource_type = 'hosted_video'
-
-        return {
-            'type': resource_type,
-            'resource_id': 1,
-            'url': video_url or audio_url or '',
-            'filename': filename,
-            'extension': extension
-        }
