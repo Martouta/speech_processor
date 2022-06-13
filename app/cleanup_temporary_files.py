@@ -7,7 +7,7 @@ from pathlib import Path
 def cleanup_temporary_files(recognition_id, downloaded_multimedia_path):
     '''
     Cleanup after usage:
-    1. Downloaded video/audio.
+    1. Downloaded multimedia.
     2. WAV equivalent.
     3. audio_chunks folder created for this recognition.
     '''
@@ -16,7 +16,7 @@ def cleanup_temporary_files(recognition_id, downloaded_multimedia_path):
     sp_path = Path(__file__).resolve().parent.parent
     name = re.match("^.*\\/([^/]*)\\.(mp\\d+|wav)$",
                     downloaded_multimedia_path).group(1)
-    wav_path = f"{sp_path}/resources/audios/{speech_env}/{name}.wav"
+    wav_path = f"{sp_path}/resources/multimedia/{speech_env}/{name}.wav"
 
     for file_path in [downloaded_multimedia_path, wav_path]:
         if os.path.exists(file_path):

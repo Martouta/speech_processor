@@ -6,11 +6,9 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt __main__.py .
 COPY app app
-COPY audio_chunks audio_chunks
-COPY audios audios
 COPY config config
+COPY resources resources
 COPY subtitles subtitles
-COPY videos videos
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y autoremove \
     && apt-get install -y git \

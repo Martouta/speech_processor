@@ -22,9 +22,9 @@ class TestProcessResource:
         for dir in os.listdir(audio_chunks_root_dir):
             if (re.search(audio_chunks_dir_pattern, dir)):
                 shutil.rmtree(audio_chunks_root_dir + dir)
-        for fname in glob.glob('resources/videos/test/*.mp4'):
+        for fname in glob.glob('resources/multimedia/test/*.mp4'):
             os.remove(fname)
-        for fname in glob.glob('resources/audios/test/*.wav'):
+        for fname in glob.glob('resources/multimedia/test/*.wav'):
             os.remove(fname)
         for fname in glob.glob('resources/subtitles/test/*.txt'):
             os.remove(fname)

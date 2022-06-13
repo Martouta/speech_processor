@@ -41,11 +41,13 @@ def __process_resource(json_parsed, recognition_id):
     }
     return {**response, **subs_location}
 
+
 def generate_recognition_id(json_parsed):
     thread_id = threading.get_ident()
     datetime_now = datetime.utcnow().strftime('%m-%d.%H:%M:%S%f')
     resource_id = int(json_parsed['resource_id'] or -1)
     return f"{thread_id}-{resource_id}-{datetime_now}"
+
 
 def log_step(step_number, recognition_id):
     total_steps = 6
@@ -59,6 +61,7 @@ def log_step(step_number, recognition_id):
         f"[DONE] [{recognition_id}]"
     ]
     logging.info(steps[step_number])
+
 
 def __error_msg(exc_tuple):
     text = """{type} : {value}
