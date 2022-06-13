@@ -24,7 +24,7 @@ def download_multimedia(recognition_id, json_parsed):
         download_tiktok_video(json_parsed['id'], dir_path, filename)
     else:
         dir_path, filename = __filepath_tuple(
-            f"{recognition_id}-{json_parsed['filename']}",
+            f"{recognition_id}",
             extension=json_parsed['extension'])
         __dowload_hosted_multimedia(
             json_parsed['url'], f"{dir_path}/{filename}")

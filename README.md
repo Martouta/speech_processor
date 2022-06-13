@@ -63,7 +63,7 @@ The project for now it is assuming that you pass this data correctly.
 Example of a JSON type with multiple items having all possible inputs:
 
 ```json
-¡[
+[
   {
     "type": "youtube",
     "id": "zWQJqt_D-vo",
@@ -103,15 +103,13 @@ Example of a JSON type with multiple items having all possible inputs:
 
 For each item, each of those parameters are mandatory. This is what they mean:
 
-- __type__ must be one of these options: __youtube__, __tiktok__, __hosted_video__ or __hosted_audio__ . The 2 latter mean that it is directly downloadable from that link, and it is either a video (with audio in the video) or an audio.
+- __type__ must be one of these options: __youtube__, __tiktok__ or __hosted__. The latter means that it is directly downloadable from that link, and it is either a video (with audio in the video) or an audio.
 
 - __id__ is used for items that are located in either tiktok or youtube. It is the the __id__ of the video in those websites. For example:
   - For __tiktok__, given a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, the __id__ would be just `7105531486224370946`.
   - For __youtube__, given a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
 
 - __url__ is provided only for hosted items. It's the URL where you can directly download the item. No scrapping involved.
-
-- __filename__ is provided only for hosted items. It is whatever name you want for this item to be saved (temporarily). It must be nique among the items being processed at the same time.
 
 - __extension__ is provided only for hosted items. It is the extension of the file being downloaded. For video it must be __mp4__ and for audio it must be either __mp3__ or __wav__.
 
