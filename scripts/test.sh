@@ -3,7 +3,7 @@
 exit_code=0
 
 echo "MONGO_URL is ${MONGO_URL:="localhost:27017"}"
-echo "KAFKA_URL is ${KAFKA_URL:="localhost:29092"}"
+echo "KAFKA_URL is ${KAFKA_URL:="localhost:9092"}"
 
 echo "Waiting for MongoDB to start on '$MONGO_URL' ... ⏳"
 mongo_url_nc_format=`tr ':' ' ' <<<$MONGO_URL`
