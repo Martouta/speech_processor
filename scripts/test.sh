@@ -17,7 +17,7 @@ echo "Waiting for Kafka to start on '$KAFKA_URL' ... ⏳"
 while ! nc -zv $kafka_url_nc_format -w 5; do
   sleep 0.1
 done
-if ! [ -f /.dockerenv ]; then
+if  [ command -v docker-compose &> /dev/null ] && [ docker-compose ps --services --filter "status=running" | grep kafka ]; then
     echo '[Host-only] Waiting for Docker Compose Logs of Kafka started ... ⏳'
     grep -q -e 'KafkaServer id=\d\] started' <(docker-compose logs -f kafka)
 fi
