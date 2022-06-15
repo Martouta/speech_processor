@@ -34,10 +34,7 @@ class ResourceAudio:
     def split_into_chunks(self):
         path_chunks = self.__path_chunks()
 
-        try:
-            os.mkdir(path_chunks)
-        except FileExistsError:
-            pass
+        os.mkdir(path_chunks)
 
         chunks = split_on_silence(
             self.audio_wav, min_silence_len=500, silence_thresh=-40)
