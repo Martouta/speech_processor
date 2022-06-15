@@ -53,12 +53,13 @@ class ResourceAudio:
 
         for filename in sorted(os.listdir(path_chunks)):
             filepath = f"{path_chunks}/{filename}"
-            line = self.recognize_chunk(filepath, language)
+            line = ResourceAudio.recognize_chunk(filepath, language)
             all_recognitions.append(line)
 
         return Subtitle(self.recognition_id, all_recognitions, language)
 
-    def recognize_chunk(self, filepath, language):
+    @staticmethod
+    def recognize_chunk(filepath, language):
         try:
             with sr.AudioFile(filepath) as audiofile:
                 recognizer = sr.Recognizer()
