@@ -32,6 +32,29 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     extra_hosts:
       - "host.docker.internal:host-gateway"
+  speech_processor_development:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        SPEECH_ENV: 'development'
+    working_dir: /usr/src/app
+    ports:
+      - 3000:3000
+    environment:
+      KAFKA_URL: kafka:29092
+      MONGO_URL: mongodb:27017
+      SUBS_LOCATION: 'mongodb'
+      MAX_THREADS: '6'
+    depends_on:
+      - mongodb
+      - kafka
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   speech_processor_test:
     build:
       context: .
