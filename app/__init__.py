@@ -13,4 +13,5 @@ from .config_loaders.tiktok_cookie_configured import tiktok_cookie_configured
 from .process_resource import process_resource
 from .models.resource_audio import ResourceAudio
 from .resource_message_to_json import resource_message_to_json
+from .resource_json_to_input_item import resource_json_to_input_item
 from .models.subtitle import Subtitle
