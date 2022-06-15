@@ -4,9 +4,7 @@ import os
 import re
 from pathlib import Path
 import speech_recognition as sr
-from google.cloud import speech
 from pydub import AudioSegment
-from pydub.utils import mediainfo
 from pydub.silence import split_on_silence
 from .subtitle import Subtitle
 
