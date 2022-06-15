@@ -1,6 +1,5 @@
 import app
 import httpretty
-import pytest
 import requests
 import requests_mock
 import re
@@ -50,9 +49,8 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'type': 'hosted_video',
+            'type': 'hosted',
             'url': resource_url,
-            'filename': fname,
             'extension': ext,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
@@ -76,7 +74,7 @@ class TestProcessResource:
             + datetime.utcnow().strftime('%m-%d.%H') \
             + r":\d{2}:\d{8}"
         assert re.match(expected_recognition_id_regex,
-                        processed_resource['recognition_id'])
+                        processed_resource['input_item.recognition_id'])
         expected_recognition = [
             'بخير وانت',
             'شكرا'
@@ -104,9 +102,8 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'type': 'hosted_video',
+            'type': 'hosted',
             'url': resource_url,
-            'filename': fname,
             'extension': ext,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
@@ -138,12 +135,11 @@ class TestProcessResource:
             ]
             assert subfile.read().split("\n") == expected_recognition
 
-    def test_process_resource_error(self):
+    def test_process_resource_error(self, caplog):
         resource_url = 'http://localhost/example.mp4'
         json_parsed = {
-            'type': 'hosted_video',
+            'type': 'hosted',
             'url': resource_url,
-            'filename': 'example',
             'extension': 'mp4',
             'language_code': 'ar',
             'resource_id': 42
@@ -155,3 +151,7 @@ class TestProcessResource:
             resp = app.process_resource(json_parsed)
             assert resp['status'] == 'error'
             assert type(resp['error']) == requests.exceptions.ConnectTimeout
+
+            assert re.search(r"Traceback", caplog.text, re.MULTILINE)
+            assert re.search(r".*File.*line 14, in process_resource", caplog.text, re.MULTILINE)
+            assert re.search(re.escape('requests.exceptions.ConnectTimeout'), caplog.text, re.MULTILINE)

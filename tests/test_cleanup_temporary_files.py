@@ -1,7 +1,6 @@
 import app
 from app import ResourceAudio
 import os
-import pytest
 import shutil
 
 

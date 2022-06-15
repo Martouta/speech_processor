@@ -1,4 +1,3 @@
-import pytest
 import app
 import json
 from kafka.protocol.message import Message

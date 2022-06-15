@@ -1,0 +1,19 @@
+from pytube import YouTube
+from .input_item import InputItem
+
+
+class InputItemYoutube(InputItem):
+    def __init__(self, *, resource_id, language_code, id):
+        super().__init__(resource_id=resource_id, language_code=language_code)
+        self.id = id
+        self.extension = 'mp4'
+
+    def download(self, filepath):
+        output_path, filename = filepath.rsplit('/', 1)
+        YouTube(f"youtube.com/watch?v={self.id}") \
+            .streams \
+            .filter(only_audio=True, file_extension=self.extension) \
+            .order_by('abr') \
+            .desc() \
+            .first() \
+            .download(output_path=output_path, filename=filename)
