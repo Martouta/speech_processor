@@ -1,0 +1,81 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:5.0.3
+    ports:
+      - 27017:27017
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.2.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  kafka:
+    image: confluentinc/cp-kafka:6.2.0
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  speech_processor_development:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        SPEECH_ENV: 'development'
+    working_dir: /usr/src/app
+    ports:
+      - 3000:3000
+    environment:
+      KAFKA_URL: kafka:29092
+      MONGO_URL: mongodb:27017
+      SUBS_LOCATION: 'mongodb'
+      MAX_THREADS: '6'
+    depends_on:
+      - mongodb
+      - kafka
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  speech_processor_test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        SPEECH_ENV: 'test'
+    working_dir: /usr/src/app
+    entrypoint: scripts/test.sh
+    ports:
+      - 3000:3000
+    environment:
+      KAFKA_URL: kafka:29092
+      MONGO_URL: mongodb:27017
+      SUBS_LOCATION: 'mongodb'
+      MAX_THREADS: '6'
+    depends_on:
+      - mongodb
+      - kafka
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

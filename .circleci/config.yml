@@ -41,7 +41,9 @@ jobs:
       - checkout
       - run:
           name: "Install system dependencies"
-          command: apt-get update && apt-get install --no-install-recommends -y git ffmpeg
+          command: |
+            apt-get update -y
+            apt-get install --no-install-recommends -y git ffmpeg
       - run:
           name: "Install Python Development requirements"
           command: pip3 install --no-cache-dir -r requirements-dev.txt
@@ -58,3 +60,12 @@ workflows:
   speech-processor-workflow:
     jobs:
       - speech-processor
+
+# workflows:
+#   speech-processor-workflow:
+#     jobs:
+#       - hold:
+#           type: approval
+#       - speech-processor:
+#           requires:
+#             - hold
