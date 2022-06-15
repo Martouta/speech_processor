@@ -17,5 +17,4 @@ production:
 
 test:
   topic_publish_resource: ${ kafka_topic() }
-  brokers:
-    - 'localhost:9092'
+  brokers: ${ kafka_brokers() }
