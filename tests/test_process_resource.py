@@ -1,6 +1,5 @@
 import app
 import httpretty
-import pytest
 import requests
 import requests_mock
 import re
@@ -50,9 +49,8 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'type': 'hosted_video',
+            'type': 'hosted',
             'url': resource_url,
-            'filename': fname,
             'extension': ext,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
@@ -76,7 +74,7 @@ class TestProcessResource:
             + datetime.utcnow().strftime('%m-%d.%H') \
             + r":\d{2}:\d{8}"
         assert re.match(expected_recognition_id_regex,
-                        processed_resource['recognition_id'])
+                        processed_resource['input_item.recognition_id'])
         expected_recognition = [
             'بخير وانت',
             'شكرا'
@@ -104,9 +102,8 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'type': 'hosted_video',
+            'type': 'hosted',
             'url': resource_url,
-            'filename': fname,
             'extension': ext,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
@@ -141,9 +138,8 @@ class TestProcessResource:
     def test_process_resource_error(self):
         resource_url = 'http://localhost/example.mp4'
         json_parsed = {
-            'type': 'hosted_video',
+            'type': 'hosted',
             'url': resource_url,
-            'filename': 'example',
             'extension': 'mp4',
             'language_code': 'ar',
             'resource_id': 42

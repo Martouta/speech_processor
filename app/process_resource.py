@@ -1,18 +1,19 @@
-from datetime import datetime
 import logging
 import os
 import traceback
-import threading
 
 from .cleanup_temporary_files import cleanup_temporary_files
 from .downloaders.download_multimedia import download_multimedia
 from .models.resource_audio import ResourceAudio
+from .converters.resource_json_to_input_item import resource_json_to_input_item
+from .converters.resource_message_to_json import resource_message_to_json
 
 
-def process_resource(json_parsed):
+def process_resource(msg):
     try:
-        recognition_id = generate_recognition_id(json_parsed)
-        return __process_resource(json_parsed, recognition_id)
+        json = resource_message_to_json(msg)
+        input_item = resource_json_to_input_item(json)
+        return __process_resource(input_item)
     except Exception as exc:
         message = __error_msg((type(exc), exc, traceback.format_exc()))
         if os.environ['SPEECH_ENV'] != 'test':
@@ -20,33 +21,26 @@ def process_resource(json_parsed):
         return {'status': 'error', 'error': exc}
 
 
-def __process_resource(json_parsed, recognition_id):
-    log_step(0, recognition_id)
-    filepath = download_multimedia(recognition_id, json_parsed)
-    log_step(1, recognition_id)
-    resource_audio = ResourceAudio.save_as_wav(recognition_id, filepath)
-    log_step(2, recognition_id)
+def __process_resource(input_item):
+    log_step(0, input_item.recognition_id)
+    filepath = input_item.save()
+    log_step(1, input_item.recognition_id)
+    resource_audio = ResourceAudio.save_as_wav(
+        input_item.recognition_id, filepath)
+    log_step(2, input_item.recognition_id)
     resource_audio.split_into_chunks()
-    log_step(3, recognition_id)
-    subtitle = resource_audio.recognize_chunks(json_parsed['language_code'])
-    log_step(4, recognition_id)
-    resource_id = int(json_parsed['resource_id'] or -1)
-    subs_location = subtitle.save_subs(resource_id)
-    log_step(5, recognition_id)
-    cleanup_temporary_files(recognition_id, filepath)
-    log_step(6, recognition_id)
+    log_step(3, input_item.recognition_id)
+    subtitle = resource_audio.recognize_chunks(input_item.language_code)
+    log_step(4, input_item.recognition_id)
+    subs_location = subtitle.save_subs(input_item.resource_id)
+    log_step(5, input_item.recognition_id)
+    cleanup_temporary_files(input_item.recognition_id, filepath)
+    log_step(6, input_item.recognition_id)
     response = {
         'status': 'ok',
-        'recognition_id': recognition_id,
+        'input_item.recognition_id': input_item.recognition_id,
     }
     return {**response, **subs_location}
-
-
-def generate_recognition_id(json_parsed):
-    thread_id = threading.get_ident()
-    datetime_now = datetime.utcnow().strftime('%m-%d.%H:%M:%S%f')
-    resource_id = int(json_parsed['resource_id'] or -1)
-    return f"{thread_id}-{resource_id}-{datetime_now}"
 
 
 def log_step(step_number, recognition_id):
