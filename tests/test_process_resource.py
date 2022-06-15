@@ -51,7 +51,6 @@ class TestProcessResource:
         json_parsed = {
             'type': 'hosted',
             'url': resource_url,
-            'extension': ext,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
         }
@@ -104,7 +103,6 @@ class TestProcessResource:
         json_parsed = {
             'type': 'hosted',
             'url': resource_url,
-            'extension': ext,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
         }
@@ -140,7 +138,6 @@ class TestProcessResource:
         json_parsed = {
             'type': 'hosted',
             'url': resource_url,
-            'extension': 'mp4',
             'language_code': 'ar',
             'resource_id': 42
         }
