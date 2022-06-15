@@ -4,9 +4,7 @@ import os
 import re
 from pathlib import Path
 import speech_recognition as sr
-from google.cloud import speech
 from pydub import AudioSegment
-from pydub.utils import mediainfo
 from pydub.silence import split_on_silence
 from .subtitle import Subtitle
 
@@ -15,6 +13,13 @@ class ResourceAudio:
     def __init__(self, recognition_id, audio_wav):
         self.recognition_id = recognition_id
         self.audio_wav = audio_wav
+
+    def __str__(self):
+        attributes_str = ''
+        for item in self.__dict__:
+            item_str = '{} = {}'.format(item, self.__dict__[item])
+            attributes_str += '\n' + item_str
+        return str(self.__class__) + '\n' + attributes_str
 
     @staticmethod
     def save_as_wav(recognition_id, original_file_path):
