@@ -7,7 +7,6 @@ class TestResourceJSONToInputItem:
         params = {
             'type': 'hosted',
             'url': 'https://localhost:3000/example.mp4',
-            'extension': 'mp4',
             'resource_id': 42,
             'language_code': 'es'
         }

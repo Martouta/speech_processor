@@ -16,10 +16,32 @@ class TestInputItemHosted:
         filepath = None
         with requests_mock.Mocker() as req_mock:
             req_mock.get(url, json={"a": "b"})
-            input_item = InputItemHosted(
-                resource_id=42, language_code='ar', url=url, extension='mp4')
-            filepath = input_item.save()
+            item = InputItemHosted(resource_id=42, language_code='ar', url=url)
+            filepath = item.save()
         assert re.match(r'^' + re.escape(os.getcwd()) +
                         r'/resources/multimedia/test/\d+-42-\d{2}-\d{2}\.\d{2}:\d{2}:\d+\.mp4$', filepath)
         with open(filepath, 'r') as file:
             assert file.read().replace('\n', '') == '{"a": "b"}'
+
+    def test_extension(self):
+        web_root_uri = 'http://localhost:3000'
+        fname = 'example'
+
+        supported_extensions = ['mp4', 'mp3', 'wav']
+        supported_extensions += [ext.upper() for ext in supported_extensions]
+        for ext in supported_extensions:
+            url = f"{web_root_uri}/{fname}.{ext}?foo=bar"
+            item = InputItemHosted(resource_id=42, language_code='ar', url=url)
+            assert item.extension_from_url() == ext
+            assert item.extension == ext
+
+        ext = 'mkv'
+        url = f"{web_root_uri}/{fname}.{ext}?foo=bar"
+        item = InputItemHosted(resource_id=42, language_code='ar', url=url)
+        assert item.extension_from_url() == ''
+        assert item.extension == ''
+
+        url = f"{web_root_uri}/no-multimedia-attached"
+        item = InputItemHosted(resource_id=42, language_code='ar', url=url)
+        assert item.extension_from_url() == ''
+        assert item.extension == ''

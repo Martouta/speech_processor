@@ -85,14 +85,12 @@ Example of a JSON type with multiple items having all possible inputs:
   {
     "type": "hosted",
     "url": "https://scontent-mad1-1.cdninstagram.com/v/t50.16885-16/286327419_404827821544713_6636671397284152039_n.mp4?efg=eyJ2ZW5jb2RlX3RhZyI6InZ0c192b2RfdXJsZ2VuLjcyMC5pZ3R2LmJhc2VsaW5lIiwicWVfZ3JvdXBzIjoiW1wiaWdfd2ViX2RlbGl2ZXJ5X3Z0c19vdGZcIl0ifQ&_nc_ht=scontent-mad1-1.cdninstagram.com&_nc_cat=109&_nc_ohc=FGWru4cNdLMAX_K4E5b&tn=VRHGuwVQgXScv-7F&edm=ALQROFkBAAAA&vs=546391373741490_1076324468&_nc_vs=HBksFQAYJEdIc0NFUkVKbFg5U01IQUJBT2NDSGlaNU1ScGNidlZCQUFBRhUAAsgBABUAGCRHRUgyQmhHSURDbDNpUWNDQUp2ODkxY04wS1puYnZWQkFBQUYVAgLIAQAoABgAGwGIB3VzZV9vaWwBMRUAACb6%2BOSmwr7VPxUCKAJDMywXQDiAAAAAAAAYEmRhc2hfYmFzZWxpbmVfMV92MREAdewHAA%3D%3D&ccb=7-5&oe=62A764B0&oh=00_AT_IQEa1RZ7hMDzWS9a5mvRrO09DPi_K8AqXglaNuP7JEg&_nc_sid=30a2ef",
-    "extension": "mp4",
     "language_code": "en-US",
     "resource_id": 4
   },
   {
     "type": "hosted",
     "url": "https://file-examples.com/storage/fece7372cf62a47bc9626b9/2017/11/file_example_MP3_700KB.mp3",
-    "extension": "mp3",
     "language_code": "en-US",
     "resource_id": 5
   }
@@ -107,9 +105,7 @@ For each item, each of those parameters are mandatory. This is what they mean:
   - For __tiktok__, given a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, the __id__ would be just `7105531486224370946`.
   - For __youtube__, given a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
 
-- __url__ is provided only for hosted items. It's the URL where you can directly download the item. No scrapping involved.
-
-- __extension__ is provided only for hosted items. It is the extension of the file being downloaded. For video it must be __mp4__ and for audio it must be either __mp3__ or __wav__.
+- __url__ is provided only for hosted items. It's the URL where you can directly download the item. No scrapping involved. The only supported formats are mp4, mp3 and wav.
 
 - __language_code__ must be a language code from the list in [Documentation of Language Support of Google Cloud Speech-To-Text](https://cloud.google.com/speech-to-text/docs/languages). Plus, for Arabic fus7a is just "ar".
 
