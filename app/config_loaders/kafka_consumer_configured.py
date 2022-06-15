@@ -18,12 +18,12 @@ def kafka_consumer_configured():
         text = file.read()
         template_rendered = Template(text).render()
         config = yaml.load(template_rendered, yaml.Loader)[speech_env]
-        if speech_env != 'test':
-            host_with_port_netstat_format = config['brokers'].replace(':', ' ')
-            os.system(
-                f"while ! nc -zv {host_with_port_netstat_format} -w 5; do sleep 20; done")
-            logging.info('Speech Processor running')
-        return KafkaConsumer(config['topic_publish_resource'],
+        if speech_env != 'test': # Because I rather to be able to run all tests without kafka running and just see it fail instead of hanging
+            logging.info('Waiting for the kafka server to be reachable (not necessarily ready)')
+            os.system(f"while ! nc -zv {config['brokers'].replace(':', ' ')} -w 5; do sleep 20; done")
+        consumer = KafkaConsumer(config['topic_publish_resource'],
                              bootstrap_servers=config['brokers'],
                              group_id='1'
                              )
+        logging.info('Connection to kafka established')
+        return consumer
