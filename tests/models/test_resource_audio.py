@@ -43,7 +43,7 @@ class TestResourceAudio:
             './resources/audio_chunks/test/recognition_id/chunk*wav')) == chunks_info['number']
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
-    def test_recognize_chunks_google(self):
+    def test_recognize_all_chunks_google(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.mp3"
         resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
         resource_audio.split_into_chunks()
@@ -69,7 +69,7 @@ class TestResourceAudio:
             ]
         )
 
-        subtitle = resource_audio.recognize_chunks('ar')
+        subtitle = resource_audio.recognize_all_chunks('ar')
         actual_recognition = subtitle.lines
 
         assert actual_recognition == expected_recognition
