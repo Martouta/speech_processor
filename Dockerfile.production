@@ -8,7 +8,6 @@ COPY requirements.txt __main__.py .
 COPY app app
 COPY config config
 COPY resources resources
-COPY subtitles subtitles
 
 RUN apt-get -y update && apt-get -y upgrade && apt-get -y autoremove \
     && apt-get install --no-install-recommends -y git ffmpeg \
