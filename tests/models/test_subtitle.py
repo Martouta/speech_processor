@@ -39,3 +39,11 @@ class TestSubtitle:
         with pytest.raises(ValueError) as exception:
             self.subtitle.save_subs(42)
         assert exception.match(r"^Invalid value for ENV var SUBS_LOCATION$")
+
+    def test_str(self):
+        expected_string = "<class 'app.models.subtitle.Subtitle'>\n" \
+                        + "\n" \
+                        + "recognition_id = test_recognition_id\n" \
+                        + "lines = ['مرحبا', 'إسمي مارتا']\n" \
+                        + "language = ar"
+        assert self.subtitle.__str__() == expected_string

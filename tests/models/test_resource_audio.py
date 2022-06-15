@@ -1,11 +1,10 @@
 import httpretty
-import pytest
 from unittest import mock
 import os
 import glob
+import re
 import shutil
 from pydub import AudioSegment
-import app
 from app import ResourceAudio
 
 
@@ -74,3 +73,13 @@ class TestResourceAudio:
         actual_recognition = subtitle.lines
 
         assert actual_recognition == expected_recognition
+
+    def test_str(self):
+        filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
+        sound = AudioSegment.from_file(filepath)
+        resource_audio = ResourceAudio('test_recognition_id', sound)
+        expected_output = re.escape("<class 'app.models.resource_audio.ResourceAudio'>\n") \
+                        + r"\n" \
+                        + r"recognition_id = test_recognition_id\n" \
+                        + r"audio_wav = <pydub\.audio_segment\.AudioSegment object at 0[xX][0-9a-fA-F]+>"
+        assert re.match(expected_output, resource_audio.__str__(), re.MULTILINE)
