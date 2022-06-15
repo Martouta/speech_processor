@@ -1,5 +1,4 @@
 import logging
-import os
 import traceback
 
 from .cleanup_temporary_files import cleanup_temporary_files
@@ -15,8 +14,7 @@ def process_resource(msg):
         return __process_resource(input_item)
     except Exception as exc:
         message = __error_msg((type(exc), exc, traceback.format_exc()))
-        if os.environ['SPEECH_ENV'] != 'test':
-            logging.error(message)
+        logging.error(message)
         return {'status': 'error', 'error': exc}
 
 
@@ -24,12 +22,11 @@ def __process_resource(input_item):
     log_step(0, input_item.recognition_id)
     filepath = input_item.save()
     log_step(1, input_item.recognition_id)
-    resource_audio = ResourceAudio.save_as_wav(
-        input_item.recognition_id, filepath)
+    audio = ResourceAudio.save_as_wav(input_item.recognition_id, filepath)
     log_step(2, input_item.recognition_id)
-    resource_audio.split_into_chunks()
+    audio.split_into_chunks()
     log_step(3, input_item.recognition_id)
-    subtitle = resource_audio.recognize_chunks(input_item.language_code)
+    subtitle = audio.recognize_chunks(input_item.language_code)
     log_step(4, input_item.recognition_id)
     subs_location = subtitle.save_subs(input_item.resource_id)
     log_step(5, input_item.recognition_id)

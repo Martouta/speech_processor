@@ -135,7 +135,7 @@ class TestProcessResource:
             ]
             assert subfile.read().split("\n") == expected_recognition
 
-    def test_process_resource_error(self):
+    def test_process_resource_error(self, caplog):
         resource_url = 'http://localhost/example.mp4'
         json_parsed = {
             'type': 'hosted',
@@ -151,3 +151,7 @@ class TestProcessResource:
             resp = app.process_resource(json_parsed)
             assert resp['status'] == 'error'
             assert type(resp['error']) == requests.exceptions.ConnectTimeout
+
+            assert re.search(r"Traceback", caplog.text, re.MULTILINE)
+            assert re.search(r".*File.*line 14, in process_resource", caplog.text, re.MULTILINE)
+            assert re.search(re.escape('requests.exceptions.ConnectTimeout'), caplog.text, re.MULTILINE)
