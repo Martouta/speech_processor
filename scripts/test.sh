@@ -25,7 +25,7 @@ echo "Kafka started 🚀"
 
 echo "Running Tests for SpeechProcessor ... 🚀"
 
-KAFKA_RESOURCE_TOPIC=speech_processor_resource_test MONGO_DB=speech_processor_test SPEECH_ENV='test' python3 -m pytest tests --tb=native -rP
+KAFKA_RESOURCE_TOPIC=speech_processor_resource_test MONGO_DB=speech_processor_test SPEECH_ENV='test' python3 -m pytest tests --tb=native -rP --show-capture=stdout
 ((exit_code+=$?))
 
 exit $exit_code
