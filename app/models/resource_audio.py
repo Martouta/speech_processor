@@ -65,7 +65,7 @@ class ResourceAudio:
         except sr.UnknownValueError:
             return ''
         except sr.RequestError:
-            logging.error(
+            logging.getLogger(__name__).error(
                 'Could not request results. check your internet connection')
             return ''
 

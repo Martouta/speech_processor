@@ -14,7 +14,7 @@ def process_resource(msg):
         return __process_resource(input_item)
     except Exception as exc:
         message = __error_msg((type(exc), exc, traceback.format_exc()))
-        logging.error(message)
+        logging.getLogger(__name__).error(message)
         return {'status': 'error', 'error': exc}
 
 
