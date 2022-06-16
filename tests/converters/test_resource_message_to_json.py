@@ -26,7 +26,7 @@ class TestResourceMessageToJSON:
 
     def unwrapped_resource_message(self):
         return {
-            'type': 'youtube',
+            'integration': 'youtube',
             'id': 'zWQJqt_D-vo',
             'resource_id': 1,
             'language_code': 'ar'

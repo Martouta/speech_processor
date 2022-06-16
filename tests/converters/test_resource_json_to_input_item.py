@@ -5,7 +5,7 @@ import pytest
 class TestResourceJSONToInputItem:
     def test_resource_json_to_input_item_hosted(self):
         params = {
-            'type': 'hosted',
+            'integration': 'hosted',
             'url': 'https://localhost:3000/example.mp4',
             'resource_id': 42,
             'language_code': 'es'
@@ -16,7 +16,7 @@ class TestResourceJSONToInputItem:
 
     def test_resource_json_to_input_item_tiktok(self):
         params = {
-            'type': 'tiktok',
+            'integration': 'tiktok',
             'id': '7105531486224370946',
             'resource_id': 42,
             'language_code': 'en'
@@ -27,7 +27,7 @@ class TestResourceJSONToInputItem:
 
     def test_resource_json_to_input_item_youtube(self):
         params = {
-            'type': 'youtube',
+            'integration': 'youtube',
             'id': 'zWQJqt_D-vo',
             'resource_id': 42,
             'language_code': 'ar'
@@ -38,7 +38,7 @@ class TestResourceJSONToInputItem:
 
     def test_resource_json_to_input_item_unsupported(self):
         with pytest.raises(KeyError) as exception:
-            app.resource_json_to_input_item({'type': 'unsupported'})
+            app.resource_json_to_input_item({'integration': 'unsupported'})
         assert exception.match(r"^'unsupported'$")
 
     def assert_params(self, input_item, params):

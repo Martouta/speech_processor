@@ -49,7 +49,7 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'type': 'hosted',
+            'integration': 'hosted',
             'url': resource_url,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
@@ -101,7 +101,7 @@ class TestProcessResource:
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
-            'type': 'hosted',
+            'integration': 'hosted',
             'url': resource_url,
             'language_code': 'ar',
             'resource_id': TestProcessResource.RESOURCE_ID
@@ -136,7 +136,7 @@ class TestProcessResource:
     def test_process_resource_error(self, caplog):
         resource_url = 'http://localhost/example.mp4'
         json_parsed = {
-            'type': 'hosted',
+            'integration': 'hosted',
             'url': resource_url,
             'language_code': 'ar',
             'resource_id': 42
