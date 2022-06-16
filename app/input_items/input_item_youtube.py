@@ -9,11 +9,15 @@ class InputItemYoutube(InputItem):
         self.extension = 'mp4'
 
     def download(self, filepath):
-        output_path, filename = filepath.rsplit('/', 1)
         YouTube(f"youtube.com/watch?v={self.id}") \
             .streams \
             .filter(only_audio=True, file_extension=self.extension) \
             .order_by('abr') \
             .desc() \
             .first() \
-            .download(output_path=output_path, filename=filename)
+            .download(**InputItemYoutube.downloads_params(filepath))
+
+    @staticmethod
+    def downloads_params(filepath):
+        output_path, filename = filepath.rsplit('/', 1)
+        return {'output_path': output_path, 'filename': filename}

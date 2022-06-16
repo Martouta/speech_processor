@@ -1,3 +1,4 @@
+from cmath import exp
 from app import InputItemYoutube
 import concurrent.futures
 import glob
@@ -15,21 +16,30 @@ class TestInputItemYoutube:
 
     @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_save_simple(self):
-        input_item = InputItemYoutube(
-            id=youtube_ids[0], language_code='en', resource_id=42)
-        filepath = input_item.save()
-        assert re.match(r'^' + re.escape(os.getcwd()) +
-                        r'/resources/multimedia/test/\d+-42-\d{2}-\d{2}\.\d{2}:\d{2}:\d+\.mp4$', filepath)
+        filepath = self.submit_save_request(youtube_ids[0])
+        expected_filepath_regexp = r'^' + re.escape(f"{os.getcwd()}/") \
+            + re.escape('resources/multimedia/test/') \
+            + r'\d+-55-' \
+            + r'\d{2}-\d{2}\.\d{2}:\d{2}:\d+\.mp4$'
+        assert re.match(expected_filepath_regexp, filepath)
         assert os.path.exists(filepath)
 
     @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
     def test_save_with_threads(self):
-        filepaths = []
         with concurrent.futures.ThreadPoolExecutor(len(youtube_ids)) as executor:
             for id in youtube_ids:
-                input_item = InputItemYoutube(
-                    id=youtube_ids[0], language_code='en', resource_id=42)
-                path = input_item.save()
-                filepaths.append(path)
-        for path in filepaths:
-            assert os.path.exists(path)
+                executor.submit(self.submit_save_request, id)
+        filepaths = glob.glob('resources/multimedia/test/*55*.mp4')
+        assert len(filepaths) == 2
+
+    def submit_save_request(self, id):
+        item = InputItemYoutube(id=id, language_code='en', resource_id=55)
+        return item.save()
+
+    def test_download_params(self):
+        filepath = f"{os.getcwd()}/tests/fixtures/example.mp4"
+        params = InputItemYoutube.downloads_params(filepath)
+        expected_params = {
+            'output_path': f"{os.getcwd()}/tests/fixtures",
+            'filename': 'example.mp4'}
+        assert params == expected_params

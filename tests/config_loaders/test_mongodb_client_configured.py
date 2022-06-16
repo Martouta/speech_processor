@@ -1,6 +1,5 @@
 import app
 import pymongo
-import pytest
 
 
 class TestMongoDBClientConfigured:
