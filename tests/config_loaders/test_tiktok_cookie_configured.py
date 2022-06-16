@@ -1,4 +1,3 @@
-import pytest
 import app
 import os
 from unittest import mock
