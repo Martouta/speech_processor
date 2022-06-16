@@ -65,31 +65,31 @@ Example of a JSON type with multiple items having all possible inputs:
 ```json
 [
   {
-    "type": "youtube",
+    "integration": "youtube",
     "id": "zWQJqt_D-vo",
     "language_code": "ar",
     "resource_id": 1
   },
   {
-    "type": "youtube",
+    "integration": "youtube",
     "id": "CNHe4qXqsck",
     "language_code": "ar",
     "resource_id": 2
   },
   {
-    "type": "tiktok",
+    "integration": "tiktok",
     "id": "7105531486224370946",
     "language_code": "en-au",
     "resource_id": 3
   },
   {
-    "type": "hosted",
+    "integration": "hosted",
     "url": "https://scontent-mad1-1.cdninstagram.com/v/t50.16885-16/10000000_4897336923689152_6953647669213471758_n.mp4?efg=eyJ2ZW5jb2RlX3RhZyI6InZ0c192b2RfdXJsZ2VuLjEyODAuaWd0di5iYXNlbGluZSIsInFlX2dyb3VwcyI6IltcImlnX3dlYl9kZWxpdmVyeV92dHNfb3RmXCJdIn0&_nc_ht=scontent-mad1-1.cdninstagram.com&_nc_cat=104&_nc_ohc=OfiUjon4e6AAX8fa1iX&edm=ALQROFkBAAAA&vs=504042498033080_1629363706&_nc_vs=HBksFQAYJEdJQ1dtQURBa0s0YkdtWVJBQTRrc1pDMlVZQmdidlZCQUFBRhUAAsgBABUAGCRHSS1IaXhDdlJKbUlTdHdLQUNYaDgzbUpqb1JWYnZWQkFBQUYVAgLIAQAoABgAGwGIB3VzZV9vaWwBMRUAACbwmrGErMDmPxUCKAJDMywXQFeRBiTdLxsYEmRhc2hfYmFzZWxpbmVfMV92MREAdewHAA%3D%3D&ccb=7-5&oe=62AC1A5F&oh=00_AT9ijqEfW1SCDHUqt3KK79FNnZmlzE9lqGMEegg35y58VQ&_nc_sid=30a2ef",
     "language_code": "en-US",
     "resource_id": 4
   },
   {
-    "type": "hosted",
+    "integration": "hosted",
     "url": "https://lang_src.s3.amazonaws.com/7a.mp3",
     "language_code": "en-US",
     "resource_id": 5
@@ -99,7 +99,7 @@ Example of a JSON type with multiple items having all possible inputs:
 
 For each item, each of those parameters are mandatory. This is what they mean:
 
-- __type__ must be one of these options: __youtube__, __tiktok__ or __hosted__. The latter means that it is directly downloadable from that link, and it is either a video (with audio in the video) or an audio.
+- __integration__ must be one of these options: __youtube__, __tiktok__ or __hosted__. The latter means that it is directly downloadable from that link, and it is either a video (with audio in the video) or an audio.
 
 - __id__ is used for items that are located in either tiktok or youtube. It is the the __id__ of the video in those websites. For example:
   - For __tiktok__, given a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, the __id__ would be just `7105531486224370946`.
