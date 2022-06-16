@@ -29,9 +29,10 @@ class TestInputItemTiktok:
         filepaths = []
         with concurrent.futures.ThreadPoolExecutor(len(tiktok_ids)) as executor:
             for id in tiktok_ids:
-                input_item = InputItemTiktok(
-                    id=tiktok_ids[0], language_code='en', resource_id=42)
-                path = input_item.save()
-                filepaths.append(path)
+                executor.submit(lambda id:
+                                filepaths.append(
+                                    InputItemTiktok(id=id, language_code='en',
+                                                    resource_id=42).save()
+                                ), id)
         for path in filepaths:
             assert os.path.exists(path)
