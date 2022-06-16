@@ -21,7 +21,7 @@ process:
 clear_cache:
 	find . | grep -E '__pycache__|\.pyc|\.pyo|\.pytest_cache' | xargs rm -rf
 
-# Deploy to production. Call like: make version=example build_production
+# Deploy to production. Call like: make version=example deploy_production
 # It builds the docker image, pushes it to dockerhub, created the github release and tag remotely and locally, and finally, it sets the new image to production (k8s).
 deploy_production:
 	docker build -t martouta/speech_processor:$(version) -f Dockerfile.production .
