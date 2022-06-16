@@ -18,8 +18,12 @@ class TestInputItemYoutube:
         input_item = InputItemYoutube(
             id=youtube_ids[0], language_code='en', resource_id=42)
         filepath = input_item.save()
-        assert re.match(r'^' + re.escape(os.getcwd()) +
-                        r'/resources/multimedia/test/\d+-42-\d{2}-\d{2}\.\d{2}:\d{2}:\d+\.mp4$', filepath)
+        expected_filepath_regexp = r'^' + re.escape(f"{os.getcwd()}/") \
+            + re.escape('resources/multimedia/test/') \
+            + r'\d+' \
+            + re.escape(f"-{input_item.resource_id}-") \
+            + r'\d{2}-\d{2}\.\d{2}:\d{2}:\d+\.mp4$'
+        assert re.match(expected_filepath_regexp, filepath)
         assert os.path.exists(filepath)
 
     @pytest.mark.skipif(os.getenv('CIRCLECI') is not None, reason="no idea how to mock these real HTTP requests")
