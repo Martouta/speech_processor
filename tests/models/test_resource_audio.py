@@ -3,16 +3,13 @@ import glob
 import httpretty
 import os
 from pydub import AudioSegment
-import pytest
 import re
-import requests
-import requests_mock
 import shutil
-import speech_recognition as sr
-from unittest import mock
 
 
 class TestResourceAudio:
+    GOOGLE_API_URL = 'http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'
+
     def teardown_method(self):
         for filename in glob.glob(f"{os.getcwd()}/multimedia/test/*.wav"):
             os.remove(filename)
@@ -38,8 +35,8 @@ class TestResourceAudio:
         self.assert_save_wav_for(format='wav')
 
     def test_split_into_chunks(self):
-        filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
-        sound = AudioSegment.from_file(filepath)
+        sound = AudioSegment.from_file(
+            f"{os.getcwd()}/tests/fixtures/example.wav")
         resource_audio = ResourceAudio('recognition_id', sound)
         chunks_info = resource_audio.split_into_chunks()
         assert f"{os.getcwd()}/resources/audio_chunks/test/recognition_id" == chunks_info['path']
@@ -58,10 +55,9 @@ class TestResourceAudio:
         ]
         actual_recognition = []
 
-        api_url = "http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
         httpretty.register_uri(
             httpretty.POST,
-            api_url,
+            TestResourceAudio.GOOGLE_API_URL,
             adding_headers={
                 'content-type': 'audio/x-flac; rate=44100'
             },
@@ -81,16 +77,16 @@ class TestResourceAudio:
     @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_recognize_chunk_error_unknown_value(self, caplog):
         filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
-        api_url = 'http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'
 
         httpretty.register_uri(
             httpretty.POST,
-            api_url,
+            TestResourceAudio.GOOGLE_API_URL,
             adding_headers={
                 'content-type': 'audio/x-flac; rate=44100'
             },
             responses=[
-                httpretty.Response('{"result":[{"alternative":[{"confidence":0.00001}],"final":true}],"result_index":0}')
+                httpretty.Response(
+                    '{"result":[{"alternative":[{"confidence":0.00001}],"final":true}],"result_index":0}')
             ]
         )
 
@@ -103,11 +99,10 @@ class TestResourceAudio:
     @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_recognize_chunk_error_network_request(self, caplog):
         filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
-        api_url = 'http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'
 
         httpretty.register_uri(
             httpretty.POST,
-            uri=api_url,
+            uri=TestResourceAudio.GOOGLE_API_URL,
             status=500
         )
 
@@ -117,8 +112,8 @@ class TestResourceAudio:
         assert re.search(expected_error, caplog.text, re.MULTILINE)
 
     def test_str(self):
-        filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
-        sound = AudioSegment.from_file(filepath)
+        sound = AudioSegment.from_file(
+            f"{os.getcwd()}/tests/fixtures/example.wav")
         resource_audio = ResourceAudio('test_recognition_id', sound)
         expected_output = re.escape("<class 'app.models.resource_audio.ResourceAudio'>\n") \
             + r"\n" \
