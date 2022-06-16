@@ -26,6 +26,6 @@ clear_cache:
 deploy_production:
 	docker build -t martouta/speech_processor:$(version) -f Dockerfile.production .
 	docker push martouta/speech_processor:$(version)
-	gh release create $(version) --title "$(version)" --notes "Release generated with 'make version=$(version) build_production'"
+	gh release create $(version) --title "$(version)" --notes "Release generated with 'make version=$(version) deploy_production'"
 	git fetch -t
 	kubectl set image deployment speech-processor speech-processor=martouta/speech_processor:$(version)
