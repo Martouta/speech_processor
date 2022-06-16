@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/martouta/speech_processor/tree/v2.0.0) (2022-06-16)
+## [v2.0.0](https://github.com/martouta/speech_processor/tree/v2.0.0) (2022-06-16)
 
 [Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.7...v2.0.0)
 
