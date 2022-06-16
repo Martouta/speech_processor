@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2.0.0](https://github.com/martouta/speech_processor/tree/v2.0.0) (2022-06-16)
+## [Unreleased](https://github.com/martouta/speech_processor/tree/v2.0.0) (2022-06-16)
 
 [Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.7...v2.0.0)
 
@@ -19,6 +19,7 @@
 
 **Merged pull requests:**
 
+- Rename type -\> integration [\#100](https://github.com/Martouta/speech_processor/pull/100) ([Martouta](https://github.com/Martouta))
 - Set up CHANGELOG 💃🏻 [\#99](https://github.com/Martouta/speech_processor/pull/99) ([Martouta](https://github.com/Martouta))
 - Test Youtube download params & Fix YT Tests [\#98](https://github.com/Martouta/speech_processor/pull/98) ([Martouta](https://github.com/Martouta))
 - \[Refactor\] Remove unused imports from TestResourceAudio + Use GOOGLE\_API\_URL [\#97](https://github.com/Martouta/speech_processor/pull/97) ([Martouta](https://github.com/Martouta))
