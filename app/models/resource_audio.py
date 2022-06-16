@@ -3,6 +3,7 @@ import logging
 import os
 import re
 from pathlib import Path
+import requests
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
@@ -13,6 +14,10 @@ class ResourceAudio:
     def __init__(self, recognition_id, audio_wav):
         self.recognition_id = recognition_id
         self.audio_wav = audio_wav
+        self.path_chunks = f"{Path(__file__).resolve().parent.parent.parent}/" \
+            + "resources/audio_chunks/" \
+            + f"{os.environ['SPEECH_ENV']}/" \
+            + self.recognition_id
 
     def __str__(self):
         attributes_str = ''
@@ -32,9 +37,7 @@ class ResourceAudio:
         return ResourceAudio(recognition_id, AudioSegment.from_wav(new_path))
 
     def split_into_chunks(self):
-        path_chunks = self.__path_chunks()
-
-        os.mkdir(path_chunks)
+        os.mkdir(self.path_chunks)
 
         chunks = split_on_silence(
             self.audio_wav, min_silence_len=500, silence_thresh=-40)
@@ -42,17 +45,16 @@ class ResourceAudio:
         for index, chunk in enumerate(chunks, start=0):
             chunk_silent = AudioSegment.silent(duration=10)
             audio_chunk = chunk_silent + chunk + chunk_silent
-            filename = f"{path_chunks}/chunk{index}.wav"
+            filename = f"{self.path_chunks}/chunk{index}.wav"
             audio_chunk.export(filename, bitrate='192k', format='wav')
 
-        return {'number': len(chunks), 'path': path_chunks}
+        return {'number': len(chunks), 'path': self.path_chunks}
 
     def recognize_all_chunks(self, language):
-        path_chunks = self.__path_chunks()
         all_recognitions = []
 
-        for filename in sorted(os.listdir(path_chunks)):
-            filepath = f"{path_chunks}/{filename}"
+        for filename in sorted(os.listdir(self.path_chunks)):
+            filepath = f"{self.path_chunks}/{filename}"
             line = ResourceAudio.recognize_chunk(filepath, language)
             all_recognitions.append(line)
 
@@ -65,13 +67,6 @@ class ResourceAudio:
                 recognizer = sr.Recognizer()
                 audio = recognizer.record(audiofile)
                 return recognizer.recognize_google(audio, language=language)
-        except sr.UnknownValueError:
+        except (sr.RequestError, sr.UnknownValueError) as error:
+            logging.getLogger(__name__).error(f"{type(error)} - {error}")
             return ''
-        except sr.RequestError:
-            logging.getLogger(__name__).error(
-                'Could not request results. check your internet connection')
-            return ''
-
-    def __path_chunks(self):
-        sp_path = Path(__file__).resolve().parent.parent.parent
-        return f"{sp_path}/resources/audio_chunks/{os.environ['SPEECH_ENV']}/{self.recognition_id}"

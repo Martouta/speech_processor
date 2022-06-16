@@ -1,11 +1,15 @@
-import httpretty
-from unittest import mock
-import os
-import glob
-import re
-import shutil
-from pydub import AudioSegment
 from app import ResourceAudio
+import glob
+import httpretty
+import os
+from pydub import AudioSegment
+import pytest
+import re
+import requests
+import requests_mock
+import shutil
+import speech_recognition as sr
+from unittest import mock
 
 
 class TestResourceAudio:
@@ -74,12 +78,51 @@ class TestResourceAudio:
 
         assert actual_recognition == expected_recognition
 
+    @httpretty.activate(verbose=True, allow_net_connect=False)
+    def test_recognize_chunk_error_unknown_value(self, caplog):
+        filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
+        api_url = 'http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'
+
+        httpretty.register_uri(
+            httpretty.POST,
+            api_url,
+            adding_headers={
+                'content-type': 'audio/x-flac; rate=44100'
+            },
+            responses=[
+                httpretty.Response('{"result":[{"alternative":[{"confidence":0.00001}],"final":true}],"result_index":0}')
+            ]
+        )
+
+        recognition = ResourceAudio.recognize_chunk(filepath, 'ar')
+        assert '' == recognition
+
+        expected_error = re.escape('speech_recognition.UnknownValueError')
+        assert re.search(expected_error, caplog.text, re.MULTILINE)
+
+    @httpretty.activate(verbose=True, allow_net_connect=False)
+    def test_recognize_chunk_error_network_request(self, caplog):
+        filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
+        api_url = 'http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'
+
+        httpretty.register_uri(
+            httpretty.POST,
+            uri=api_url,
+            status=500
+        )
+
+        assert '' == ResourceAudio.recognize_chunk(filepath, 'ar')
+        assert re.search('Internal Server Error', caplog.text, re.MULTILINE)
+        expected_error = re.escape('speech_recognition.RequestError')
+        assert re.search(expected_error, caplog.text, re.MULTILINE)
+
     def test_str(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
         sound = AudioSegment.from_file(filepath)
         resource_audio = ResourceAudio('test_recognition_id', sound)
         expected_output = re.escape("<class 'app.models.resource_audio.ResourceAudio'>\n") \
-                        + r"\n" \
-                        + r"recognition_id = test_recognition_id\n" \
-                        + r"audio_wav = <pydub\.audio_segment\.AudioSegment object at 0[xX][0-9a-fA-F]+>"
-        assert re.match(expected_output, resource_audio.__str__(), re.MULTILINE)
+            + r"\n" \
+            + r"recognition_id = test_recognition_id\n" \
+            + r"audio_wav = <pydub\.audio_segment\.AudioSegment object at 0[xX][0-9a-fA-F]+>"
+        assert re.match(expected_output,
+                        resource_audio.__str__(), re.MULTILINE)
