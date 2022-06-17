@@ -63,8 +63,6 @@ services:
         SPEECH_ENV: 'test'
     working_dir: /usr/src/app
     entrypoint: scripts/test.sh
-    ports:
-      - 3000:3000
     environment:
       KAFKA_URL: kafka:29092
       MONGO_URL: mongodb:27017
