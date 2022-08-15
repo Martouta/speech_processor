@@ -1,4 +1,4 @@
-google-cloud-speech==2.15.0
+google-cloud-speech==2.15.1
 kafka-python==2.0.2
 mako==1.2.1
 pydub==0.25.1
