@@ -1,6 +1,7 @@
 google_cloud_speech_credentials.json
 
 .DS_Store
+.coverage
 
 __pycache__/
 .pytest_cache/
