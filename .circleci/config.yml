@@ -27,7 +27,7 @@ jobs:
   speech-processor:
     resource_class: small
     docker:
-      - image: python:3.10-slim
+      - image: python:3.11-slim
       - *mongodb-container
       - *kafka-container
       - *zookeeper-container

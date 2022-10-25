@@ -28,7 +28,7 @@ Please, use a release instead. Preferably, the latest.
 
 ## Install dependencies
 
-1. Install [Python version 3.10 or newer](https://www.python.org/downloads/).
+1. Install [Python version 3.11 or newer](https://www.python.org/downloads/).
 2. Install the dependencies (external libraries necessary for this program to work). With this command in the Terminal:
 `pip3 install --no-cache-dir -r requirements.txt --user`
 
