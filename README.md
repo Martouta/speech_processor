@@ -1,6 +1,6 @@
 # Speech Processor [![Maintainability](https://api.codeclimate.com/v1/badges/152b7d7c3208b39b8b0a/maintainability)](https://codeclimate.com/github/Martouta/speech_processor/maintainability) [![CircleCI](https://circleci.com/gh/Martouta/speech_processor.svg?style=svg)](https://app.circleci.com/pipelines/github/Martouta/speech_processor) [![Coverage Status](https://coveralls.io/repos/github/Martouta/speech_processor/badge.svg?branch=main)](https://coveralls.io/github/Martouta/speech_processor?branch=main)
 
-📗 This project fetches videos and audios from the internet, then it tries to identify their texts through __Google Cloud Speech-To-Text__ and it saves the results. It doesn't require a headless browser.
+📗 This project fetches videos and audios from the internet, then it tries to identify their texts through __Google Cloud Speech-To-Text__ and it saves the results.
 
 🧑‍💻 This documentation used to be mostly addressed to non-developers. Now, it is addressed only to developers. Otherwise, it would get crazy how much I would have to explain.
 
