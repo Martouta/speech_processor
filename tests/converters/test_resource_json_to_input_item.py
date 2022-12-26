@@ -5,6 +5,17 @@ import pytest
 class TestResourceJSONToInputItem:
     def test_resource_json_to_input_item_hosted(self):
         params = {
+            'integration': 'local',
+            'url': 'tests/fixtures/example.mp3',
+            'resource_id': 42,
+            'language_code': 'ar'
+        }
+        input_item = app.resource_json_to_input_item(params)
+        assert type(input_item) == app.InputItemLocal
+        self.assert_params(input_item, params)
+
+    def test_resource_json_to_input_item_hosted(self):
+        params = {
             'integration': 'hosted',
             'url': 'https://localhost:3000/example.mp4',
             'resource_id': 42,

@@ -1,7 +1,5 @@
 version: 2.1
 
-####### YAML ANCHORS #######
-
 mongodb-container: &mongodb-container
   image: mongo:5.0.3
 
@@ -21,10 +19,8 @@ kafka-container: &kafka-container
     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-####### CIRCLECI JOBS #######
-
 jobs:
-  speech-processor:
+  speech-processor-job:
     resource_class: small
     docker:
       - image: python:3.11-slim
@@ -50,22 +46,11 @@ jobs:
       - run:
           name: "Run Tests with coverage"
           command: |
-            python3 -m coverage run -m pytest tests --tb=native --verbosity=1
+            python3 -m coverage run --omit='tests/*' -m pytest tests --tb=native --verbosity=1
             python3 -m coverage report
             coveralls
-
-####### CIRCLECI WORKFLOWS #######
 
 workflows:
   speech-processor-workflow:
     jobs:
-      - speech-processor
-
-# workflows:
-#   speech-processor-workflow:
-#     jobs:
-#       - hold:
-#           type: approval
-#       - speech-processor:
-#           requires:
-#             - hold
+      - speech-processor-job

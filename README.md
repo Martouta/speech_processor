@@ -93,6 +93,12 @@ Example of a JSON type with multiple items having all possible inputs:
     "url": "https://lang_src.s3.amazonaws.com/7a.mp3",
     "language_code": "en-US",
     "resource_id": 5
+  },
+  {
+    "integration": "local",
+    "path": "tests/fixtures/example.mp3",
+    "language_code": "ar",
+    "resource_id": 6
   }
 ]
 ```
@@ -106,6 +112,8 @@ For each item, each of those parameters are mandatory. This is what they mean:
   - For __youtube__, given a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
 
 - __url__ is provided only for hosted items. It's the URL where you can directly download the item. No scrapping involved. The only supported formats are mp4, mp3 and wav.
+
+- __path__ is only provided for local items. It is where you have the resource in the same machine where you are running this program.
 
 - __language_code__ must be a language code from the list in [Documentation of Language Support of Google Cloud Speech-To-Text](https://cloud.google.com/speech-to-text/docs/languages). Plus, for Arabic fus7a is just "ar".
 

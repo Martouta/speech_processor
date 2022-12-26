@@ -28,5 +28,11 @@
     "url": "https://lang_src.s3.amazonaws.com/7a.mp3",
     "language_code": "en-US",
     "resource_id": 5
+  },
+  {
+    "integration": "local",
+    "path": "tests/fixtures/example.mp3",
+    "language_code": "ar",
+    "resource_id": 6
   }
 ]

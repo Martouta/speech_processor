@@ -10,8 +10,6 @@ class TestFetchInputMessages:
     def test_fetch_input_msgs_from_input_file(self):
         messages = app.fetch_input_messages()
 
-        assert len(messages) == 5
-
         assert messages[0]['integration'] == 'youtube'
         assert messages[0]['id'] == 'zWQJqt_D-vo'
         assert messages[0]['language_code'] == 'ar'
@@ -36,6 +34,11 @@ class TestFetchInputMessages:
         assert messages[4]['url'] == 'https://lang_src.s3.amazonaws.com/7a.mp3'
         assert messages[4]['language_code'] == 'en-US'
         assert messages[4]['resource_id'] == 5
+
+        assert messages[5]['integration'] == 'local'
+        assert messages[5]['path'] == 'tests/fixtures/example.mp3'
+        assert messages[5]['language_code'] == 'ar'
+        assert messages[5]['resource_id'] == 6
 
     def test_fetch_input_msgs_from_kafka(self):
         messages = app.fetch_input_messages()
