@@ -46,7 +46,7 @@ jobs:
       - run:
           name: "Run Tests with coverage"
           command: |
-            python3 -m coverage run -m pytest tests --tb=native --verbosity=1
+            python3 -m coverage run --omit='tests/*' -m pytest tests --tb=native --verbosity=1
             python3 -m coverage report
             coveralls
 
