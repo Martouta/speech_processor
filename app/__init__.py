@@ -1,5 +1,6 @@
 from .cleanup_temporary_files import cleanup_temporary_files
 from .input_items.input_item import InputItem
+from .input_items.input_item_local import InputItemLocal
 from .input_items.input_item_hosted import InputItemHosted
 from .input_items.input_item_tiktok import InputItemTiktok
 from .input_items.input_item_youtube import InputItemYoutube
