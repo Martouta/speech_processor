@@ -1,7 +1,5 @@
 version: 2.1
 
-####### YAML ANCHORS #######
-
 mongodb-container: &mongodb-container
   image: mongo:5.0.3
 
@@ -20,8 +18,6 @@ kafka-container: &kafka-container
     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-####### CIRCLECI JOBS #######
 
 jobs:
   speech-processor-job:
@@ -54,18 +50,7 @@ jobs:
             python3 -m coverage report
             coveralls
 
-####### CIRCLECI WORKFLOWS #######
-
 workflows:
   speech-processor-workflow:
     jobs:
       - speech-processor-job
-
-# workflows:
-#   speech-processor-workflow:
-#     jobs:
-#       - hold:
-#           type: approval
-#       - speech-processor-job:
-#           requires:
-#             - hold
