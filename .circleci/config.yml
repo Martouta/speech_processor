@@ -24,7 +24,7 @@ kafka-container: &kafka-container
 ####### CIRCLECI JOBS #######
 
 jobs:
-  speech-processor:
+  speech-processor-job:
     resource_class: small
     docker:
       - image: python:3.11-slim
@@ -59,13 +59,13 @@ jobs:
 workflows:
   speech-processor-workflow:
     jobs:
-      - speech-processor
+      - speech-processor-job
 
 # workflows:
 #   speech-processor-workflow:
 #     jobs:
 #       - hold:
 #           type: approval
-#       - speech-processor:
+#       - speech-processor-job:
 #           requires:
 #             - hold
