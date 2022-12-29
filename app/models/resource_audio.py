@@ -40,7 +40,7 @@ class ResourceAudio:
         os.mkdir(self.path_chunks)
 
         chunks = split_on_silence(
-            self.audio_wav, min_silence_len=500, silence_thresh=-40)
+            self.audio_wav, min_silence_len=400, silence_thresh=-40)
 
         for index, chunk in enumerate(chunks, start=0):
             chunk_silent = AudioSegment.silent(duration=10)
