@@ -11,5 +11,5 @@ SpeechRecognition==3.9.0
 coverage==6.5.0
 coveralls==3.3.1
 httpretty==1.1.4
-pytest==7.2.0
+pytest==7.2.1
 requests-mock==1.10.0
