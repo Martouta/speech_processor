@@ -3,8 +3,10 @@ import glob
 import httpretty
 import os
 from pydub import AudioSegment
+import pydub
 import re
 import shutil
+import pytest
 
 
 class TestResourceAudio:
@@ -33,6 +35,16 @@ class TestResourceAudio:
 
     def test_save_as_wav_for_wav(self):
         self.assert_save_wav_for(format='wav')
+
+    def test_save_as_wav_non_existent(self):
+        filepath = f"{os.getcwd()}/tests/fixtures/fake.fake"
+        with pytest.raises(FileNotFoundError):
+            ResourceAudio.save_as_wav('recognition_id', filepath)
+
+    def test_save_as_wav_invalid_format(self):
+        filepath = f"{os.getcwd()}/tests/fixtures/example.txt"
+        with pytest.raises(pydub.exceptions.CouldntDecodeError):
+            ResourceAudio.save_as_wav('recognition_id', filepath)
 
     def test_split_into_chunks(self):
         sound = AudioSegment.from_file(
