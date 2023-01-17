@@ -1,9 +1,7 @@
-import io
 import logging
 import os
 import re
 from pathlib import Path
-import requests
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
@@ -28,9 +26,9 @@ class ResourceAudio:
 
     @staticmethod
     def save_as_wav(recognition_id, original_file_path):
+        path_regexp = "^.*\\/([^/]*)\\.[^.]*$"
+        name = re.match(path_regexp, original_file_path).group(1)
         sound = AudioSegment.from_file(original_file_path)
-        name = re.match("^.*\\/([^/]*)\\.(mp\\d+|wav)$",
-                        original_file_path).group(1)
         sp_path = Path(__file__).resolve().parent.parent.parent
         new_path = f"{sp_path}/resources/multimedia/{os.environ['SPEECH_ENV']}/{name}.wav"
         sound.export(new_path, format='wav')

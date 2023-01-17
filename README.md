@@ -111,7 +111,7 @@ For each item, each of those parameters are mandatory. This is what they mean:
   - For __tiktok__, given a URL like `https://www.tiktok.com/@robertirwin/video/7105531486224370946`, the __id__ would be just `7105531486224370946`.
   - For __youtube__, given a URL like `https://www.youtube.com/watch?v=zWQJqt_D-vo`, this would be just `zWQJqt_D-vo`.
 
-- __url__ is provided only for hosted items. It's the URL where you can directly download the item. No scrapping involved. The only supported formats are mp4, mp3 and wav.
+- __url__ is provided only for hosted items. It's the URL where you can directly download the item. No scrapping involved. The only supported formats are any format supported by `pydub`'s `AudioSegment.from_file`, like mp4, mp3, wav, m4a and webm.
 
 - __path__ is only provided for local items. It is where you have the resource in the same machine where you are running this program.
 
