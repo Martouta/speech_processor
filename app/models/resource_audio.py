@@ -5,6 +5,8 @@ from pathlib import Path
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
+from .duration import Duration
+from .recognition_line import RecognitionLine
 from .subtitle import Subtitle
 
 
@@ -40,21 +42,37 @@ class ResourceAudio:
         chunks = split_on_silence(
             self.audio_wav, min_silence_len=400, silence_thresh=-40)
 
+        start_time = 0
         for index, chunk in enumerate(chunks, start=0):
-            chunk_silent = AudioSegment.silent(duration=10)
-            audio_chunk = chunk_silent + chunk + chunk_silent
-            filename = f"{self.path_chunks}/chunk{index}.wav"
-            audio_chunk.export(filename, bitrate='192k', format='wav')
+            self._split_export_audio_chunk(chunk, index)
+            end_time = start_time + (chunk.duration_seconds * 1000)
+            Duration(start_time, end_time).export(
+                f"{self.path_chunks}/chunk{index}.txt", index)
+            start_time = end_time
 
         return {'number': len(chunks), 'path': self.path_chunks}
+
+    def _split_export_audio_chunk(self, chunk, index):
+        chunk_silent = AudioSegment.silent(duration=10)
+        audio_chunk = chunk_silent + chunk + chunk_silent
+        filename = f"{self.path_chunks}/chunk{index}.wav"
+        audio_chunk.export(filename, bitrate='192k', format='wav')
 
     def recognize_all_chunks(self, language):
         all_recognitions = []
 
         for filename in sorted(os.listdir(self.path_chunks)):
-            filepath = f"{self.path_chunks}/{filename}"
-            line = ResourceAudio.recognize_chunk(filepath, language)
-            all_recognitions.append(line)
+            root, extension = os.path.splitext(filename)
+            if extension == ".wav":
+                filepath_wav = f"{self.path_chunks}/{filename}"
+                line_text = ResourceAudio.recognize_chunk(
+                    filepath_wav, language)
+                filepath_ts = f"{self.path_chunks}/{root}.txt"
+                with open(filepath_ts, 'r') as ts_file:
+                    _, ts_start, ts_end = ts_file.read().split(";")
+                    duration = Duration(Duration.srt_timestamp_to_ms(ts_start), Duration.srt_timestamp_to_ms(ts_end))
+                    recognition_line = RecognitionLine(line_text, duration)
+                    all_recognitions.append(recognition_line)
 
         return Subtitle(self.recognition_id, all_recognitions, language)
 

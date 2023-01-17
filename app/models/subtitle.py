@@ -11,11 +11,12 @@ class Subtitle:
         self.language = language
 
     def __str__(self):
-        attributes_str = ''
-        for item in self.__dict__:
-            item_str = '{} = {}'.format(item, self.__dict__[item])
-            attributes_str += '\n' + item_str
+        attributes_str = f'recognition_id = {self.recognition_id}\n'
+        lines_str = '\n'.join(str(line) for line in self.lines)
+        attributes_str += f'lines = [{lines_str}]\n'
+        attributes_str += f'language = {self.language}'
         return str(self.__class__) + '\n' + attributes_str
+
 
     def save_subs(self, resource_id: int):
         subs_location = os.getenv('SUBS_LOCATION', 'mongodb')
@@ -35,7 +36,7 @@ class Subtitle:
 
         subs_info = {
             'resource_id': resource_id,
-            'lines': self.lines,
+            'lines': list(map(lambda recognition_line: recognition_line.text, self.lines)),
             'language_code': self.language,
             'created_at': datetime.utcnow()
         }
@@ -51,12 +52,14 @@ class Subtitle:
 
         sp_path = Path(__file__).resolve().parent.parent.parent
         subs_dir = f"{sp_path}/resources/subtitles/{os.environ['SPEECH_ENV']}"
-        subtitles_path = f"{subs_dir}/{self.recognition_id}-subs.txt"
+        subtitles_path = f"{subs_dir}/{self.recognition_id}-subs.srt"
 
         with open(subtitles_path, 'w') as file:
-            for index, line in enumerate(self.lines):
-                if index != 0:
+            for index, recognition_line in enumerate(self.lines, start=1):
+                if index != 1:
                     file.write("\n")
-                file.write(line)
+                file.write(f"{index}\n")
+                file.write(f"{recognition_line.duration.ts_start_srt()} --> {recognition_line.duration.ts_end_srt()}\n")
+                file.write(recognition_line.text + "\n")
 
         return subtitles_path
