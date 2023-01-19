@@ -9,6 +9,7 @@ from pydub.silence import split_on_silence
 from .duration import Duration
 from .recognition_line import RecognitionLine
 from .subtitle import Subtitle
+from ..services.speech_recognizer import SpeechRecognizer
 
 
 class ResourceAudio:
@@ -76,7 +77,7 @@ class ResourceAudio:
 
     def _recognize_chunk(self, language, root):
         filepath_wav = f"{self.path_chunks}/{root}.wav"
-        return ResourceAudio.recognize_chunk(filepath_wav, language)
+        return SpeechRecognizer.call(filepath_wav, language)
 
     def _build_recognition_line(self, root, line_text):
         filepath_ts = f"{self.path_chunks}/{root}.txt"
@@ -84,15 +85,3 @@ class ResourceAudio:
             _, ts_start, ts_end = ts_file.read().split(";")
             duration = Duration.from_srt(ts_start, ts_end)
             return RecognitionLine(line_text, duration)
-
-    @staticmethod
-    def recognize_chunk(filepath, language):
-        try:
-            with sr.AudioFile(filepath) as audiofile:
-                recognizer = sr.Recognizer()
-                audio = recognizer.record(audiofile)
-                text = recognizer.recognize_google(audio, language=language)
-                return text if text else None
-        except (sr.RequestError, sr.UnknownValueError) as error:
-            logging.getLogger(__name__).error(f"{type(error)} - {error}")
-            return

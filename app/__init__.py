@@ -15,3 +15,4 @@ from .models.duration import Duration
 from .models.recognition_line import RecognitionLine
 from .models.resource_audio import ResourceAudio
 from .models.subtitle import Subtitle
+from .services.speech_recognizer import SpeechRecognizer
