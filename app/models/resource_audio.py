@@ -44,19 +44,22 @@ class ResourceAudio:
 
         start_time = 0
         for index, chunk in enumerate(chunks, start=0):
-            self._split_export_audio_chunk(chunk, index)
-            end_time = start_time + (chunk.duration_seconds * 1000)
-            Duration(start_time, end_time).export(
-                f"{self.path_chunks}/chunk{index}.txt", index)
-            start_time = end_time
+            self._export_audio_chunk(chunk, index)
+            start_time = self._export_ts_chunk(chunk, start_time, index)
 
         return {'number': len(chunks), 'path': self.path_chunks}
 
-    def _split_export_audio_chunk(self, chunk, index):
+    def _export_audio_chunk(self, chunk, index):
         chunk_silent = AudioSegment.silent(duration=10)
         audio_chunk = chunk_silent + chunk + chunk_silent
         filename = f"{self.path_chunks}/chunk{index}.wav"
         audio_chunk.export(filename, bitrate='192k', format='wav')
+
+    def _export_ts_chunk(self, chunk, start_time, index):
+        end_time = start_time + (chunk.duration_seconds * 1000)
+        filename = f"{self.path_chunks}/chunk{index}.txt"
+        Duration(start_time, end_time).export(filename, index)
+        return end_time
 
     def recognize_all_chunks(self, language):
         all_recognitions = []
