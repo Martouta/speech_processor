@@ -78,8 +78,11 @@ class ResourceAudio:
             return
 
         filepath_wav = f"{self.path_chunks}/{filename}"
-        line_text = ResourceAudio.recognize_chunk(filepath_wav, language)
         filepath_ts = f"{self.path_chunks}/{root}.txt"
+        line_text = ResourceAudio.recognize_chunk(filepath_wav, language)
+
+        if not line_text:
+            return
 
         with open(filepath_ts, 'r') as ts_file:
             _, ts_start, ts_end = ts_file.read().split(";")
@@ -93,7 +96,8 @@ class ResourceAudio:
             with sr.AudioFile(filepath) as audiofile:
                 recognizer = sr.Recognizer()
                 audio = recognizer.record(audiofile)
-                return recognizer.recognize_google(audio, language=language)
+                text = recognizer.recognize_google(audio, language=language)
+                return text if text else None
         except (sr.RequestError, sr.UnknownValueError) as error:
             logging.getLogger(__name__).error(f"{type(error)} - {error}")
-            return ''
+            return
