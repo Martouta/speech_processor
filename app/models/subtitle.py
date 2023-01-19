@@ -17,7 +17,6 @@ class Subtitle:
         attributes_str += f'language = {self.language}'
         return str(self.__class__) + '\n' + attributes_str
 
-
     def save_subs(self, resource_id: int):
         subs_location = os.getenv('SUBS_LOCATION', 'mongodb')
         match os.getenv('SUBS_LOCATION', 'mongodb'):
@@ -59,7 +58,8 @@ class Subtitle:
                 if index != 1:
                     file.write("\n")
                 file.write(f"{index}\n")
-                file.write(f"{recognition_line.duration.ts_start_srt()} --> {recognition_line.duration.ts_end_srt()}\n")
+                file.write(
+                    f"{recognition_line.duration_ts_start_srt()} --> {recognition_line.duration_ts_end_srt()}\n")
                 file.write(recognition_line.text + "\n")
 
         return subtitles_path
