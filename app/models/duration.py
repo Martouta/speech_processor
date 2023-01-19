@@ -24,6 +24,12 @@ class Duration:
             file.write(f"{index};{self.ts_start_srt()};{self.ts_end_srt()}")
 
     @staticmethod
+    def from_srt(start, end):
+        ts_start = Duration.srt_timestamp_to_ms(start)
+        ts_end = Duration.srt_timestamp_to_ms(end)
+        return Duration(ts_start, ts_end)
+
+    @staticmethod
     def ms_to_srt_timestamp(ms):
         hours, remainder = divmod(ms, 3600000)
         minutes, remainder = divmod(remainder, 60000)

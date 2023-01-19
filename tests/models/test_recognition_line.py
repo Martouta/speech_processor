@@ -12,3 +12,9 @@ class TestRecognitionLine:
 
     def test_str(self):
         assert str(self.line) == "00:00:00,000;00:00:00,010;Hello, world!"
+
+    def test_duration_ts_start_srt(self):
+        assert self.line.duration_ts_start_srt() == "00:00:00,000"
+
+    def test_duration_ts_end_srt(self):
+        assert self.line.duration_ts_end_srt() == "00:00:00,010"

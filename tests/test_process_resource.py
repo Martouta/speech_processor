@@ -123,13 +123,19 @@ class TestProcessResource:
             + datetime.utcnow().strftime('%m-%d.%H') \
             + r":\d{2}:\d{8}" \
             + '-' \
-            + 'subs.txt'
+            + 'subs.srt'
         assert re.match(expected_subs_path_regex,
                         processed_resource['id_location'])
         with open(processed_resource['id_location'], 'r') as subfile:
             expected_recognition = [
+                '1',
+                '00:00:00,000 --> 00:00:01,328',
                 'بخير وانت',
-                'شكرا'
+                '',
+                '2',
+                '00:00:01,328 --> 00:00:01,928',
+                'شكرا',
+                ''
             ]
             assert subfile.read().split("\n") == expected_recognition
 
@@ -150,5 +156,7 @@ class TestProcessResource:
             assert type(resp['error']) == requests.exceptions.ConnectTimeout
 
             assert re.search(r"Traceback", caplog.text, re.MULTILINE)
-            assert re.search(r".*File.*line 14, in process_resource", caplog.text, re.MULTILINE)
-            assert re.search(re.escape('requests.exceptions.ConnectTimeout'), caplog.text, re.MULTILINE)
+            assert re.search(
+                r".*File.*line 14, in process_resource", caplog.text, re.MULTILINE)
+            assert re.search(
+                re.escape('requests.exceptions.ConnectTimeout'), caplog.text, re.MULTILINE)

@@ -39,6 +39,13 @@ class TestDuration:
         with open(TestDuration.FILEPATH, 'r') as file:
             assert file.read() == "1;00:00:01,000;00:00:02,000"
 
+    def test_duration_from_srt(self):
+        start = '00:00:01,500'
+        end = '00:00:03,000'
+        duration = Duration.from_srt(start, end)
+        assert duration.ts_start == 1500
+        assert duration.ts_end == 3000
+
     def test_ms_srt_conversions(self):
         srt_timestamp = "00:00:01,000"
         ms = 1000

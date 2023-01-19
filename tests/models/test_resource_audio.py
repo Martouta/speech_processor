@@ -54,6 +54,17 @@ class TestResourceAudio:
         assert f"{os.getcwd()}/resources/audio_chunks/test/recognition_id" == chunks_info['path']
         assert len(glob.glob(
             './resources/audio_chunks/test/recognition_id/chunk*wav')) == chunks_info['number']
+        assert len(glob.glob(
+            './resources/audio_chunks/test/recognition_id/chunk*txt')) == chunks_info['number']
+        expected_ts = [
+            '0;00:00:00,000;00:00:01,328',
+            '1;00:00:01,328;00:00:01,928'
+        ]
+        for i in range(chunks_info['number']):
+            ts_chunk_fp = f"./resources/audio_chunks/test/recognition_id/chunk{i}.txt"
+            assert os.path.exists(ts_chunk_fp)
+            with open(ts_chunk_fp, 'r') as file:
+                assert file.read() == expected_ts[i]
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_recognize_all_chunks_google(self):
@@ -82,7 +93,8 @@ class TestResourceAudio:
         )
 
         subtitle = resource_audio.recognize_all_chunks('ar')
-        actual_recognition = subtitle.lines
+        actual_recognition = list(
+            map(lambda recognition_line: recognition_line.text, subtitle.lines))
 
         assert actual_recognition == expected_recognition
 
