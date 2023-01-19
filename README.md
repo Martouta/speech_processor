@@ -128,7 +128,7 @@ The environment variable __SUBS_LOCATION__ can be either __mongodb__ or __file__
 
 #### Save in a file
 
-It saves it inside this same project path, in __resources/subtitles__, in one of its 3 subfolders: __development__, __test__ and __production__ depending on which environment you are in, which it takes from the environment variable __SPEECH_ENV__. It's saved in a SRT file (including the timestamps) in the right format.
+It saves it inside this same project path, in __resources/subtitles__, in one of its 3 subfolders: __development__, __test__ and __production__ depending on which environment you are in, which it takes from the environment variable __SPEECH_ENV__.
 
 #### Save in MongoDB
 
@@ -137,8 +137,20 @@ For mongodb, it assumes that you pass all the data correctly, that it is running
 
 ### Output Format
 
-- The format in the __file__ is just the text as it is.
-- The format in __mongodb__, it saves it in the following format:
+- The format of the file output is saved in the SRT format, which includes timestamps in the following format:
+
+```srt
+1
+00:00:03,400 --> 00:00:06,177
+In this lesson, we're going to be talking about finance. And
+
+2
+00:00:06,177 --> 00:00:10,009
+one of the most important aspects of finance is interest.
+
+```
+
+- The format of the MongoDB output is saved in the following format:
 
 ```javascript
 {
