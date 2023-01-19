@@ -1,3 +1,4 @@
+import fnmatch
 import logging
 import os
 import re
@@ -64,31 +65,25 @@ class ResourceAudio:
     def recognize_all_chunks(self, language):
         all_recognitions = []
 
-        for filename in sorted(os.listdir(self.path_chunks)):
-            recognition_line = self._recognize_chunk(language, filename)
-            if recognition_line:
+        for filename in fnmatch.filter(sorted(os.listdir(self.path_chunks)), '*.wav'):
+            root, _ = os.path.splitext(filename)
+            line_text = self._recognize_chunk(language, root)
+            if line_text:
+                recognition_line = self._build_recognition_line(root, line_text)
                 all_recognitions.append(recognition_line)
 
         return Subtitle(self.recognition_id, all_recognitions, language)
 
-    def _recognize_chunk(self, language, filename):
-        root, extension = os.path.splitext(filename)
+    def _recognize_chunk(self, language, root):
+        filepath_wav = f"{self.path_chunks}/{root}.wav"
+        return ResourceAudio.recognize_chunk(filepath_wav, language)
 
-        if extension != ".wav":
-            return
-
-        filepath_wav = f"{self.path_chunks}/{filename}"
+    def _build_recognition_line(self, root, line_text):
         filepath_ts = f"{self.path_chunks}/{root}.txt"
-        line_text = ResourceAudio.recognize_chunk(filepath_wav, language)
-
-        if not line_text:
-            return
-
         with open(filepath_ts, 'r') as ts_file:
             _, ts_start, ts_end = ts_file.read().split(";")
             duration = Duration.from_srt(ts_start, ts_end)
-            recognition_line = RecognitionLine(line_text, duration)
-            return recognition_line
+            return RecognitionLine(line_text, duration)
 
     @staticmethod
     def recognize_chunk(filepath, language):
