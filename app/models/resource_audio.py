@@ -70,7 +70,7 @@ class ResourceAudio:
                 filepath_ts = f"{self.path_chunks}/{root}.txt"
                 with open(filepath_ts, 'r') as ts_file:
                     _, ts_start, ts_end = ts_file.read().split(";")
-                    duration = Duration(Duration.srt_timestamp_to_ms(ts_start), Duration.srt_timestamp_to_ms(ts_end))
+                    duration = Duration.from_srt(ts_start, ts_end)
                     recognition_line = RecognitionLine(line_text, duration)
                     all_recognitions.append(recognition_line)
 
