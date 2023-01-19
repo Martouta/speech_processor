@@ -9,7 +9,9 @@ from .config_loaders.kafka_consumer_configured import kafka_consumer_configured
 from .config_loaders.mongodb_client_configured import mongodb_client_configured
 from .config_loaders.tiktok_cookie_configured import tiktok_cookie_configured
 from .process_resource import process_resource
-from .models.resource_audio import ResourceAudio
 from .converters.resource_message_to_json import resource_message_to_json
 from .converters.resource_json_to_input_item import resource_json_to_input_item
+from .models.duration import Duration
+from .models.recognition_line import RecognitionLine
+from .models.resource_audio import ResourceAudio
 from .models.subtitle import Subtitle
