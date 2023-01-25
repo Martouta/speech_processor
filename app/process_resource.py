@@ -8,6 +8,14 @@ from .converters.resource_message_to_json import resource_message_to_json
 
 
 def process_resource(msg):
+    """
+    Processes a resource message.
+    It converts the message to json, converts the json to a input_item, saves the input_item,
+    converts the input_item to audio, splits the audio into chunks, recognizes the chunks and
+    saves the recognition results in the mongodb.
+    :param msg: The message to process, it should contain a json with the resource information.
+    :return: A json with the status of the processing, the recognition_id and the location of the subtitles.
+    """
     try:
         json = resource_message_to_json(msg)
         input_item = resource_json_to_input_item(json)
@@ -40,6 +48,11 @@ def __process_resource(input_item):
 
 
 def log_step(step_number, recognition_id):
+    """
+    Logs the current step of the processing.
+    :param step_number: The number of the step.
+    :param recognition_id: The recognition_id to add to the log.
+    """
     total_steps = 6
     steps = [
         f"[1/{total_steps}] Downloading multimedia from URL ... [{recognition_id}]",
