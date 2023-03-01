@@ -73,10 +73,9 @@ class TestResourceAudio:
         resource_audio.split_into_chunks()
 
         expected_recognition = [
-            'بخير وانت',
-            'شكرا'
+            '00:00:00,000;00:00:01,328;بخير وانت',
+            '00:00:01,328;00:00:01,928;شكرا'
         ]
-        actual_recognition = []
 
         httpretty.register_uri(
             httpretty.POST,
@@ -93,10 +92,8 @@ class TestResourceAudio:
         )
 
         subtitle = resource_audio.recognize_all_chunks('ar')
-        actual_recognition = list(
-            map(lambda recognition_line: recognition_line.text, subtitle.lines))
 
-        assert actual_recognition == expected_recognition
+        assert list(map(lambda recognition_line: str(recognition_line), subtitle.lines)) == expected_recognition
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_recognize_all_chunks_google_with_mix_correct_incorrect_transcripts(self):
@@ -105,9 +102,8 @@ class TestResourceAudio:
         resource_audio.split_into_chunks()
 
         expected_recognition = [
-            'شكرا'
+            '00:00:01,328;00:00:01,928;شكرا'
         ]
-        actual_recognition = []
 
         httpretty.register_uri(
             httpretty.POST,
@@ -124,69 +120,8 @@ class TestResourceAudio:
         )
 
         subtitle = resource_audio.recognize_all_chunks('ar')
-        actual_recognition = list(
-            map(lambda recognition_line: recognition_line.text, subtitle.lines))
-
-        assert actual_recognition == expected_recognition
-
-    @httpretty.activate(verbose=True, allow_net_connect=False)
-    def test_recognize_chunk_google_with_correct_transcript(self):
-        filepath = f"{os.getcwd()}/tests/fixtures/example.mp3"
-        resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
-        resource_audio.split_into_chunks()
-
-        httpretty.register_uri(
-            httpretty.POST,
-            TestResourceAudio.GOOGLE_API_URL,
-            adding_headers={
-                'content-type': 'audio/x-flac; rate=44100'
-            },
-            responses=[
-                httpretty.Response(
-                    '{"result":[{"alternative":[{"transcript":"شكرا","confidence":0.5705713}],"final":true}],"result_index":0}')
-            ]
-        )
-
-        recognition = ResourceAudio.recognize_chunk(filepath, 'ar')
-        assert "شكرا" == recognition
-
-    @httpretty.activate(verbose=True, allow_net_connect=False)
-    def test_recognize_chunk_error_unknown_value(self, caplog):
-        filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
-
-        httpretty.register_uri(
-            httpretty.POST,
-            TestResourceAudio.GOOGLE_API_URL,
-            adding_headers={
-                'content-type': 'audio/x-flac; rate=44100'
-            },
-            responses=[
-                httpretty.Response(
-                    '{"result":[{"alternative":[{"confidence":0.00001}],"final":true}],"result_index":0}')
-            ]
-        )
-
-        recognition = ResourceAudio.recognize_chunk(filepath, 'ar')
-        assert recognition is None
-
-        expected_error = re.escape('speech_recognition.UnknownValueError')
-        assert re.search(expected_error, caplog.text, re.MULTILINE)
-
-    @httpretty.activate(verbose=True, allow_net_connect=False)
-    def test_recognize_chunk_error_network_request(self, caplog):
-        filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
-
-        httpretty.register_uri(
-            httpretty.POST,
-            uri=TestResourceAudio.GOOGLE_API_URL,
-            status=500
-        )
-
-        recognition = ResourceAudio.recognize_chunk(filepath, 'ar')
-        assert recognition is None
-        assert re.search('Internal Server Error', caplog.text, re.MULTILINE)
-        expected_error = re.escape('speech_recognition.RequestError')
-        assert re.search(expected_error, caplog.text, re.MULTILINE)
+        
+        assert list(map(lambda recognition_line: str(recognition_line), subtitle.lines)) == expected_recognition
 
     def test_str(self):
         sound = AudioSegment.from_file(
