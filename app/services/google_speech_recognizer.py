@@ -3,7 +3,7 @@ from pathlib import Path
 import speech_recognition as sr
 
 
-class SpeechRecognizer:
+class GoogleSpeechRecognizer:
     @staticmethod
     def call(filepath, language):
         try:

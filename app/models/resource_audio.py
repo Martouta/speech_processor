@@ -1,5 +1,4 @@
 import fnmatch
-import logging
 import os
 import re
 from pathlib import Path
@@ -9,7 +8,7 @@ from pydub.silence import split_on_silence
 from .duration import Duration
 from .recognition_line import RecognitionLine
 from .subtitle import Subtitle
-from ..services.speech_recognizer import SpeechRecognizer
+from ..services.google_speech_recognizer import GoogleSpeechRecognizer
 
 
 class ResourceAudio:
@@ -77,7 +76,7 @@ class ResourceAudio:
 
     def _recognize_chunk(self, language, root):
         filepath_wav = f"{self.path_chunks}/{root}.wav"
-        return SpeechRecognizer.call(filepath_wav, language)
+        return GoogleSpeechRecognizer.call(filepath_wav, language)
 
     def _build_recognition_line(self, root, line_text):
         filepath_ts = f"{self.path_chunks}/{root}.txt"
