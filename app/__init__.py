@@ -4,6 +4,7 @@ from .input_items.input_item_local import InputItemLocal
 from .input_items.input_item_hosted import InputItemHosted
 from .input_items.input_item_tiktok import InputItemTiktok
 from .input_items.input_item_youtube import InputItemYoutube
+from .input_items.recognizer_data import RecognizerData
 from .fetch_input_messages import fetch_input_messages
 from .config_loaders.kafka_consumer_configured import kafka_consumer_configured
 from .config_loaders.mongodb_client_configured import mongodb_client_configured
