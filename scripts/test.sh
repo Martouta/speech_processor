@@ -23,7 +23,7 @@ if  [ command -v docker-compose &> /dev/null ] && [ docker-compose ps --services
 fi
 echo "Kafka started 🚀"
 
-echo "Running Tests for SpeechProcessor ... 🚀"
+echo "Running Tests for Speech Processor ... 🚀"
 
 KAFKA_RESOURCE_TOPIC=speech_processor_resource_test MONGO_DB=speech_processor_test SPEECH_ENV='test' python3 -m pytest tests --tb=native -rP --show-capture=stdout
 ((exit_code+=$?))

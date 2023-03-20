@@ -1,14 +1,13 @@
-from app import SpeechRecognizer
+from app import GoogleSpeechRecognizer
 from app import ResourceAudio
 import glob
 import httpretty
 import os
 import re
 import shutil
-import pytest
 
 
-class TestSpeechRecognizer:
+class TestGoogleSpeechRecognizer:
     GOOGLE_API_URL = 'http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw'
 
     def teardown_method(self):
@@ -27,7 +26,7 @@ class TestSpeechRecognizer:
 
         httpretty.register_uri(
             httpretty.POST,
-            TestSpeechRecognizer.GOOGLE_API_URL,
+            TestGoogleSpeechRecognizer.GOOGLE_API_URL,
             adding_headers={
                 'content-type': 'audio/x-flac; rate=44100'
             },
@@ -37,7 +36,7 @@ class TestSpeechRecognizer:
             ]
         )
 
-        recognition_text =  SpeechRecognizer.call(filepath, 'ar')
+        recognition_text =  GoogleSpeechRecognizer.call(filepath, 'ar')
         assert "شكرا" == recognition_text
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
@@ -46,7 +45,7 @@ class TestSpeechRecognizer:
 
         httpretty.register_uri(
             httpretty.POST,
-            TestSpeechRecognizer.GOOGLE_API_URL,
+            TestGoogleSpeechRecognizer.GOOGLE_API_URL,
             adding_headers={
                 'content-type': 'audio/x-flac; rate=44100'
             },
@@ -56,7 +55,7 @@ class TestSpeechRecognizer:
             ]
         )
 
-        recognition_text =  SpeechRecognizer.call(filepath, 'ar')
+        recognition_text =  GoogleSpeechRecognizer.call(filepath, 'ar')
         assert recognition_text is None
 
         expected_error = re.escape('speech_recognition.UnknownValueError')
@@ -68,11 +67,11 @@ class TestSpeechRecognizer:
 
         httpretty.register_uri(
             httpretty.POST,
-            uri=TestSpeechRecognizer.GOOGLE_API_URL,
+            uri=TestGoogleSpeechRecognizer.GOOGLE_API_URL,
             status=500
         )
 
-        recognition_text =  SpeechRecognizer.call(filepath, 'ar')
+        recognition_text =  GoogleSpeechRecognizer.call(filepath, 'ar')
         assert recognition_text is None
         assert re.search('Internal Server Error', caplog.text, re.MULTILINE)
         expected_error = re.escape('speech_recognition.RequestError')
