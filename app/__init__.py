@@ -15,4 +15,5 @@ from .models.duration import Duration
 from .models.recognition_line import RecognitionLine
 from .models.resource_audio import ResourceAudio
 from .models.subtitle import Subtitle
+from .services.gladia_speech_recognizer import GladiaSpeechRecognizer
 from .services.google_speech_recognizer import GoogleSpeechRecognizer
