@@ -24,3 +24,8 @@ class RecognizerData:
             item_str = '{} = {}'.format(item, self.__dict__[item])
             attributes_str += '\n' + item_str
         return str(self.__class__) + '\n' + attributes_str
+
+    def __eq__(self, other):
+        if isinstance(other, RecognizerData):
+            return self.recognizer_class == other.recognizer_class and self.language_code == other.language_code
+        return False

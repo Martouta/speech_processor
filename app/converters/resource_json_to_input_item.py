@@ -14,6 +14,7 @@ INPUT_TYPE_TO_ITEM_CLASS = {
 
 
 def resource_json_to_input_item(json: dict) -> InputItem:
+    json = json.copy()
     type = json.pop('integration')
     input_item_class = INPUT_TYPE_TO_ITEM_CLASS[type]
 

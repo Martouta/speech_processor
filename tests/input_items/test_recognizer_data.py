@@ -39,3 +39,26 @@ class TestRecognizerData:
     def test_invalid_recognizer_type(self):
         with pytest.raises(KeyError):
             RecognizerData('en-US', 'invalid_recognizer')
+
+    def test_eq_same_instance(self):
+        recognizer_data1 = RecognizerData('en-US', 'google')
+        assert recognizer_data1 == recognizer_data1
+
+    def test_eq_different_instances_same_values(self):
+        recognizer_data1 = RecognizerData('en-US', 'google')
+        recognizer_data2 = RecognizerData('en-US', 'google')
+        assert recognizer_data1 == recognizer_data2
+
+    def test_eq_different_language_code(self):
+        recognizer_data1 = RecognizerData('en-US', 'google')
+        recognizer_data2 = RecognizerData('es-ES', 'google')
+        assert recognizer_data1 != recognizer_data2
+
+    def test_eq_different_recognizer_class(self):
+        recognizer_data1 = RecognizerData('en-US', 'google')
+        recognizer_data2 = RecognizerData('en-US', 'openai')
+        assert recognizer_data1 != recognizer_data2
+
+    def test_eq_different_class(self):
+        recognizer_data = RecognizerData('en-US', 'google')
+        assert recognizer_data != 'some_string'
