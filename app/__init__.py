@@ -17,3 +17,4 @@ from .models.resource_audio import ResourceAudio
 from .models.subtitle import Subtitle
 from .services.gladia_speech_recognizer import GladiaSpeechRecognizer
 from .services.google_speech_recognizer import GoogleSpeechRecognizer
+from .services.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer

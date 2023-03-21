@@ -1,6 +1,7 @@
 google-cloud-speech==2.18.0
 kafka-python==2.0.2
 mako==1.2.4
+openai==0.27.0
 pydub==0.25.1
 pymongo==4.3.3
 PyTikTokAPI @ git+https://github.com/martouta/TikTokAPI-Python@v0.0.5-martouta-1
