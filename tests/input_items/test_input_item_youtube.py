@@ -3,6 +3,7 @@ from app import InputItemYoutube
 import concurrent.futures
 import glob
 import os
+from app.input_items.recognizer_data import RecognizerData
 import pytest
 import re
 
@@ -33,7 +34,7 @@ class TestInputItemYoutube:
         assert len(filepaths) == 2
 
     def submit_save_request(self, id):
-        item = InputItemYoutube(id=id, language_code='en', resource_id=55)
+        item = InputItemYoutube(id=id, recognizer_data=RecognizerData(language_code='en'), resource_id=55)
         return item.save()
 
     def test_download_params(self):

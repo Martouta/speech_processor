@@ -2,6 +2,7 @@ from app import InputItemTiktok
 import concurrent.futures
 import glob
 import os
+from app.input_items.recognizer_data import RecognizerData
 import pytest
 import re
 
@@ -17,7 +18,7 @@ class TestInputItemTiktok:
     @pytest.mark.filterwarnings('ignore::DeprecationWarning')
     def test_save_simple(self):
         input_item = InputItemTiktok(
-            id=tiktok_ids[0], language_code='en', resource_id=42)
+            id=tiktok_ids[0], recognizer_data=RecognizerData(language_code='en'), resource_id=42)
         filepath = input_item.save()
         assert re.match(r'^' + re.escape(os.getcwd()) +
                         r'/resources/multimedia/test/\d+-42-\d{2}-\d{2}\.\d{2}:\d{2}:\d+\.mp4$', filepath)
@@ -31,7 +32,7 @@ class TestInputItemTiktok:
             for id in tiktok_ids:
                 executor.submit(lambda id:
                                 filepaths.append(
-                                    InputItemTiktok(id=id, language_code='en',
+                                    InputItemTiktok(id=id, recognizer_data=RecognizerData(language_code='en'),
                                                     resource_id=42).save()
                                 ), id)
         for path in filepaths:

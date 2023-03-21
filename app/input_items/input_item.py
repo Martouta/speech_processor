@@ -4,11 +4,10 @@ import threading
 import os
 from abc import ABC, abstractmethod
 
-
 class InputItem(ABC):
-    def __init__(self, *, resource_id, language_code):
+    def __init__(self, *, resource_id, recognizer_data):
         self.resource_id = int(resource_id) or -1
-        self.language_code = language_code
+        self.recognizer_data = recognizer_data
         self.recognition_id = f"{threading.get_ident()}-{self.resource_id}-{datetime.utcnow().strftime('%m-%d.%H:%M:%S%f')}"
         self.extension = None
 

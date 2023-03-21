@@ -4,8 +4,8 @@ from .input_item import InputItem
 
 
 class InputItemHosted(InputItem):
-    def __init__(self, *, resource_id, language_code, url):
-        super().__init__(resource_id=resource_id, language_code=language_code)
+    def __init__(self, *, resource_id, url, recognizer_data):
+        super().__init__(resource_id=resource_id, recognizer_data=recognizer_data)
         self.url = url
         self.extension = self.extension_from_url()
 

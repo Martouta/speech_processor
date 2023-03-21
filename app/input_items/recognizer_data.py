@@ -16,7 +16,7 @@ class RecognizerData:
 
     def __init__(self, language_code, recognizer='google'):
         self.language_code = language_code
-        self.recognizer_class = RecognizerData.RECOGNIZER_TYPE_TO_CLASS[recognizer]
+        self.recognizer_class = RecognizerData.RECOGNIZER_TYPE_TO_CLASS[recognizer or 'google']
 
     def __str__(self):
         attributes_str = ''

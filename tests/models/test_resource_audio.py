@@ -1,5 +1,7 @@
 from app import ResourceAudio
 import glob
+from app.input_items.recognizer_data import RecognizerData
+from app.services.google_speech_recognizer import GoogleSpeechRecognizer
 import httpretty
 import os
 from pydub import AudioSegment
@@ -66,62 +68,69 @@ class TestResourceAudio:
             with open(ts_chunk_fp, 'r') as file:
                 assert file.read() == expected_ts[i]
 
+    def setup_recognize_all_chunks(self, filepath):
+        resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
+        resource_audio.split_into_chunks()
+        return resource_audio
+
+    def register_google_api_responses(self, responses):
+        httpretty.register_uri(
+            httpretty.POST,
+            TestResourceAudio.GOOGLE_API_URL,
+            adding_headers={
+                'content-type': 'audio/x-flac; rate=44100'
+            },
+            responses=responses
+        )
+
     @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_recognize_all_chunks_google_with_correct_transcripts(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.mp3"
-        resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
-        resource_audio.split_into_chunks()
+        resource_audio = self.setup_recognize_all_chunks(filepath)
 
         expected_recognition = [
             '00:00:00,000;00:00:01,328;بخير وانت',
             '00:00:01,328;00:00:01,928;شكرا'
         ]
 
-        httpretty.register_uri(
-            httpretty.POST,
-            TestResourceAudio.GOOGLE_API_URL,
-            adding_headers={
-                'content-type': 'audio/x-flac; rate=44100'
-            },
-            responses=[
-                httpretty.Response(
-                    '{"result":[{"alternative":[{"transcript":"بخير وانت","confidence":0.85492837}],"final":true}],"result_index":0}'),
-                httpretty.Response(
-                    '{"result":[{"alternative":[{"transcript":"شكرا","confidence":0.5705713}],"final":true}],"result_index":0}')
-            ]
-        )
+        responses = [
+            httpretty.Response(
+                '{"result":[{"alternative":[{"transcript":"بخير وانت","confidence":0.85492837}],"final":true}],"result_index":0}'),
+            httpretty.Response(
+                '{"result":[{"alternative":[{"transcript":"شكرا","confidence":0.5705713}],"final":true}],"result_index":0}')
+        ]
 
-        subtitle = resource_audio.recognize_all_chunks('ar')
+        self.register_google_api_responses(responses)
 
-        assert list(map(lambda recognition_line: str(recognition_line), subtitle.lines)) == expected_recognition
+        recognizer_data = RecognizerData('ar', 'google')
+        subtitle = resource_audio.recognize_all_chunks(recognizer_data)
+
+        assert list(map(lambda recognition_line: str(
+            recognition_line), subtitle.lines)) == expected_recognition
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_recognize_all_chunks_google_with_mix_correct_incorrect_transcripts(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.mp3"
-        resource_audio = ResourceAudio.save_as_wav('recognition_id', filepath)
-        resource_audio.split_into_chunks()
+        resource_audio = self.setup_recognize_all_chunks(filepath)
 
         expected_recognition = [
             '00:00:01,328;00:00:01,928;شكرا'
         ]
 
-        httpretty.register_uri(
-            httpretty.POST,
-            TestResourceAudio.GOOGLE_API_URL,
-            adding_headers={
-                'content-type': 'audio/x-flac; rate=44100'
-            },
-            responses=[
-                httpretty.Response(
-                    '{"result":[{"alternative":[{"confidence":0.00001}],"final":true}],"result_index":0}'),
-                httpretty.Response(
-                    '{"result":[{"alternative":[{"transcript":"شكرا","confidence":0.5705713}],"final":true}],"result_index":0}')
-            ]
-        )
+        responses = [
+            httpretty.Response(
+                '{"result":[{"alternative":[{"confidence":0.00001}],"final":true}],"result_index":0}'),
+            httpretty.Response(
+                '{"result":[{"alternative":[{"transcript":"شكرا","confidence":0.5705713}],"final":true}],"result_index":0}')
+        ]
 
-        subtitle = resource_audio.recognize_all_chunks('ar')
-        
-        assert list(map(lambda recognition_line: str(recognition_line), subtitle.lines)) == expected_recognition
+        self.register_google_api_responses(responses)
+
+        recognizer_data = RecognizerData('ar', 'google')
+        subtitle = resource_audio.recognize_all_chunks(recognizer_data)
+
+        assert list(map(lambda recognition_line: str(
+            recognition_line), subtitle.lines)) == expected_recognition
 
     def test_str(self):
         sound = AudioSegment.from_file(
