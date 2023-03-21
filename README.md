@@ -68,7 +68,8 @@ Example of a JSON type with multiple items having all possible inputs:
     "integration": "youtube",
     "id": "zWQJqt_D-vo",
     "language_code": "ar",
-    "resource_id": 1
+    "resource_id": 1,
+    "recognizer": "google"
   },
   {
     "integration": "youtube",
@@ -118,6 +119,13 @@ For each item, each of those parameters are mandatory. This is what they mean:
 - __language_code__ must be a language code from the list in [Documentation of Language Support of Google Cloud Speech-To-Text](https://cloud.google.com/speech-to-text/docs/languages). Plus, for Arabic fus7a is just "ar".
 
 - __resource_id__ is an optional parameter that should not matter to you unless you want the output to be saved in MongoDB. In this case, it must be an integer.
+
+- __recognizer__ is an optional parameter. The default value is "google". It can be any of these options: "assemblyai", "gladia", "google", "ibm", "microsoft", "openai". For each of these speec-to-text services, it is assuming that the credentials are in ENV vars:
+  - For __AssemblyAI__, it needs the __ASSEMBLYAI_SECRET_KEY__.
+  - For __Gladia__, it needs the __GLADIA_API_KEY__.
+  - For __Google__, no credentials are required.
+  - For __IBM__, it needs the __IBM_WATSON_USERNAME__ and __IBM_WATSON_PASSWORD__.
+  - For __Microsoft__, it needs the __MS_AZURE_SPEECH_API_KEY__.
 
 ## Expected output
 
