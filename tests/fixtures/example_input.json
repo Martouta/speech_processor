@@ -3,7 +3,8 @@
     "integration": "youtube",
     "id": "zWQJqt_D-vo",
     "language_code": "ar",
-    "resource_id": 1
+    "resource_id": 1,
+    "recognizer": "google"
   },
   {
     "integration": "youtube",

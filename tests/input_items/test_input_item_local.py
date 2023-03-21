@@ -1,4 +1,5 @@
 from app import InputItemLocal
+from app.input_items.recognizer_data import RecognizerData
 import glob
 import os
 import re
@@ -11,7 +12,7 @@ class TestInputItemLocal:
 
     def test_save(self):
         item = InputItemLocal(
-            resource_id=42, language_code='en', path='tests/fixtures/example.txt'
+            resource_id=42, path='tests/fixtures/example.txt', recognizer_data=RecognizerData(language_code='en')
         )
         filepath = item.save()
 

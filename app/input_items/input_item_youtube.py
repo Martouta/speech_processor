@@ -3,8 +3,8 @@ from .input_item import InputItem
 
 
 class InputItemYoutube(InputItem):
-    def __init__(self, *, resource_id, language_code, id):
-        super().__init__(resource_id=resource_id, language_code=language_code)
+    def __init__(self, *, resource_id, id, recognizer_data):
+        super().__init__(resource_id=resource_id, recognizer_data=recognizer_data)
         self.id = id
         self.extension = 'mp4'
 

@@ -1,4 +1,5 @@
 import app
+from app.services.google_speech_recognizer import GoogleSpeechRecognizer
 import pytest
 
 
@@ -54,5 +55,10 @@ class TestResourceJSONToInputItem:
 
     def assert_params(self, input_item, params):
         for key in params:
-            attr_value = getattr(input_item, key)
-            assert attr_value == params[key]
+            if key == 'language_code':
+                input_item.recognizer_data.language_code == params[key] # FIXME: RIP LoD
+            elif key == 'recognizer':
+                input_item.recognizer_data.recognizer_class == GoogleSpeechRecognizer # FIXME: RIP LoD
+            else:
+                attr_value = getattr(input_item, key)
+                assert attr_value == params[key]

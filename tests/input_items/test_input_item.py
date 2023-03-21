@@ -1,7 +1,6 @@
-from fileinput import filename
-from multiprocessing import dummy
-from app import InputItem
+from app.input_items.input_item import InputItem
 from dataclasses import dataclass
+from app.input_items.recognizer_data import RecognizerData
 
 
 class TestInputItem:
@@ -9,13 +8,29 @@ class TestInputItem:
 
     @dataclass
     class InputItemDummy(InputItem):
-        recognition_id: 1
+        def __init__(self, resource_id, recognizer_data):
+            super().__init__(resource_id=resource_id,
+                             recognizer_data=recognizer_data)
+
+        def download(self, dir_path, filename):
+            pass
 
     def test_download(self):
-        dummy = TestInputItem.InputItemDummy(recognition_id=1)
-        assert dummy.download(dir_path='.', filename='example.txt') == None
+        dummy = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
+        assert dummy.download(dir_path='.', filename='example.txt') is None
 
     def test_str(self):
-        dummy = TestInputItem.InputItemDummy(recognition_id=1)
+        dummy = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
         dummy_string = dummy.__str__()
-        assert dummy_string == "<class 'test_input_item.TestInputItem.InputItemDummy'>\n\nrecognition_id = 1"
+        expected_output = (
+            "<class 'test_input_item.TestInputItem.InputItemDummy'>\n\n"
+            "resource_id = 1\n"
+            "recognizer_data = <class 'app.input_items.recognizer_data.RecognizerData'>\n\n"
+            "language_code = en-US\n"
+            "recognizer_class = <class 'app.services.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
+            f"recognition_id = {dummy.recognition_id}\n"
+            "extension = None"
+        )
+        assert dummy_string == expected_output

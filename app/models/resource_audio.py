@@ -2,13 +2,11 @@ import fnmatch
 import os
 import re
 from pathlib import Path
-import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 from .duration import Duration
 from .recognition_line import RecognitionLine
 from .subtitle import Subtitle
-from ..services.google_speech_recognizer import GoogleSpeechRecognizer
 
 
 class ResourceAudio:
@@ -62,21 +60,22 @@ class ResourceAudio:
         Duration(start_time, end_time).export(filename, index)
         return end_time
 
-    def recognize_all_chunks(self, language):
+    def recognize_all_chunks(self, recognizer_data):
         all_recognitions = []
 
         for filename in fnmatch.filter(sorted(os.listdir(self.path_chunks)), '*.wav'):
             root, _ = os.path.splitext(filename)
-            line_text = self._recognize_chunk(language, root)
+            line_text = self._recognize_chunk(recognizer_data, root)
             if line_text:
-                recognition_line = self._build_recognition_line(root, line_text)
+                recognition_line = self._build_recognition_line(
+                    root, line_text)
                 all_recognitions.append(recognition_line)
 
-        return Subtitle(self.recognition_id, all_recognitions, language)
+        return Subtitle(self.recognition_id, all_recognitions, recognizer_data.language_code)
 
-    def _recognize_chunk(self, language, root):
+    def _recognize_chunk(self, recognizer_data, root):
         filepath_wav = f"{self.path_chunks}/{root}.wav"
-        return GoogleSpeechRecognizer.call(filepath_wav, language)
+        return recognizer_data.recognizer_class.call(filepath_wav, recognizer_data.language_code)
 
     def _build_recognition_line(self, root, line_text):
         filepath_ts = f"{self.path_chunks}/{root}.txt"

@@ -26,7 +26,7 @@ def __process_resource(input_item):
     log_step(2, input_item.recognition_id)
     audio.split_into_chunks()
     log_step(3, input_item.recognition_id)
-    subtitle = audio.recognize_all_chunks(input_item.language_code)
+    subtitle = audio.recognize_all_chunks(input_item.recognizer_data)
     log_step(4, input_item.recognition_id)
     subs_location = subtitle.save_subs(input_item.resource_id)
     log_step(5, input_item.recognition_id)
