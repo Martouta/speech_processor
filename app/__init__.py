@@ -18,4 +18,5 @@ from .models.subtitle import Subtitle
 from .services.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
 from .services.gladia_speech_recognizer import GladiaSpeechRecognizer
 from .services.google_speech_recognizer import GoogleSpeechRecognizer
+from .services.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
 from .services.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
