@@ -54,7 +54,8 @@ class TestSubtitle:
         document = config['collection'].find_one({'_id': doc_id})
         assert document['resource_id'] == 42
         assert document['lines'] == [
-            '00:00:00,000;00:00:03,000;Hello!', '00:00:05,000;00:00:08,000;My name is Marta'
+            {'timestamp': '00:00:00,000 --> 00:00:03,000', 'text': 'Hello!'},
+            {'timestamp': '00:00:05,000 --> 00:00:08,000', 'text': 'My name is Marta'}
         ]
         assert document['language_code'] == 'ar'
         assert type(document['created_at']) == datetime.datetime
