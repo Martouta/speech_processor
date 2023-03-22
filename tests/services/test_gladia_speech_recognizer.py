@@ -4,6 +4,7 @@ import os
 import glob
 import shutil
 import httpretty
+import pytest
 from unittest import mock
 from app import GladiaSpeechRecognizer
 
@@ -82,3 +83,17 @@ class TestGladiaSpeechRecognizer:
         # Assert
         assert result is None
         assert error_message in caplog.text
+
+    @pytest.mark.parametrize("iso_code,expected_language", [
+        ("en-US", "english"),
+        ("fr-FR", "french"),
+        ("es-ES", "spanish"),
+        ("invalid_code", None),
+        ("", None),
+    ])
+    def test_get_language_name(self, iso_code, expected_language):
+        # Act
+        result = GladiaSpeechRecognizer.get_language_name(iso_code)
+
+        # Assert
+        assert result == expected_language
