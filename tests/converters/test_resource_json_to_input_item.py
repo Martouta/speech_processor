@@ -4,10 +4,10 @@ import pytest
 
 
 class TestResourceJSONToInputItem:
-    def test_resource_json_to_input_item_hosted(self):
+    def test_resource_json_to_input_item_local(self):
         params = {
             'integration': 'local',
-            'url': 'tests/fixtures/example.mp3',
+            'path': 'tests/fixtures/example.mp3',
             'resource_id': 42,
             'language_code': 'ar'
         }
@@ -20,7 +20,8 @@ class TestResourceJSONToInputItem:
             'integration': 'hosted',
             'url': 'https://localhost:3000/example.mp4',
             'resource_id': 42,
-            'language_code': 'es'
+            'language_code': 'es',
+            'recognizer': 'gladia'
         }
         input_item = app.resource_json_to_input_item(params)
         assert type(input_item) == app.InputItemHosted
@@ -54,11 +55,15 @@ class TestResourceJSONToInputItem:
         assert exception.match(r"^'unsupported'$")
 
     def assert_params(self, input_item, params):
+        recognizer = params['recognizer'] if 'recognizer' in params else None
+        language_code = params['language_code']
+        assert input_item.recognizer_data == app.RecognizerData(
+            recognizer=recognizer, language_code=language_code)
         for key in params:
-            if key == 'language_code':
-                input_item.recognizer_data.language_code == params[key] # FIXME: RIP LoD
-            elif key == 'recognizer':
-                input_item.recognizer_data.recognizer_class == GoogleSpeechRecognizer # FIXME: RIP LoD
-            else:
-                attr_value = getattr(input_item, key)
-                assert attr_value == params[key]
+            if key not in ['language_code', 'recognizer', 'integration']:
+                if key == 'path':
+                    attr_value = getattr(input_item, 'origin_filepath')
+                    assert attr_value == params[key]
+                else:
+                    attr_value = getattr(input_item, key)
+                    assert attr_value == params[key]
