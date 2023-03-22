@@ -5,11 +5,12 @@ import os
 from abc import ABC, abstractmethod
 
 class InputItem(ABC):
-    def __init__(self, *, resource_id, recognizer_data):
+    def __init__(self, *, resource_id, recognizer_data, **options):
         self.resource_id = int(resource_id) or -1
         self.recognizer_data = recognizer_data
         self.recognition_id = f"{threading.get_ident()}-{self.resource_id}-{datetime.utcnow().strftime('%m-%d.%H:%M:%S%f')}"
         self.extension = None
+        self.options = options
 
     def __str__(self):
         attributes_str = ''

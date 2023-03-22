@@ -3,8 +3,8 @@ from .input_item import InputItem
 
 
 class InputItemYoutube(InputItem):
-    def __init__(self, *, resource_id, id, recognizer_data):
-        super().__init__(resource_id=resource_id, recognizer_data=recognizer_data)
+    def __init__(self, *, resource_id, id, recognizer_data, **options):
+        super().__init__(resource_id=resource_id, recognizer_data=recognizer_data, **options)
         self.id = id
         self.extension = 'mp4'
 
@@ -21,3 +21,6 @@ class InputItemYoutube(InputItem):
     def downloads_params(filepath):
         output_path, filename = filepath.rsplit('/', 1)
         return {'output_path': output_path, 'filename': filename}
+
+    def has_captions_enabled(self):
+        return self.options.get('captions', False)
