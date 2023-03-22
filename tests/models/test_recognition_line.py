@@ -18,3 +18,13 @@ class TestRecognitionLine:
 
     def test_duration_ts_end_srt(self):
         assert self.line.duration_ts_end_srt() == "00:00:00,010"
+
+    def test_duration_ts_srt(self):
+        assert self.line.duration_ts_srt() == "00:00:00,000 --> 00:00:00,010"
+
+    def test_to_dict(self):
+        expected_dict = {
+            'timestamp': '00:00:00,000 --> 00:00:00,010',
+            'text': 'Hello, world!'
+        }
+        assert self.line.to_dict() == expected_dict

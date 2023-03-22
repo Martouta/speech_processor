@@ -39,7 +39,7 @@ class Subtitle:
 
         subs_info = {
             'resource_id': resource_id,
-            'lines': list(map(lambda recognition_line: recognition_line.text, self.lines)),
+            'lines': list(map(lambda recognition_line: recognition_line.to_dict(), self.lines)),
             'language_code': self.language,
             'created_at': datetime.utcnow()
         }
@@ -65,8 +65,7 @@ class Subtitle:
                 if index != 1:
                     file.write("\n")
                 file.write(f"{index}\n")
-                file.write(
-                    f"{recognition_line.duration_ts_start_srt()} --> {recognition_line.duration_ts_end_srt()}\n")
-                file.write(recognition_line.text + "\n")
+                file.write(f"{recognition_line.duration_ts_srt()}\n")
+                file.write(f"{recognition_line.text}\n")
 
         return subtitles_path

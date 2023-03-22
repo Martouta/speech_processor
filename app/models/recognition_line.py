@@ -12,7 +12,7 @@ class RecognitionLine:
         """
         Returns a string representation of the RecognitionLine object in the format 'duration.ts_start_srt();duration.ts_end_srt();line_text'
         """
-        return f"{self.duration.ts_start_srt()};{self.duration.ts_end_srt()};{self.text}"
+        return f"{self.duration_ts_start_srt()};{self.duration_ts_end_srt()};{self.text}"
 
     def duration_ts_start_srt(self):
         """
@@ -25,3 +25,18 @@ class RecognitionLine:
         Returns the end timestamp of the line's duration in SRT format
         """
         return self.duration.ts_end_srt()
+    
+    def duration_ts_srt(self):
+        """
+        Returns the start and end timestamps of the line's duration in SRT format
+        """
+        return f"{self.duration_ts_start_srt()} --> {self.duration_ts_end_srt()}"
+
+    def to_dict(self):
+        """
+        Returns a dictionary representation of the RecognitionLine object with timestamp and text keys
+        """
+        return {
+            'timestamp': self.duration_ts_srt(),
+            'text': self.text
+        }

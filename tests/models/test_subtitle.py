@@ -53,7 +53,10 @@ class TestSubtitle:
         config = app.mongodb_client_configured()
         document = config['collection'].find_one({'_id': doc_id})
         assert document['resource_id'] == 42
-        assert document['lines'] == ['Hello!', 'My name is Marta']
+        assert document['lines'] == [
+            {'timestamp': '00:00:00,000 --> 00:00:03,000', 'text': 'Hello!'},
+            {'timestamp': '00:00:05,000 --> 00:00:08,000', 'text': 'My name is Marta'}
+        ]
         assert document['language_code'] == 'ar'
         assert type(document['created_at']) == datetime.datetime
 

@@ -75,8 +75,8 @@ class TestProcessResource:
         assert re.match(expected_recognition_id_regex,
                         processed_resource['input_item.recognition_id'])
         expected_recognition = [
-            'بخير وانت',
-            'شكرا'
+            {'timestamp': '00:00:00,000 --> 00:00:01,328', 'text': 'بخير وانت'},
+            {'timestamp': '00:00:01,328 --> 00:00:01,928', 'text': 'شكرا'}
         ]
         assert doc['lines'] == expected_recognition
 
