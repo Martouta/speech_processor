@@ -6,7 +6,7 @@ pycountry==22.3.5
 pydub==0.25.1
 pymongo==4.3.3
 PyTikTokAPI @ git+https://github.com/martouta/TikTokAPI-Python@v0.0.5-martouta-1
-pytube @ git+https://github.com/martouta/pytube@v12.1.0-martouta-1
+pytube==12.1.2
 pyyaml==6.0
 SpeechRecognition==3.9.0
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
