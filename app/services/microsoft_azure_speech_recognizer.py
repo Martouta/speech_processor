@@ -1,4 +1,4 @@
-import json
+import logging
 import speech_recognition as sr
 import os
 
@@ -15,5 +15,5 @@ class MicrosoftAzureSpeechRecognizer:
                 audio, key=api_key, language=language)
             return text if text else None
         except Exception as e:
-            print(f"Error recognizing speech: {e}")
+            logging.getLogger(__name__).error(f"Error recognizing speech: {e}")
             return None

@@ -1,3 +1,4 @@
+import logging
 import time
 import requests
 import os
@@ -9,24 +10,22 @@ class AssemblyAiSpeechRecognizer:
     POLLING_ENDPOINT_BASE = "https://api.assemblyai.com/v2/transcript"
 
     @staticmethod
-    def call(filepath, _language):
-        # TODO: Add support for different languages
+    def call(filepath, language):
         try:
             headers = AssemblyAiSpeechRecognizer._get_headers()
             upload_response = AssemblyAiSpeechRecognizer._upload_file(
                 filepath, headers)
             transcript_response = AssemblyAiSpeechRecognizer._request_transcript(
-                upload_response, headers)
+                upload_response, headers, language)
             polling_endpoint = AssemblyAiSpeechRecognizer._create_polling_endpoint(
                 transcript_response)
             AssemblyAiSpeechRecognizer._wait_for_completion(
                 polling_endpoint, headers)
             transcribed_text = AssemblyAiSpeechRecognizer._get_transcribed_text(
                 polling_endpoint, headers)
-            print(transcribed_text)
 
         except Exception as e:
-            print(f"Error occurred: {e}")
+            logging.getLogger(__name__).error(f"Error occurred: {e}")
             transcribed_text = None
 
         return transcribed_text
@@ -51,9 +50,10 @@ class AssemblyAiSpeechRecognizer:
         return upload_response
 
     @staticmethod
-    def _request_transcript(upload_response, headers):
+    def _request_transcript(upload_response, headers, language):
         transcript_request = {
-            'audio_url': upload_response['upload_url']
+            'audio_url': upload_response['upload_url'],
+            'language_code': language[:2]
         }
         transcript_response = requests.post(
             AssemblyAiSpeechRecognizer.TRANSCRIPT_ENDPOINT,

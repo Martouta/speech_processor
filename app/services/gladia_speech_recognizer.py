@@ -1,7 +1,8 @@
 import json
-import requests
-import os
 import logging
+import os
+import pycountry
+import requests
 
 
 class GladiaSpeechRecognizer:
@@ -17,7 +18,7 @@ class GladiaSpeechRecognizer:
 
         files = {
             'audio': (filepath, open(filepath, 'rb'), 'audio/wav'),
-            'language': (None, 'english'), # TODO: change to language
+            'language': (None, GladiaSpeechRecognizer.get_language_name(language) or 'english'),
             'language_behaviour': (None, 'automatic multiple languages'),
         }
 
@@ -31,3 +32,16 @@ class GladiaSpeechRecognizer:
             logging.getLogger(__name__).error(
                 'GladiaSpeechRecognizer error: ' + response.text)
             return
+
+    @staticmethod
+    def get_language_name(iso_code):
+        try:
+            # Extract the first two characters for the ISO 639-1 code
+            language = pycountry.languages.get(alpha_2=iso_code[:2])
+        except KeyError:
+            return None
+
+        if language:
+            return language.name.lower()
+        else:
+            return None
