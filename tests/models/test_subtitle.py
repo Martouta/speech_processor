@@ -43,6 +43,11 @@ class TestSubtitle:
             ]
             assert actual_lines == expected_lines
 
+    def test_save_in_file_no_lines(self):
+        self.subtitle.lines = []
+        filepath = self.subtitle.save_in_file()
+        assert filepath == None
+
     def test_save_in_mongodb(self):
         doc_id = self.subtitle.save_in_mongodb(42)
         config = app.mongodb_client_configured()
@@ -51,6 +56,11 @@ class TestSubtitle:
         assert document['lines'] == ['Hello!', 'My name is Marta']
         assert document['language_code'] == 'ar'
         assert type(document['created_at']) == datetime.datetime
+
+    def test_save_in_mongodb_no_lines(self):
+        self.subtitle.lines = []
+        doc_id = self.subtitle.save_in_mongodb(42)
+        assert doc_id == None
 
     @mock.patch.dict(os.environ, {'SUBS_LOCATION': 'invalid'})
     def test_save_invalid_destination(self):
