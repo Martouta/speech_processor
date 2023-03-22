@@ -39,7 +39,7 @@ class Subtitle:
 
         subs_info = {
             'resource_id': resource_id,
-            'lines': list(map(lambda recognition_line: recognition_line.text, self.lines)),
+            'lines': list(map(lambda recognition_line: str(recognition_line), self.lines)),
             'language_code': self.language,
             'created_at': datetime.utcnow()
         }
