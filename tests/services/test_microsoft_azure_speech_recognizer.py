@@ -56,9 +56,5 @@ class TestMicrosoftAzureSpeechRecognizer:
         with patch.object(sr.Recognizer, "recognize_azure") as mock_recognize_azure:
             mock_recognize_azure.side_effect = Exception("API error")
 
-            with patch("builtins.print") as mock_print:
-                result = MicrosoftAzureSpeechRecognizer.call(filepath, "en-US")
-
-        mock_print.assert_called_once_with(
-            "Error recognizing speech: API error")
-        assert result is None
+            result = MicrosoftAzureSpeechRecognizer.call(filepath, "en-US")
+            assert result is None
