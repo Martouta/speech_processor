@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 import os
 from pathlib import Path
 from ..config_loaders.mongodb_client_configured import mongodb_client_configured
@@ -30,8 +31,11 @@ class Subtitle:
 
     def save_in_mongodb(self, resource_id: int):
         '''
-        It connects to MongoDB and saves the subtitles there.
+        If there are lines, it connects to MongoDB and saves the subtitles there.
         '''
+        if not self.lines:
+            logging.getLogger(__name__).info('No lines to save in file')
+            return None
 
         subs_info = {
             'resource_id': resource_id,
@@ -42,12 +46,15 @@ class Subtitle:
         mongodb_config = mongodb_client_configured()
         return mongodb_config['collection'].insert_one(subs_info).inserted_id
 
-    def save_in_file(self):
+    def save_in_file(self) -> str:
         '''
-        It receives an array of strings and prints it in a file.
+        If there are lines, it receives an array of strings and prints it in a file.
         It can be in Arabic.
         It prints each item of the array in a different line.
         '''
+        if not self.lines:
+            logging.getLogger(__name__).info('No lines to save in file')
+            return None
 
         sp_path = Path(__file__).resolve().parent.parent.parent
         subs_dir = f"{sp_path}/resources/subtitles/{os.environ['SPEECH_ENV']}"
