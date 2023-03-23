@@ -205,11 +205,9 @@ class TestProcessResource:
             'captions': True
         }
 
-        with requests_mock.Mocker() as req_mock:
-            with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
-                fetch_captions_mock.side_effect = Exception(
-                    "Captions fetch failed")
-                resp = app.process_resource(json_parsed)
+        with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
+            fetch_captions_mock.side_effect = Exception('Captions fetch failed')
+            resp = app.process_resource(json_parsed)
 
         assert resp['status'] == 'error'
         assert type(resp['error']) == Exception

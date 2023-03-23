@@ -14,9 +14,13 @@ class RecognizerData:
         'openai':  OpenAIWhisperSpeechRecognizer
     }
 
-    def __init__(self, language_code, recognizer='google'):
+    def __init__(self, language_code, recognizer='google', captions=False):
         self.language_code = language_code
         self.recognizer_class = RecognizerData.RECOGNIZER_TYPE_TO_CLASS[recognizer or 'google']
+        self._captions = captions or False
+
+    def are_captions_requested(self):
+        return self._captions
 
     def __str__(self):
         attributes_str = ''

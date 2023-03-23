@@ -31,10 +31,20 @@ class TestRecognizerData:
         recognizer_data = RecognizerData('en-US', 'google')
         expected_str = (
             f"<class '{RecognizerData.__module__}.{RecognizerData.__name__}'>\n\n"
-            "language_code = en-US\n"
-            "recognizer_class = <class 'app.services.google_speech_recognizer.GoogleSpeechRecognizer'>"
+            'language_code = en-US\n'
+            "recognizer_class = <class 'app.services.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
+            '_captions = False'
         )
         assert str(recognizer_data) == expected_str
+
+    @pytest.mark.parametrize("captions, expected", [
+        (True, True),
+        (False, False),
+        (None, False),
+    ])
+    def test_are_captions_requested(self, captions, expected):
+        recognizer_data = RecognizerData('en-US', captions=captions)
+        assert recognizer_data.are_captions_requested() == expected
 
     def test_invalid_recognizer_type(self):
         with pytest.raises(KeyError):

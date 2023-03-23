@@ -21,18 +21,15 @@ class TestInputItem:
         assert dummy.download(dir_path='.', filename='example.txt') is None
 
     def test_str(self):
-        dummy = TestInputItem.InputItemDummy(
-            resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
+        recognizer_data = RecognizerData(language_code='en-US')
+        dummy = TestInputItem.InputItemDummy(resource_id=1, recognizer_data=recognizer_data)
         dummy_string = dummy.__str__()
         expected_output = (
             "<class 'test_input_item.TestInputItem.InputItemDummy'>\n\n"
             "resource_id = 1\n"
-            "recognizer_data = <class 'app.input_items.recognizer_data.RecognizerData'>\n\n"
-            "language_code = en-US\n"
-            "recognizer_class = <class 'app.services.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
+            f"recognizer_data = {str(recognizer_data)}\n"
             f"recognition_id = {dummy.recognition_id}\n"
-            "extension = None\n"
-            'options = {}'
+            "extension = None"
         )
         assert dummy_string == expected_output
 
