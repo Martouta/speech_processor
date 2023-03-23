@@ -23,7 +23,7 @@ class TestMicrosoftAzureSpeechRecognizer:
         with patch.dict(os.environ, {"MS_AZURE_SPEECH_API_KEY": self.api_key}):
             yield
 
-    @httpretty.activate
+    @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_call_success(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
         httpretty.register_uri(
@@ -43,7 +43,7 @@ class TestMicrosoftAzureSpeechRecognizer:
             )
             assert result == "This is a test."
 
-    @httpretty.activate
+    @httpretty.activate(verbose=True, allow_net_connect=False)
     def test_call_exception(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
         httpretty.register_uri(

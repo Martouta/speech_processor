@@ -22,5 +22,5 @@ class InputItemYoutube(InputItem):
         output_path, filename = filepath.rsplit('/', 1)
         return {'output_path': output_path, 'filename': filename}
 
-    def has_captions_enabled(self):
+    def are_captions_requested(self):
         return self.options.get('captions', False)

@@ -46,11 +46,11 @@ class TestInputItemYoutube:
             'filename': 'example.mp4'}
         assert params == expected_params
 
-    def test_has_captions_enabled(self):
+    def test_are_captions_requested(self):
         item_without_captions = InputItemYoutube(
             id=youtube_ids[0], recognizer_data=RecognizerData(language_code='en'), resource_id=55)
-        assert not item_without_captions.has_captions_enabled()
+        assert not item_without_captions.are_captions_requested()
 
         item_with_captions = InputItemYoutube(id=youtube_ids[0], recognizer_data=RecognizerData(
             language_code='en'), resource_id=55, captions=True)
-        assert item_with_captions.has_captions_enabled()
+        assert item_with_captions.are_captions_requested()

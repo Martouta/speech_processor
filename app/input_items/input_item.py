@@ -4,6 +4,7 @@ import threading
 import os
 from abc import ABC, abstractmethod
 
+
 class InputItem(ABC):
     def __init__(self, *, resource_id, recognizer_data, **options):
         self.resource_id = int(resource_id) or -1
@@ -23,6 +24,9 @@ class InputItem(ABC):
         filepath = self.__filepath(self.recognition_id, self.extension)
         self.download(filepath)
         return filepath
+
+    def are_captions_requested(self):
+        return False
 
     @abstractmethod
     def download(self, dir_path, filename):

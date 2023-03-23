@@ -35,3 +35,8 @@ class TestInputItem:
             'options = {}'
         )
         assert dummy_string == expected_output
+
+    def test_are_captions_requested(self):
+        item_without_captions = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
+        assert not item_without_captions.are_captions_requested()
