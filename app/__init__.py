@@ -16,9 +16,9 @@ from .models.duration import Duration
 from .models.recognition_line import RecognitionLine
 from .models.resource_audio import ResourceAudio
 from .models.subtitle import Subtitle
-from .services.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
-from .services.gladia_speech_recognizer import GladiaSpeechRecognizer
-from .services.google_speech_recognizer import GoogleSpeechRecognizer
-from .services.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
-from .services.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
+from .services.speech_recognizers.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
+from .services.speech_recognizers.gladia_speech_recognizer import GladiaSpeechRecognizer
+from .services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
+from .services.speech_recognizers.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
+from .services.speech_recognizers.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
 from .services.youtube_captions_fetcher import YoutubeCaptionsFetcher

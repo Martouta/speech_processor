@@ -157,7 +157,7 @@ class TestProcessResource:
 
             assert re.search(r"Traceback", caplog.text, re.MULTILINE)
             assert re.search(
-                r".*File.*line 17, in process_resource", caplog.text, re.MULTILINE)
+                r".*File.*line \d+, in process_resource", caplog.text, re.MULTILINE)
             assert re.search(
                 re.escape('requests.exceptions.ConnectTimeout'), caplog.text, re.MULTILINE)
 
@@ -214,7 +214,7 @@ class TestProcessResource:
         assert str(resp['error']) == "Captions fetch failed"
 
         assert re.search(r"Traceback", caplog.text, re.MULTILINE)
-        assert re.search(r".*File.*line 17, in process_resource",
+        assert re.search(r".*File.*line \d+, in process_resource",
                          caplog.text, re.MULTILINE)
         assert re.search(re.escape('Captions fetch failed'),
                          caplog.text, re.MULTILINE)

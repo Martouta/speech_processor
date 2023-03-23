@@ -7,8 +7,6 @@ from .models.resource_audio import ResourceAudio
 from .converters.resource_json_to_input_item import resource_json_to_input_item
 from .converters.resource_message_to_json import resource_message_to_json
 
-# TODO: clean all this up
-
 
 def process_resource(msg):
     try:
