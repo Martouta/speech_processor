@@ -26,6 +26,62 @@ class TestSubtitle:
         if os.path.exists(TestSubtitle.FILEPATH):
             os.remove(TestSubtitle.FILEPATH)
 
+    def test_eq_same_object(self):
+        assert self.subtitle == self.subtitle
+
+    def test_eq_different_objects_same_values(self):
+        recognition_lines = [
+            RecognitionLine("Hello!", Duration(0, 3000)),
+            RecognitionLine("My name is Marta", Duration(5000, 8000))
+        ]
+        other_subtitle = Subtitle(
+            'test_recognition_id', recognition_lines, 'ar')
+        assert self.subtitle == other_subtitle
+
+    def test_eq_different_objects_different_recognition_id(self):
+        recognition_lines = [
+            RecognitionLine("Hello!", Duration(0, 3000)),
+            RecognitionLine("My name is Marta", Duration(5000, 8000))
+        ]
+        other_subtitle = Subtitle(
+            'another_recognition_id', recognition_lines, 'ar')
+        assert self.subtitle != other_subtitle
+
+    def test_eq_different_objects_different_lines(self):
+        recognition_lines = [
+            RecognitionLine("Hello!", Duration(0, 3000)),
+            RecognitionLine("My name is John", Duration(5000, 8000))
+        ]
+        other_subtitle = Subtitle(
+            'test_recognition_id', recognition_lines, 'ar')
+        assert self.subtitle != other_subtitle
+
+    def test_eq_different_objects_different_language(self):
+        recognition_lines = [
+            RecognitionLine("Hello!", Duration(0, 3000)),
+            RecognitionLine("My name is Marta", Duration(5000, 8000))
+        ]
+        other_subtitle = Subtitle(
+            'test_recognition_id', recognition_lines, 'en')
+        assert self.subtitle != other_subtitle
+
+    def test_eq_different_objects_different_recognition_id_and_lines(self):
+        recognition_lines = [
+            RecognitionLine("Hello!", Duration(0, 3000)),
+            RecognitionLine("My name is John", Duration(5000, 8000))
+        ]
+        other_subtitle = Subtitle(
+            'another_recognition_id', recognition_lines, 'ar')
+        assert self.subtitle != other_subtitle
+
+    def test_eq_different_object_types(self):
+        assert self.subtitle != 'test_recognition_id'
+        assert self.subtitle != [
+            RecognitionLine("Hello!", Duration(0, 3000)),
+            RecognitionLine("My name is Marta", Duration(5000, 8000))
+        ]
+        assert self.subtitle != 42
+
     def test_save_in_file(self):
         filepath = self.subtitle.save_in_file()
         assert filepath == TestSubtitle.FILEPATH

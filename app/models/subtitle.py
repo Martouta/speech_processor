@@ -11,6 +11,13 @@ class Subtitle:
         self.lines = lines
         self.language = language
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Subtitle):
+            return False
+        return self.recognition_id == other.recognition_id \
+            and self.lines == other.lines \
+            and self.language == other.language
+
     def __str__(self):
         attributes_str = f'recognition_id = {self.recognition_id}\n'
         lines_str = '\n'.join(str(line) for line in self.lines)
