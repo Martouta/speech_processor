@@ -31,6 +31,12 @@ class TestInputItem:
             "language_code = en-US\n"
             "recognizer_class = <class 'app.services.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
             f"recognition_id = {dummy.recognition_id}\n"
-            "extension = None"
+            "extension = None\n"
+            'options = {}'
         )
         assert dummy_string == expected_output
+
+    def test_are_captions_requested(self):
+        item_without_captions = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
+        assert not item_without_captions.are_captions_requested()

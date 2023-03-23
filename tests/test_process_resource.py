@@ -29,7 +29,7 @@ class TestProcessResource:
             os.remove(fname)
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
-    def test_process_resource_correctly(self):
+    def test_process_resource_ia_correctly(self):
         api_url = "http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
         httpretty.register_uri(
             httpretty.POST,
@@ -82,7 +82,7 @@ class TestProcessResource:
 
     @httpretty.activate(verbose=True, allow_net_connect=False)
     @mock.patch.dict(os.environ, {'SUBS_LOCATION': 'file'})
-    def test_process_resource_save_in_file(self):
+    def test_process_resource_ia_save_in_file(self):
         api_url = "http://www.google.com/speech-api/v2/recognize?client=chromium&lang=ar&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
         httpretty.register_uri(
             httpretty.POST,
@@ -139,7 +139,7 @@ class TestProcessResource:
             ]
             assert subfile.read().split("\n") == expected_recognition
 
-    def test_process_resource_error(self, caplog):
+    def test_process_resource_ia_error(self, caplog):
         resource_url = 'http://localhost/example.mp4'
         json_parsed = {
             'integration': 'hosted',
@@ -157,6 +157,66 @@ class TestProcessResource:
 
             assert re.search(r"Traceback", caplog.text, re.MULTILINE)
             assert re.search(
-                r".*File.*line 14, in process_resource", caplog.text, re.MULTILINE)
+                r".*File.*line 17, in process_resource", caplog.text, re.MULTILINE)
             assert re.search(
                 re.escape('requests.exceptions.ConnectTimeout'), caplog.text, re.MULTILINE)
+
+    def test_process_resource_captions_correctly(self):
+        video_id = 'zWQJqt_D-vo'
+        json_parsed = {
+            'integration': 'youtube',
+            'id': video_id,
+            'language_code': 'ar',
+            'resource_id': TestProcessResource.RESOURCE_ID,
+            'captions': True
+        }
+
+        with requests_mock.Mocker() as req_mock:
+            with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
+                lines = [
+                    app.RecognitionLine(line_text='بخير وانت', duration=app.Duration(
+                        ts_start=0, ts_end=1328)),
+                    app.RecognitionLine(line_text='شكرا', duration=app.Duration(
+                        ts_start=1328, ts_end=1928))
+                ]
+                fetch_captions_mock.return_value = app.Subtitle(
+                    recognition_id=1, language='ar', lines=lines)
+                processed_resource = app.process_resource(json_parsed)
+
+        assert 'ok' == processed_resource['status']
+        assert 'mongodb' == processed_resource['subtitles_location']
+        mongodb_config = app.mongodb_client_configured()
+        doc_id = processed_resource['id_location']
+        doc = mongodb_config['collection'].find_one({'_id': doc_id})
+        assert json_parsed['resource_id'] == doc['resource_id']
+        expected_recognition = [
+            {'timestamp': '00:00:00,000 --> 00:00:01,328', 'text': 'بخير وانت'},
+            {'timestamp': '00:00:01,328 --> 00:00:01,928', 'text': 'شكرا'}
+        ]
+        assert doc['lines'] == expected_recognition
+
+    def test_process_resource_captions_error(self, caplog):
+        video_id = 'zWQJqt_D-vo'
+        json_parsed = {
+            'integration': 'youtube',
+            'id': video_id,
+            'language_code': 'ar',
+            'resource_id': TestProcessResource.RESOURCE_ID,
+            'captions': True
+        }
+
+        with requests_mock.Mocker() as req_mock:
+            with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
+                fetch_captions_mock.side_effect = Exception(
+                    "Captions fetch failed")
+                resp = app.process_resource(json_parsed)
+
+        assert resp['status'] == 'error'
+        assert type(resp['error']) == Exception
+        assert str(resp['error']) == "Captions fetch failed"
+
+        assert re.search(r"Traceback", caplog.text, re.MULTILINE)
+        assert re.search(r".*File.*line 17, in process_resource",
+                         caplog.text, re.MULTILINE)
+        assert re.search(re.escape('Captions fetch failed'),
+                         caplog.text, re.MULTILINE)

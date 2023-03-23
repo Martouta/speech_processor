@@ -69,7 +69,8 @@ Example of a JSON type with multiple items having all possible inputs:
     "id": "zWQJqt_D-vo",
     "language_code": "ar",
     "resource_id": 1,
-    "recognizer": "google"
+    "recognizer": "google",
+    "captions": true
   },
   {
     "integration": "youtube",
@@ -125,6 +126,8 @@ For each item, each of those parameters are mandatory. This is what they mean:
   - For __Gladia__, it needs the __GLADIA_API_KEY__.
   - For __Google__, no credentials are required.
   - For __Microsoft__, it needs the __MS_AZURE_SPEECH_API_KEY__.
+
+- __captions__ is an optional parameter, only valid for YouTube integrations. If it is present and "true", it fetches the subtitles from YouTube captions instead of transcribing it by IA. In that case, if the captions in that language are not present in YouTube, it does nothing.
 
 ## Expected output
 

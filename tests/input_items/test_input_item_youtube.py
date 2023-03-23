@@ -34,7 +34,8 @@ class TestInputItemYoutube:
         assert len(filepaths) == 2
 
     def submit_save_request(self, id):
-        item = InputItemYoutube(id=id, recognizer_data=RecognizerData(language_code='en'), resource_id=55)
+        item = InputItemYoutube(id=id, recognizer_data=RecognizerData(
+            language_code='en'), resource_id=55)
         return item.save()
 
     def test_download_params(self):
@@ -44,3 +45,12 @@ class TestInputItemYoutube:
             'output_path': f"{os.getcwd()}/tests/fixtures",
             'filename': 'example.mp4'}
         assert params == expected_params
+
+    def test_are_captions_requested(self):
+        item_without_captions = InputItemYoutube(
+            id=youtube_ids[0], recognizer_data=RecognizerData(language_code='en'), resource_id=55)
+        assert not item_without_captions.are_captions_requested()
+
+        item_with_captions = InputItemYoutube(id=youtube_ids[0], recognizer_data=RecognizerData(
+            language_code='en'), resource_id=55, captions=True)
+        assert item_with_captions.are_captions_requested()

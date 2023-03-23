@@ -15,7 +15,7 @@ class TestAssemblyAiSpeechRecognizer:
         if os.path.exists(file_path):
             shutil.rmtree(file_path)
 
-    @httpretty.activate
+    @httpretty.activate(verbose=True, allow_net_connect=False)
     @patch.dict(os.environ, {'ASSEMBLYAI_API_KEY': 'test_key'})
     def test_transcribe_success(self):
         audio_file_path = f"{os.getcwd()}/tests/fixtures/example.wav"
@@ -62,7 +62,7 @@ class TestAssemblyAiSpeechRecognizer:
             audio_file_path, 'en-US')
         assert transcribed_text == "This is a test transcription.\n"
 
-    @httpretty.activate
+    @httpretty.activate(verbose=True, allow_net_connect=False)
     @patch.dict(os.environ, {'ASSEMBLYAI_API_KEY': 'test_key'})
     def test_transcribe_failure(self):
         audio_file_path = f"{os.getcwd()}/tests/fixtures/example.wav"
