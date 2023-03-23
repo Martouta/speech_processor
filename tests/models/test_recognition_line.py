@@ -6,6 +6,30 @@ class TestRecognitionLine:
     def setup_method(self):
         self.line = RecognitionLine("Hello, world!", Duration(0, 10))
 
+    def test_eq_same_object(self):
+        assert self.line == self.line
+
+    def test_eq_different_objects_same_values(self):
+        other_line = RecognitionLine("Hello, world!", Duration(0, 10))
+        assert self.line == other_line
+
+    def test_eq_different_objects_different_text(self):
+        other_line = RecognitionLine("Goodbye, world!", Duration(0, 10))
+        assert self.line != other_line
+
+    def test_eq_different_objects_different_duration(self):
+        other_line = RecognitionLine("Hello, world!", Duration(1, 11))
+        assert self.line != other_line
+
+    def test_eq_different_objects_different_text_and_duration(self):
+        other_line = RecognitionLine("Goodbye, world!", Duration(1, 11))
+        assert self.line != other_line
+
+    def test_eq_different_object_types(self):
+        assert self.line != "Hello, world!"
+        assert self.line != Duration(0, 10)
+        assert self.line != 42
+
     def test_init(self):
         assert self.line.text == "Hello, world!"
         assert self.line.duration == Duration(0, 10)

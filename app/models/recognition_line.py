@@ -8,6 +8,14 @@ class RecognitionLine:
         self.text = line_text
         self.duration = duration
 
+    def __eq__(self, other) -> bool:
+        """
+        Returns True if the RecognitionLine objects have the same text and duration
+        """
+        if not isinstance(other, RecognitionLine):
+            return False
+        return self.text == other.text and self.duration == other.duration
+
     def __str__(self):
         """
         Returns a string representation of the RecognitionLine object in the format 'duration.ts_start_srt();duration.ts_end_srt();line_text'
@@ -25,7 +33,7 @@ class RecognitionLine:
         Returns the end timestamp of the line's duration in SRT format
         """
         return self.duration.ts_end_srt()
-    
+
     def duration_ts_srt(self):
         """
         Returns the start and end timestamps of the line's duration in SRT format

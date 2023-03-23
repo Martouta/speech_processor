@@ -16,7 +16,7 @@ class Duration:
         attributes_str += f'ts_end = {self.ts_end_srt()}\n'
         return str(self.__class__) + '\n' + attributes_str
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """
         Compare two Duration objects for equality
         :param other: other Duration object to compare to
