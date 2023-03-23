@@ -54,7 +54,7 @@ def __process_resource_speech_recognition(input_item):
 def __process_resource_captions(input_item):
     log_step_captions(0, input_item.recognition_id)
     subtitle = YoutubeCaptionsFetcher.call(
-        input_item.id, input_item.recognizer_data.language_code)  # FIXME: RIP LoD
+        input_item.id, input_item.language_code())
     subs_location = subtitle.save_subs(input_item.resource_id)
     log_step_speech_recognition(1, input_item.recognition_id)
     return subs_location

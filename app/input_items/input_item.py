@@ -25,7 +25,10 @@ class InputItem(ABC):
         return filepath
 
     def are_captions_requested(self):
-        self.recognizer_data.are_captions_requested()
+        return self.recognizer_data.are_captions_requested()
+
+    def language_code(self):
+        return self.recognizer_data.language_code
 
     @abstractmethod
     def download(self, dir_path, filename):
