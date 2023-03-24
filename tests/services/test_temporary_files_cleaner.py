@@ -1,10 +1,10 @@
 import app
-from app import ResourceAudio
 import os
 import shutil
+from app.services.temporary_files_cleaner import TemporaryFilesCleaner
 
 
-class TestCleanupTemporaryFiles:
+class TestTemporaryFilesCleaner:
     VIDEO_FIXTURE_FILE_PATH = f"{os.getcwd()}/tests/fixtures/example.mp4"
 
     def test_cleanup_temporary_files_when_they_exist_for_video_mp4(self):
@@ -23,7 +23,7 @@ class TestCleanupTemporaryFiles:
         downloaded_multimedia_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}"
         audio_chunks_path = f"{os.getcwd()}/resources/audio_chunks/test/{recognition_id}"
 
-        app.cleanup_temporary_files(recognition_id, downloaded_multimedia_path)
+        TemporaryFilesCleaner.call(recognition_id, downloaded_multimedia_path)
         assert os.path.exists(downloaded_multimedia_path) == False
         assert os.path.exists(audio_chunks_path) == False
 
@@ -33,10 +33,11 @@ class TestCleanupTemporaryFiles:
 
         downloaded_multimedia_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}.{format}"
         shutil.copyfile(
-            TestCleanupTemporaryFiles.VIDEO_FIXTURE_FILE_PATH, downloaded_multimedia_path)
+            TestTemporaryFilesCleaner.VIDEO_FIXTURE_FILE_PATH, downloaded_multimedia_path)
         assert os.path.exists(downloaded_multimedia_path)
 
-        ResourceAudio.save_as_wav(recognition_id, downloaded_multimedia_path)
+        app.ResourceAudio.save_as_wav(
+            recognition_id, downloaded_multimedia_path)
         generated_audio_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}.wav"
         assert os.path.exists(generated_audio_path)
 
@@ -44,7 +45,7 @@ class TestCleanupTemporaryFiles:
         self.create_folder(audio_chunks_path)
         os.path.exists(audio_chunks_path)
 
-        app.cleanup_temporary_files(recognition_id, downloaded_multimedia_path)
+        TemporaryFilesCleaner.call(recognition_id, downloaded_multimedia_path)
         assert os.path.exists(downloaded_multimedia_path) == False
         assert os.path.exists(generated_audio_path) == False
         assert os.path.exists(audio_chunks_path) == False
