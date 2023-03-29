@@ -1,10 +1,10 @@
 import pytest
 from app import RecognizerData
-from app.services.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
-from app.services.gladia_speech_recognizer import GladiaSpeechRecognizer
-from app.services.google_speech_recognizer import GoogleSpeechRecognizer
-from app.services.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
-from app.services.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
+from app.services.speech_recognizers.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
+from app.services.speech_recognizers.gladia_speech_recognizer import GladiaSpeechRecognizer
+from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
+from app.services.speech_recognizers.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
+from app.services.speech_recognizers.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
 
 
 class TestRecognizerData:
@@ -31,10 +31,20 @@ class TestRecognizerData:
         recognizer_data = RecognizerData('en-US', 'google')
         expected_str = (
             f"<class '{RecognizerData.__module__}.{RecognizerData.__name__}'>\n\n"
-            "language_code = en-US\n"
-            "recognizer_class = <class 'app.services.google_speech_recognizer.GoogleSpeechRecognizer'>"
+            'language_code = en-US\n'
+            "recognizer_class = <class 'app.services.speech_recognizers.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
+            '_captions = False'
         )
         assert str(recognizer_data) == expected_str
+
+    @pytest.mark.parametrize("captions, expected", [
+        (True, True),
+        (False, False),
+        (None, False),
+    ])
+    def test_are_captions_requested(self, captions, expected):
+        recognizer_data = RecognizerData('en-US', captions=captions)
+        assert recognizer_data.are_captions_requested() == expected
 
     def test_invalid_recognizer_type(self):
         with pytest.raises(KeyError):

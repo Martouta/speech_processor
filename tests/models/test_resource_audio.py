@@ -1,7 +1,7 @@
 from app import ResourceAudio
 import glob
 from app.input_items.recognizer_data import RecognizerData
-from app.services.google_speech_recognizer import GoogleSpeechRecognizer
+from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
 import httpretty
 import os
 from pydub import AudioSegment

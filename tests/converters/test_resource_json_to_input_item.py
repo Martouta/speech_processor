@@ -1,5 +1,5 @@
 import app
-from app.services.google_speech_recognizer import GoogleSpeechRecognizer
+from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
 import pytest
 
 

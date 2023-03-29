@@ -18,9 +18,12 @@ def resource_json_to_input_item(json: dict) -> InputItem:
     type = json.pop('integration')
     input_item_class = INPUT_TYPE_TO_ITEM_CLASS[type]
 
-    recognizer_data = RecognizerData(**{
+    recognizer_data_params = {
         'recognizer': json.pop('recognizer', None),
-        'language_code': json.pop('language_code')
-    })
+        'language_code': json.pop('language_code'),
+        'captions': json.pop('captions', False),
+    }
 
-    return input_item_class(**json, **{'recognizer_data': recognizer_data})
+    recognizer_data = RecognizerData(**recognizer_data_params)
+
+    return input_item_class(**json, recognizer_data=recognizer_data)

@@ -1,87 +1,24 @@
 import logging
 import traceback
-
-from app.services.youtube_captions_fetcher import YoutubeCaptionsFetcher
-from .cleanup_temporary_files import cleanup_temporary_files
-from .models.resource_audio import ResourceAudio
+from app.services.resource_processors.ai_resource_processor import AiResourceProcessor
+from app.services.resource_processors.captions_resource_processor import CaptionsResourceProcessor
 from .converters.resource_json_to_input_item import resource_json_to_input_item
 from .converters.resource_message_to_json import resource_message_to_json
-
-# TODO: clean all this up
 
 
 def process_resource(msg):
     try:
         json = resource_message_to_json(msg)
         input_item = resource_json_to_input_item(json)
-        return __process_resource(input_item)
+        if input_item.are_captions_requested():
+            resource_processor_class = CaptionsResourceProcessor
+        else:
+            resource_processor_class = AiResourceProcessor
+        return resource_processor_class(input_item).call()
     except Exception as exc:
         message = __error_msg((type(exc), exc, traceback.format_exc()))
         logging.getLogger(__name__).error(message)
         return {'status': 'error', 'error': exc}
-
-
-def __process_resource(input_item):
-    subs_location = None
-    if input_item.are_captions_requested():
-        subs_location = __process_resource_captions(input_item)
-    else:
-        subs_location = __process_resource_speech_recognition(input_item)
-    response = {
-        'status': 'ok',
-        'input_item.recognition_id': input_item.recognition_id,
-    }
-    return {**response, **subs_location}
-
-
-def __process_resource_speech_recognition(input_item):
-    log_step_speech_recognition(0, input_item.recognition_id)
-    filepath = input_item.save()
-    log_step_speech_recognition(1, input_item.recognition_id)
-    audio = ResourceAudio.save_as_wav(input_item.recognition_id, filepath)
-    log_step_speech_recognition(2, input_item.recognition_id)
-    audio.split_into_chunks()
-    log_step_speech_recognition(3, input_item.recognition_id)
-    subtitle = audio.recognize_all_chunks(input_item.recognizer_data)
-    log_step_speech_recognition(4, input_item.recognition_id)
-    subs_location = subtitle.save_subs(input_item.resource_id)
-    log_step_speech_recognition(5, input_item.recognition_id)
-    cleanup_temporary_files(input_item.recognition_id, filepath)
-    log_step_speech_recognition(6, input_item.recognition_id)
-    return subs_location
-
-
-def __process_resource_captions(input_item):
-    log_step_captions(0, input_item.recognition_id)
-    subtitle = YoutubeCaptionsFetcher.call(
-        input_item.id, input_item.recognizer_data.language_code)  # FIXME: RIP LoD
-    subs_location = subtitle.save_subs(input_item.resource_id)
-    log_step_speech_recognition(1, input_item.recognition_id)
-    return subs_location
-
-
-def log_step_speech_recognition(step_number, recognition_id):
-    total_steps = 6
-    steps = [
-        f"[1/{total_steps}] Downloading multimedia from URL ... [{recognition_id}]",
-        f"[2/{total_steps}] Saving audio as WAP ... [{recognition_id}]",
-        f"[3/{total_steps}] Spliting into chunks ... [{recognition_id}]",
-        f"[4/{total_steps}] Recognizing chunks ... [{recognition_id}]",
-        f"[5/{total_steps}] Saving subtitles ... [{recognition_id}]",
-        f"[6/{total_steps}] Cleaning up temporary generated files ... [{recognition_id}]",
-        f"[DONE] [{recognition_id}]"
-    ]
-    logging.info(steps[step_number])
-
-
-def log_step_captions(step_number, recognition_id):
-    total_steps = 2
-    steps = [
-        f"[1/{total_steps}] Fetching captions from YouTube ... [{recognition_id}]",
-        f"[2/{total_steps}] Saving subtitles ... [{recognition_id}]",
-        f"[DONE] [{recognition_id}]",
-    ]
-    logging.info(steps[step_number])
 
 
 def __error_msg(exc_tuple):

@@ -1,8 +1,8 @@
-from app.services.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
-from app.services.gladia_speech_recognizer import GladiaSpeechRecognizer
-from app.services.google_speech_recognizer import GoogleSpeechRecognizer
-from app.services.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
-from app.services.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
+from app.services.speech_recognizers.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
+from app.services.speech_recognizers.gladia_speech_recognizer import GladiaSpeechRecognizer
+from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
+from app.services.speech_recognizers.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
+from app.services.speech_recognizers.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
 
 
 class RecognizerData:
@@ -14,9 +14,13 @@ class RecognizerData:
         'openai':  OpenAIWhisperSpeechRecognizer
     }
 
-    def __init__(self, language_code, recognizer='google'):
+    def __init__(self, language_code, recognizer='google', captions=False):
         self.language_code = language_code
         self.recognizer_class = RecognizerData.RECOGNIZER_TYPE_TO_CLASS[recognizer or 'google']
+        self._captions = captions or False
+
+    def are_captions_requested(self):
+        return self._captions
 
     def __str__(self):
         attributes_str = ''

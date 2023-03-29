@@ -47,10 +47,12 @@ class TestInputItemYoutube:
         assert params == expected_params
 
     def test_are_captions_requested(self):
+        recognizer_data = RecognizerData(language_code='en')
         item_without_captions = InputItemYoutube(
-            id=youtube_ids[0], recognizer_data=RecognizerData(language_code='en'), resource_id=55)
+            id=youtube_ids[0], recognizer_data=recognizer_data, resource_id=55)
         assert not item_without_captions.are_captions_requested()
 
-        item_with_captions = InputItemYoutube(id=youtube_ids[0], recognizer_data=RecognizerData(
-            language_code='en'), resource_id=55, captions=True)
+        recognizer_data = RecognizerData(language_code='en', captions=True)
+        item_with_captions = InputItemYoutube(
+            id=youtube_ids[0], recognizer_data=recognizer_data, resource_id=55)
         assert item_with_captions.are_captions_requested()

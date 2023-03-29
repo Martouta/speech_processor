@@ -157,7 +157,7 @@ class TestProcessResource:
 
             assert re.search(r"Traceback", caplog.text, re.MULTILINE)
             assert re.search(
-                r".*File.*line 17, in process_resource", caplog.text, re.MULTILINE)
+                r".*File.*line \d+, in process_resource", caplog.text, re.MULTILINE)
             assert re.search(
                 re.escape('requests.exceptions.ConnectTimeout'), caplog.text, re.MULTILINE)
 
@@ -171,17 +171,16 @@ class TestProcessResource:
             'captions': True
         }
 
-        with requests_mock.Mocker() as req_mock:
-            with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
-                lines = [
-                    app.RecognitionLine(line_text='بخير وانت', duration=app.Duration(
-                        ts_start=0, ts_end=1328)),
-                    app.RecognitionLine(line_text='شكرا', duration=app.Duration(
-                        ts_start=1328, ts_end=1928))
-                ]
-                fetch_captions_mock.return_value = app.Subtitle(
-                    recognition_id=1, language='ar', lines=lines)
-                processed_resource = app.process_resource(json_parsed)
+        with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
+            lines = [
+                app.RecognitionLine(line_text='بخير وانت', duration=app.Duration(
+                    ts_start=0, ts_end=1328)),
+                app.RecognitionLine(line_text='شكرا', duration=app.Duration(
+                    ts_start=1328, ts_end=1928))
+            ]
+            fetch_captions_mock.return_value = app.Subtitle(
+                recognition_id=1, language='ar', lines=lines)
+            processed_resource = app.process_resource(json_parsed)
 
         assert 'ok' == processed_resource['status']
         assert 'mongodb' == processed_resource['subtitles_location']
@@ -205,18 +204,17 @@ class TestProcessResource:
             'captions': True
         }
 
-        with requests_mock.Mocker() as req_mock:
-            with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
-                fetch_captions_mock.side_effect = Exception(
-                    "Captions fetch failed")
-                resp = app.process_resource(json_parsed)
+        with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
+            fetch_captions_mock.side_effect = Exception(
+                'Captions fetch failed')
+            resp = app.process_resource(json_parsed)
 
         assert resp['status'] == 'error'
         assert type(resp['error']) == Exception
         assert str(resp['error']) == "Captions fetch failed"
 
         assert re.search(r"Traceback", caplog.text, re.MULTILINE)
-        assert re.search(r".*File.*line 17, in process_resource",
+        assert re.search(r".*File.*line \d+, in process_resource",
                          caplog.text, re.MULTILINE)
         assert re.search(re.escape('Captions fetch failed'),
                          caplog.text, re.MULTILINE)

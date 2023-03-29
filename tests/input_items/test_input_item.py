@@ -21,22 +21,32 @@ class TestInputItem:
         assert dummy.download(dir_path='.', filename='example.txt') is None
 
     def test_str(self):
+        recognizer_data = RecognizerData(language_code='en-US')
         dummy = TestInputItem.InputItemDummy(
-            resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
+            resource_id=1, recognizer_data=recognizer_data)
         dummy_string = dummy.__str__()
         expected_output = (
             "<class 'test_input_item.TestInputItem.InputItemDummy'>\n\n"
             "resource_id = 1\n"
-            "recognizer_data = <class 'app.input_items.recognizer_data.RecognizerData'>\n\n"
-            "language_code = en-US\n"
-            "recognizer_class = <class 'app.services.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
+            f"recognizer_data = {str(recognizer_data)}\n"
             f"recognition_id = {dummy.recognition_id}\n"
-            "extension = None\n"
-            'options = {}'
+            "extension = None"
         )
         assert dummy_string == expected_output
 
     def test_are_captions_requested(self):
+        recognizer_data = RecognizerData(language_code='en-US')
         item_without_captions = TestInputItem.InputItemDummy(
-            resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
+            resource_id=1, recognizer_data=recognizer_data)
         assert not item_without_captions.are_captions_requested()
+
+        recognizer_data = RecognizerData(language_code='en-US', captions=True)
+        item_without_captions = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=recognizer_data)
+        assert item_without_captions.are_captions_requested()
+
+    def test_language_code(self):
+        recognizer_data = RecognizerData(language_code='en-US')
+        dummy = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=recognizer_data)
+        assert dummy.language_code() == 'en-US'
