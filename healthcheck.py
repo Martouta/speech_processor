@@ -1,48 +1,29 @@
 import os
-from datetime import datetime, timedelta
+from datetime import timedelta
 
-LIVENESS_THRESHOLD = timedelta(minutes=5)
 STARTUP_LOG_LINE = "Fetching input messages"
 
 
-def get_last_log_line():
+def get_all_log_lines():
     with open(f"log/{os.environ['SPEECH_ENV']}.log", "r") as log_file:
         lines = log_file.readlines()
-        return lines[-1] if lines else None
+        return lines
 
 
-def log_timestamp(log_line):
-    timestamp_str = log_line.split(" - ")[0]
-    return datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S.%f")
-
-
-def is_liveness_ok(log_line):
-    if not log_line:
-        return False
-
-    log_parts = log_line.split(" - ")
-    log_level = log_parts[1].strip()
-    log_timestamp = datetime.strptime(log_parts[0], "%Y-%m-%d %H:%M:%S.%f")
-
-    if log_level == "ERROR" and datetime.now() - log_timestamp > LIVENESS_THRESHOLD:
-        return False
-
-    return True
-
-
-def is_startup_ok(log_line):
-    return STARTUP_LOG_LINE in log_line
+def is_startup_ok(log_lines):
+    for line in log_lines:
+        if STARTUP_LOG_LINE in line:
+            return True
+    return False
 
 
 def main():
-    last_log_line = get_last_log_line()
+    log_lines = get_all_log_lines()
 
     probe_type = os.environ.get("PROBE_TYPE")
 
-    if probe_type == "liveness":
-        is_ok = is_liveness_ok(last_log_line)
-    elif probe_type == "startup":
-        is_ok = is_startup_ok(last_log_line)
+    if probe_type == "startup":
+        is_ok = is_startup_ok(log_lines)
     else:
         print("Unknown probe type")
         exit(1)
