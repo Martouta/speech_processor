@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 
 LIVENESS_THRESHOLD = timedelta(minutes=5)
-READINESS_LOG_LINE = "Connection to kafka established"
+STARTUP_LOG_LINE = "Fetching input messages"
 
 
 def get_last_log_line():
@@ -30,8 +30,8 @@ def is_liveness_ok(log_line):
     return True
 
 
-def is_readiness_ok(log_line):
-    return READINESS_LOG_LINE in log_line
+def is_startup_ok(log_line):
+    return STARTUP_LOG_LINE in log_line
 
 
 def main():
@@ -41,8 +41,8 @@ def main():
 
     if probe_type == "liveness":
         is_ok = is_liveness_ok(last_log_line)
-    elif probe_type == "readiness":
-        is_ok = is_readiness_ok(last_log_line)
+    elif probe_type == "startup":
+        is_ok = is_startup_ok(last_log_line)
     else:
         print("Unknown probe type")
         exit(1)

@@ -4,7 +4,7 @@ from unittest.mock import mock_open, patch
 import pytest
 
 import healthcheck
-from healthcheck import get_last_log_line, is_liveness_ok, is_readiness_ok
+from healthcheck import get_last_log_line, is_liveness_ok, is_startup_ok
 
 
 class TestHealthCheck:
@@ -34,15 +34,15 @@ class TestHealthCheck:
         log_line = f"{datetime.now()} - INFO - test message\n"
         assert is_liveness_ok(log_line)
 
-    def test_is_readiness_ok_returns_false_if_log_line_does_not_contain_connection_to_kafka_established(
+    def test_is_startup_ok_returns_false_if_log_line_does_not_contain_fetching_input_messages(
         self,
     ):
         log_line = "log message without the expected substring\n"
-        assert not is_readiness_ok(log_line)
+        assert not is_startup_ok(log_line)
 
-    def test_is_readiness_ok_returns_true_if_log_line_contains_connection_to_kafka_established(self):
-        log_line = "Connection to kafka established\n"
-        assert is_readiness_ok(log_line)
+    def test_is_startup_ok_returns_true_if_log_line_contains_fetching_input_messages(self):
+        log_line = "Fetching input messages\n"
+        assert is_startup_ok(log_line)
 
     @patch('healthcheck.os.environ', {"SPEECH_ENV": "test", "PROBE_TYPE": "liveness"})
     @patch('healthcheck.get_last_log_line')
@@ -54,11 +54,11 @@ class TestHealthCheck:
         assert exc_info.value.code == 0
         assert mock_stdout.getvalue() == "OK\n"
 
-    @patch('healthcheck.os.environ', {"SPEECH_ENV": "test", "PROBE_TYPE": "readiness"})
+    @patch('healthcheck.os.environ', {"SPEECH_ENV": "test", "PROBE_TYPE": "startup"})
     @patch('healthcheck.get_last_log_line')
     @patch('sys.stdout', new_callable=StringIO)
-    def test_main_readiness_ok(self, mock_stdout, mock_get_last_log_line):
-        mock_get_last_log_line.return_value = "Connection to kafka established\n"
+    def test_main_startup_ok(self, mock_stdout, mock_get_last_log_line):
+        mock_get_last_log_line.return_value = "Fetching input messages\n"
         with pytest.raises(SystemExit) as exc_info:
             healthcheck.main()
         assert exc_info.value.code == 0
