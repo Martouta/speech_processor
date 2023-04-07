@@ -1,4 +1,3 @@
-import json
 import pytest
 from unittest.mock import MagicMock, patch
 from app.models.duration import Duration
@@ -10,12 +9,13 @@ from app.services.youtube_captions_fetcher import YoutubeCaptionsFetcher
 class TestYoutubeCaptionsFetcher:
     @pytest.fixture(autouse=True)
     def setup(self):
+        self.recognition_id = "test_recognition_id"
         self.video_id = "test_video_id"
         self.language = "en-US"
 
     def test_call_success(self):
         expected_subtitle = Subtitle(
-            recognition_id=self.video_id,
+            recognition_id=self.recognition_id,
             lines=[
                 RecognitionLine("Hello, world!", Duration(0, 1.5)),
                 RecognitionLine("How are you?", Duration(1.5, 3.0)),
@@ -27,17 +27,14 @@ class TestYoutubeCaptionsFetcher:
             mock_transcript = MagicMock()
             mock_transcript.language_code = self.language[:2]
             mock_transcript.is_generated = False
-            mock_youtube_api.list_transcripts.return_value = [mock_transcript]
-
-            mock_json_formatter = MagicMock()
-            mock_json_formatter.format_transcript.return_value = json.dumps([
+            mock_transcript.fetch.return_value = [
                 {"start": 0, "duration": 1.5, "text": "Hello, world!"},
                 {"start": 1.5, "duration": 1.5, "text": "How are you?"},
-            ])
+            ]
+            mock_youtube_api.list_transcripts.return_value = [mock_transcript]
 
-            with patch("app.services.youtube_captions_fetcher.JSONFormatter", return_value=mock_json_formatter):
-                subtitle = YoutubeCaptionsFetcher.call(
-                    self.video_id, self.language)
+            subtitle = YoutubeCaptionsFetcher.call(
+                self.recognition_id, self.video_id, self.language)
 
         assert subtitle == expected_subtitle
 
@@ -49,7 +46,8 @@ class TestYoutubeCaptionsFetcher:
             mock_youtube_api.list_transcripts.return_value = [mock_transcript]
 
             with pytest.raises(ValueError) as exc_info:
-                YoutubeCaptionsFetcher.call(self.video_id, self.language)
+                YoutubeCaptionsFetcher.call(
+                    self.recognition_id, self.video_id, self.language)
 
         assert str(
             exc_info.value) == f"No manual captions found for video ID {self.video_id} and language {self.language}"
@@ -62,7 +60,8 @@ class TestYoutubeCaptionsFetcher:
             mock_youtube_api.list_transcripts.return_value = [mock_transcript]
 
             with pytest.raises(ValueError) as exc_info:
-                YoutubeCaptionsFetcher.call(self.video_id, self.language)
+                YoutubeCaptionsFetcher.call(
+                    self.recognition_id, self.video_id, self.language)
 
         assert str(
             exc_info.value) == f"No manual captions found for video ID {self.video_id} and language {self.language}"

@@ -22,6 +22,12 @@ class RecognitionLine:
         """
         return f"{self.duration_ts_start_srt()};{self.duration_ts_end_srt()};{self.text}"
 
+    def __repr__(self):
+        """
+        Returns a string representation of the RecognitionLine object
+        """
+        return f"RecognitionLine(text='{self.text}', duration={repr(self.duration)})"
+
     def duration_ts_start_srt(self):
         """
         Returns the start timestamp of the line's duration in SRT format

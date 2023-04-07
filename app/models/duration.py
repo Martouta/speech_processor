@@ -26,6 +26,12 @@ class Duration:
             return self.ts_start == other.ts_start and self.ts_end == other.ts_end
         return False
 
+    def __repr__(self):
+        """
+        Returns a string representation of the Duration object
+        """
+        return f"Duration(ts_start={self.ts_start}, ts_end={self.ts_end})"
+
     def ts_start_srt(self):
         """
         Returns the start timestamp in SRT format

@@ -7,8 +7,9 @@ from .resource_processor import ResourceProcessor
 class CaptionsResourceProcessor(ResourceProcessor):
     def call(self):
         self.log_step(0)
+        logging.info(f"Fetching captions for {self.input_item.id} ...")
         subtitle = YoutubeCaptionsFetcher.call(
-            self.input_item.id, self.input_item.language_code())
+            self.input_item.recognition_id, self.input_item.id, self.input_item.language_code())
         subs_location = subtitle.save_subs(self.input_item.resource_id)
         self.log_step(1)
         return self.response(subs_location)

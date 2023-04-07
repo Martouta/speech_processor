@@ -82,6 +82,15 @@ class TestSubtitle:
         ]
         assert self.subtitle != 42
 
+    def test_repr(self):
+        expected_repr = (
+            "Subtitle(recognition_id='test_recognition_id', "
+            "lines=[RecognitionLine(text='Hello!', duration=Duration(ts_start=0, ts_end=3000)), "
+            "RecognitionLine(text='My name is Marta', duration=Duration(ts_start=5000, ts_end=8000))], "
+            "language='ar')"
+        )
+        assert repr(self.subtitle) == expected_repr
+
     def test_save_in_file(self):
         filepath = self.subtitle.save_in_file()
         assert filepath == TestSubtitle.FILEPATH

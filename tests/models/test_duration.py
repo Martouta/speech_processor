@@ -21,6 +21,9 @@ class TestDuration:
         expected_output = re.sub(r'[ \t]{2,}', '', expected_output)
         assert str(self.duration) == expected_output
 
+    def test_repr(self):
+        assert repr(self.duration) == "Duration(ts_start=1000, ts_end=2000)"
+
     def test_duration_equality(self):
         duration1 = Duration(ts_start=10, ts_end=20)
         duration2 = Duration(ts_start=10, ts_end=20)
