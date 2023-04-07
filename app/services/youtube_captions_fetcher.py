@@ -2,7 +2,6 @@ from app.models.duration import Duration
 from app.models.recognition_line import RecognitionLine
 from app.models.subtitle import Subtitle
 from youtube_transcript_api import YouTubeTranscriptApi
-from youtube_transcript_api.formatters import JSONFormatter
 
 
 class YoutubeCaptionsFetcher:
