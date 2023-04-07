@@ -27,17 +27,14 @@ class TestYoutubeCaptionsFetcher:
             mock_transcript = MagicMock()
             mock_transcript.language_code = self.language[:2]
             mock_transcript.is_generated = False
-            mock_youtube_api.list_transcripts.return_value = [mock_transcript]
-
-            mock_json_formatter = MagicMock()
-            mock_json_formatter.format_transcript.return_value = json.dumps([
+            mock_transcript.fetch.return_value = [
                 {"start": 0, "duration": 1.5, "text": "Hello, world!"},
                 {"start": 1.5, "duration": 1.5, "text": "How are you?"},
-            ])
+            ]
+            mock_youtube_api.list_transcripts.return_value = [mock_transcript]
 
-            with patch("app.services.youtube_captions_fetcher.JSONFormatter", return_value=mock_json_formatter):
-                subtitle = YoutubeCaptionsFetcher.call(
-                    self.video_id, self.language)
+            subtitle = YoutubeCaptionsFetcher.call(
+                self.video_id, self.language)
 
         assert subtitle == expected_subtitle
 

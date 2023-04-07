@@ -39,7 +39,7 @@ class YoutubeCaptionsFetcher:
 
     @staticmethod
     def _captions_to_json(captions):
-        return json.loads(JSONFormatter().format_transcript(captions))
+        return captions.fetch()
 
     @staticmethod
     def _json_to_subtitles(transcript_json, video_id, language):
