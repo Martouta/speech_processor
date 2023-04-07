@@ -1,4 +1,3 @@
-import json
 from app.models.duration import Duration
 from app.models.recognition_line import RecognitionLine
 from app.models.subtitle import Subtitle
@@ -8,7 +7,7 @@ from youtube_transcript_api.formatters import JSONFormatter
 
 class YoutubeCaptionsFetcher:
     @staticmethod
-    def call(video_id, language):
+    def call(recognition_id, video_id, language):
         captions_list = YoutubeCaptionsFetcher._get_available_captions(
             video_id)
         manual_captions = YoutubeCaptionsFetcher._manual_captions(
@@ -22,7 +21,7 @@ class YoutubeCaptionsFetcher:
             manual_captions)
 
         subtitle = YoutubeCaptionsFetcher._json_to_subtitles(
-            transcript_json, video_id, language)
+            transcript_json, recognition_id, language)
 
         return subtitle
 
@@ -42,7 +41,7 @@ class YoutubeCaptionsFetcher:
         return captions.fetch()
 
     @staticmethod
-    def _json_to_subtitles(transcript_json, video_id, language):
+    def _json_to_subtitles(transcript_json, recognition_id, language):
         lines = []
         for line in transcript_json:
             start = line['start']
@@ -51,4 +50,4 @@ class YoutubeCaptionsFetcher:
             recognition_line = RecognitionLine(line['text'], duration)
             lines.append(recognition_line)
 
-        return Subtitle(recognition_id=video_id, lines=lines, language=language)
+        return Subtitle(recognition_id=recognition_id, lines=lines, language=language)
