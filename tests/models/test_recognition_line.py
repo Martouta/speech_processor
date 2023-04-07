@@ -37,6 +37,9 @@ class TestRecognitionLine:
     def test_str(self):
         assert str(self.line) == "00:00:00,000;00:00:00,010;Hello, world!"
 
+    def test_repr(self):
+        assert repr(self.line) == "RecognitionLine(text='Hello, world!', duration=Duration(ts_start=0, ts_end=10))"
+
     def test_duration_ts_start_srt(self):
         assert self.line.duration_ts_start_srt() == "00:00:00,000"
 

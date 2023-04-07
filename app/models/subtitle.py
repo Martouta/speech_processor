@@ -18,6 +18,9 @@ class Subtitle:
             and self.lines == other.lines \
             and self.language == other.language
 
+    def __repr__(self):
+        return f"Subtitle(recognition_id='{self.recognition_id}', lines={self.lines}, language='{self.language}')"
+
     def __str__(self):
         attributes_str = f'recognition_id = {self.recognition_id}\n'
         lines_str = '\n'.join(str(line) for line in self.lines)
