@@ -174,8 +174,11 @@ one of the most important aspects of finance is interest.
 ```javascript
 {
   'resource_id': 1, // The resource_id provided in the input of the item. If not provided, it default to -1.
-  'lines': "example of text processed", // The text processed itself. It is saved in an array of strings.
-  'language_code': 'ar', // The same value as the 'language_code' of the input given for this item.
+  'lines': [
+    {'timestamp': '00:00:00,000 --> 00:00:03,000', 'text': 'Hello!'},
+    {'timestamp': '00:00:05,000 --> 00:00:08,000', 'text': 'My name is Marta'}
+  ], // The text processed itself. It is saved as an array of lines, for each line the text and the timestamps (start and end of the line). The lines are sorted by the timestamps (in the same order as in the resource).
+  'language_code': 'en-US', // The same value as the 'language_code' of the input given for this item.
   'created_at': 06/11/2022, 18:54:36 // It is a datetime value type. The current datetime (in UTC) at the moment the text is saved.
 }
 ```
