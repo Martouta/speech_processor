@@ -2,6 +2,7 @@ import fnmatch
 import os
 import re
 from pathlib import Path
+import subprocess
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 from .duration import Duration
@@ -29,10 +30,14 @@ class ResourceAudio:
     def save_as_wav(recognition_id, original_file_path):
         path_regexp = "^.*\\/([^/]*)\\.[^.]*$"
         name = re.match(path_regexp, original_file_path).group(1)
-        sound = AudioSegment.from_file(original_file_path)
         sp_path = Path(__file__).resolve().parent.parent.parent
         new_path = f"{sp_path}/resources/multimedia/{os.environ['SPEECH_ENV']}/{name}.wav"
-        sound.export(new_path, format='wav')
+
+        if original_file_path != new_path:
+            command = ['ffmpeg', '-y', '-i', original_file_path,
+                       '-acodec', 'pcm_s16le', '-ar', '16000', new_path]
+            subprocess.run(command, check=True, stderr=subprocess.DEVNULL)
+
         return ResourceAudio(recognition_id, AudioSegment.from_wav(new_path))
 
     def split_into_chunks(self):

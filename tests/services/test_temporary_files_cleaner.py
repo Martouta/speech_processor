@@ -5,7 +5,7 @@ from app.services.temporary_files_cleaner import TemporaryFilesCleaner
 
 
 class TestTemporaryFilesCleaner:
-    VIDEO_FIXTURE_FILE_PATH = f"{os.getcwd()}/tests/fixtures/example.mp4"
+    FIXTURE_FILE_PARTIAL_PATH = f"{os.getcwd()}/tests/fixtures/example"
 
     def test_cleanup_temporary_files_when_they_exist_for_video_mp4(self):
         self.assert_cleanup_temporary_files_when_they_exist('mp4')
@@ -32,8 +32,8 @@ class TestTemporaryFilesCleaner:
         multimedia_name = f"{recognition_id}-example"
 
         downloaded_multimedia_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}.{format}"
-        shutil.copyfile(
-            TestTemporaryFilesCleaner.VIDEO_FIXTURE_FILE_PATH, downloaded_multimedia_path)
+        fixture_path = f"{self.FIXTURE_FILE_PARTIAL_PATH}.{format}"
+        shutil.copyfile(fixture_path, downloaded_multimedia_path)
         assert os.path.exists(downloaded_multimedia_path)
 
         ResourceAudio.save_as_wav(

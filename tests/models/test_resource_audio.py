@@ -1,4 +1,5 @@
 import glob
+import subprocess
 from app.input_items.recognizer_data import RecognizerData
 from app.models.resource_audio import ResourceAudio
 import httpretty
@@ -37,15 +38,30 @@ class TestResourceAudio:
     def test_save_as_wav_for_wav(self):
         self.assert_save_wav_for(format='wav')
 
-    def test_save_as_wav_non_existent(self):
+    def test_save_as_wav_non_existent_origin(self):
         filepath = f"{os.getcwd()}/tests/fixtures/fake.fake"
-        with pytest.raises(FileNotFoundError):
+        with pytest.raises(subprocess.CalledProcessError):
             ResourceAudio.save_as_wav('recognition_id', filepath)
 
     def test_save_as_wav_invalid_format(self):
         filepath = f"{os.getcwd()}/tests/fixtures/example.txt"
-        with pytest.raises(pydub.exceptions.CouldntDecodeError):
+        with pytest.raises(subprocess.CalledProcessError):
             ResourceAudio.save_as_wav('recognition_id', filepath)
+
+    def test_save_as_wav_invalid_audio(self):
+        filepath = f"{os.getcwd()}/tests/fixtures/invalid.wav"
+        with pytest.raises(subprocess.CalledProcessError):
+            ResourceAudio.save_as_wav('recognition_id', filepath)
+
+    def test_save_as_wav_when_origin_is_same_as_destination(self):
+        example_downloaded_path = f"{os.getcwd()}/resources/multimedia/test/example.wav"
+        fixture_filepath = f"{os.getcwd()}/tests/fixtures/example.wav"
+        shutil.copyfile(fixture_filepath, example_downloaded_path)
+        assert os.path.exists(example_downloaded_path)
+
+        resource_audio = ResourceAudio.save_as_wav(
+            'recognition_id', example_downloaded_path)
+        assert type(resource_audio) == ResourceAudio
 
     def test_split_into_chunks(self):
         sound = AudioSegment.from_file(
@@ -88,8 +104,8 @@ class TestResourceAudio:
         resource_audio = self.setup_recognize_all_chunks(filepath)
 
         expected_recognition = [
-            '00:00:00,000;00:00:01,328;بخير وانت',
-            '00:00:01,328;00:00:01,928;شكرا'
+            '00:00:00,000;00:00:01,329;بخير وانت',
+            '00:00:01,329;00:00:01,927;شكرا'
         ]
 
         responses = [
@@ -113,7 +129,7 @@ class TestResourceAudio:
         resource_audio = self.setup_recognize_all_chunks(filepath)
 
         expected_recognition = [
-            '00:00:01,328;00:00:01,928;شكرا'
+            '00:00:01,329;00:00:01,927;شكرا'
         ]
 
         responses = [
