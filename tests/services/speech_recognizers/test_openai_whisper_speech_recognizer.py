@@ -1,9 +1,9 @@
 import json
 import os
 from unittest import mock
+from app.services.speech_recognizers.open_ai_whisper_speech_recognizer import OpenAIWhisperSpeechRecognizer
 import openai
 import httpretty
-from app import OpenAIWhisperSpeechRecognizer
 
 
 class TestOpenAIWhisperSpeechRecognizer:

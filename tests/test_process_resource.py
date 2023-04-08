@@ -1,4 +1,8 @@
-import app
+from app.config_loaders.mongodb_client_configured import mongodb_client_configured
+from app.models.duration import Duration
+from app.models.recognition_line import RecognitionLine
+from app.models.subtitle import Subtitle
+from app.process_resource import process_resource
 import httpretty
 import requests
 import requests_mock
@@ -14,7 +18,7 @@ class TestProcessResource:
     RESOURCE_ID = 123456789
 
     def teardown_method(self):
-        config = app.mongodb_client_configured()
+        config = mongodb_client_configured()
         config['client'].drop_database(config['database'])
         audio_chunks_root_dir = f"{os.getcwd()}/resources/audio_chunks/test/"
         audio_chunks_dir_pattern = str(TestProcessResource.RESOURCE_ID) + r".*"
@@ -45,7 +49,7 @@ class TestProcessResource:
             ]
         )
 
-        mongodb_config = app.mongodb_client_configured()
+        mongodb_config = mongodb_client_configured()
         fname, ext = ('example', 'mp4')
         resource_url = f"http://localhost/{fname}.{ext}"
         json_parsed = {
@@ -59,7 +63,7 @@ class TestProcessResource:
         with requests_mock.Mocker() as req_mock:
             with open(f"{os.getcwd()}/tests/fixtures/{fname}.{ext}", 'rb') as vfile:
                 req_mock.get(resource_url, body=vfile)
-                processed_resource = app.process_resource(json_parsed)
+                processed_resource = process_resource(json_parsed)
 
         assert 'ok' == processed_resource['status']
         assert 'mongodb' == processed_resource['subtitles_location']
@@ -111,7 +115,7 @@ class TestProcessResource:
         with requests_mock.Mocker() as req_mock:
             with open(f"{os.getcwd()}/tests/fixtures/{fname}.{ext}", 'rb') as vfile:
                 req_mock.get(resource_url, body=vfile)
-                processed_resource = app.process_resource(json_parsed)
+                processed_resource = process_resource(json_parsed)
 
         assert 'ok' == processed_resource['status']
         assert 'file' == processed_resource['subtitles_location']
@@ -151,7 +155,7 @@ class TestProcessResource:
         with requests_mock.Mocker() as req_mock:
             req_mock.get(resource_url,
                          exc=requests.exceptions.ConnectTimeout)
-            resp = app.process_resource(json_parsed)
+            resp = process_resource(json_parsed)
             assert resp['status'] == 'error'
             assert type(resp['error']) == requests.exceptions.ConnectTimeout
 
@@ -171,20 +175,20 @@ class TestProcessResource:
             'captions': True
         }
 
-        with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
+        with mock.patch('app.services.resource_processors.captions_resource_processor.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
             lines = [
-                app.RecognitionLine(line_text='بخير وانت', duration=app.Duration(
+                RecognitionLine(line_text='بخير وانت', duration=Duration(
                     ts_start=0, ts_end=1328)),
-                app.RecognitionLine(line_text='شكرا', duration=app.Duration(
+                RecognitionLine(line_text='شكرا', duration=Duration(
                     ts_start=1328, ts_end=1928))
             ]
-            fetch_captions_mock.return_value = app.Subtitle(
+            fetch_captions_mock.return_value = Subtitle(
                 recognition_id=1, language='ar', lines=lines)
-            processed_resource = app.process_resource(json_parsed)
+            processed_resource = process_resource(json_parsed)
 
         assert 'ok' == processed_resource['status']
         assert 'mongodb' == processed_resource['subtitles_location']
-        mongodb_config = app.mongodb_client_configured()
+        mongodb_config = mongodb_client_configured()
         doc_id = processed_resource['id_location']
         doc = mongodb_config['collection'].find_one({'_id': doc_id})
         assert json_parsed['resource_id'] == doc['resource_id']
@@ -204,10 +208,10 @@ class TestProcessResource:
             'captions': True
         }
 
-        with mock.patch('app.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
+        with mock.patch('app.services.resource_processors.captions_resource_processor.YoutubeCaptionsFetcher.call') as fetch_captions_mock:
             fetch_captions_mock.side_effect = Exception(
                 'Captions fetch failed')
-            resp = app.process_resource(json_parsed)
+            resp = process_resource(json_parsed)
 
         assert resp['status'] == 'error'
         assert type(resp['error']) == Exception

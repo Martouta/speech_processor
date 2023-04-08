@@ -1,8 +1,8 @@
-from app import InputItemLocal
-from app.input_items.recognizer_data import RecognizerData
 import glob
 import os
 import re
+from app.input_items.input_item_local import InputItemLocal
+from app.input_items.recognizer_data import RecognizerData
 
 
 class TestInputItemLocal:

@@ -1,5 +1,5 @@
-from app.input_items.input_item import InputItem
 from dataclasses import dataclass
+from app.input_items.input_item import InputItem
 from app.input_items.recognizer_data import RecognizerData
 
 

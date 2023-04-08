@@ -1,8 +1,7 @@
-from cmath import exp
-from app import InputItemYoutube
 import concurrent.futures
 import glob
 import os
+from app.input_items.input_item_youtube import InputItemYoutube
 from app.input_items.recognizer_data import RecognizerData
 import pytest
 import re

@@ -1,5 +1,5 @@
 import pytest
-from app import RecognizerData
+from app.input_items.recognizer_data import RecognizerData
 from app.services.speech_recognizers.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
 from app.services.speech_recognizers.gladia_speech_recognizer import GladiaSpeechRecognizer
 from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer

@@ -1,5 +1,5 @@
-from app import RecognitionLine
-from app import Duration
+from app.models.duration import Duration
+from app.models.recognition_line import RecognitionLine
 
 
 class TestRecognitionLine:

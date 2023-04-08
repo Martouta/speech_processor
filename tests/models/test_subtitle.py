@@ -1,10 +1,10 @@
-import app
-from app import Subtitle
-from app import RecognitionLine
-from app import Duration
 import datetime
 from unittest import mock
 import os
+from app.config_loaders.mongodb_client_configured import mongodb_client_configured
+from app.models.duration import Duration
+from app.models.recognition_line import RecognitionLine
+from app.models.subtitle import Subtitle
 import pytest
 
 
@@ -21,7 +21,7 @@ class TestSubtitle:
 
     def teardown_method(self):
         if os.getenv('MONGO_DB'):
-            config = app.mongodb_client_configured()
+            config = mongodb_client_configured()
             config['client'].drop_database(config['database'])
         if os.path.exists(TestSubtitle.FILEPATH):
             os.remove(TestSubtitle.FILEPATH)
@@ -115,7 +115,7 @@ class TestSubtitle:
 
     def test_save_in_mongodb(self):
         doc_id = self.subtitle.save_in_mongodb(42)
-        config = app.mongodb_client_configured()
+        config = mongodb_client_configured()
         document = config['collection'].find_one({'_id': doc_id})
         assert document['resource_id'] == 42
         assert document['lines'] == [

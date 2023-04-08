@@ -1,7 +1,7 @@
-from app import InputItemTiktok
 import concurrent.futures
 import glob
 import os
+from app.input_items.input_item_tiktok import InputItemTiktok
 from app.input_items.recognizer_data import RecognizerData
 import pytest
 import re

@@ -1,7 +1,7 @@
-from app import InputItemHosted
 import glob
 import os
 import re
+from app.input_items.input_item_hosted import InputItemHosted
 from app.input_items.recognizer_data import RecognizerData
 import requests_mock
 
