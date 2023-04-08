@@ -1,8 +1,7 @@
 import logging
+from app.services.resource_processors.ai_resource_processor import AiResourceProcessor
 import pytest
 from unittest.mock import MagicMock, patch
-
-from app.services.resource_processors.ai_resource_processor import AiResourceProcessor
 
 
 class TestAiResourceProcessor:
@@ -18,12 +17,12 @@ class TestAiResourceProcessor:
 
     @pytest.fixture
     def resource_audio_mock(self):
-        with patch("app.services.resource_processors.ai_resource_processor.ResourceAudio") as mock:
+        with patch('app.services.resource_processors.ai_resource_processor.ResourceAudio') as mock:
             yield mock
 
     @pytest.fixture
     def temporary_files_cleaner_mock(self):
-        with patch("app.services.resource_processors.ai_resource_processor.TemporaryFilesCleaner") as mock:
+        with patch('app.services.resource_processors.ai_resource_processor.TemporaryFilesCleaner') as mock:
             yield mock
 
     def test_call(self, input_item_mock, resource_audio_mock, temporary_files_cleaner_mock):

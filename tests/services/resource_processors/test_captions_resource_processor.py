@@ -1,8 +1,7 @@
 import logging
+from app.services.resource_processors.captions_resource_processor import CaptionsResourceProcessor
 import pytest
 from unittest.mock import MagicMock, patch
-
-from app.services.resource_processors.captions_resource_processor import CaptionsResourceProcessor
 
 
 class TestCaptionsResourceProcessor:
@@ -17,7 +16,7 @@ class TestCaptionsResourceProcessor:
 
     @pytest.fixture
     def youtube_captions_fetcher_mock(self):
-        with patch("app.services.resource_processors.captions_resource_processor.YoutubeCaptionsFetcher") as mock:
+        with patch('app.services.resource_processors.captions_resource_processor.YoutubeCaptionsFetcher') as mock:
             yield mock
 
     def test_call(self, input_item_mock, youtube_captions_fetcher_mock):
