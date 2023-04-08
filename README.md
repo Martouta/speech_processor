@@ -101,6 +101,14 @@ Example of a JSON type with multiple items having all possible inputs:
     "path": "tests/fixtures/example.mp3",
     "language_code": "ar",
     "resource_id": 6
+  },
+  {
+    "integration": "youtube",
+    "id": "E6h1HUaDbAk",
+    "language_code": "ar",
+    "resource_id": 7,
+    "recognizer": "google",
+    "captions": "try"
   }
 ]
 ```
@@ -127,7 +135,8 @@ For each item, each of those parameters are mandatory. This is what they mean:
   - For __Google__, no credentials are required.
   - For __Microsoft__, it needs the __MS_AZURE_SPEECH_API_KEY__.
 
-- __captions__ is an optional parameter, only valid for YouTube integrations. If it is present and "true", it fetches the subtitles from YouTube captions instead of transcribing it by AI. In that case, if the captions in that language are not present in YouTube, it does nothing.
+- __captions__ is an optional parameter, only valid for YouTube integrations. If it is present and `true`, it fetches the subtitles from YouTube captions instead of transcribing it by AI. In that case, if the captions in that language are not present in YouTube, it does nothing.
+If it is present and `"try"`, then it tries to fetch the captions from Youtube, and if it can't, then it goes for the AI.
 
 ## Expected output
 

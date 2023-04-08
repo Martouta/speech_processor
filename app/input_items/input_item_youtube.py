@@ -21,6 +21,3 @@ class InputItemYoutube(InputItem):
     def downloads_params(filepath):
         output_path, filename = filepath.rsplit('/', 1)
         return {'output_path': output_path, 'filename': filename}
-
-    def are_captions_requested(self):
-        return self.recognizer_data.are_captions_requested()

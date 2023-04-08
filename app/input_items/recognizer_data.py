@@ -1,3 +1,6 @@
+from app.services.resource_processors.ai_resource_processor import AiResourceProcessor
+from app.services.resource_processors.captions_resource_processor import CaptionsResourceProcessor
+from app.services.resource_processors.hybrid_resource_processor import HybridResourceProcessor
 from app.services.speech_recognizers.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
 from app.services.speech_recognizers.gladia_speech_recognizer import GladiaSpeechRecognizer
 from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
@@ -14,13 +17,17 @@ class RecognizerData:
         'openai':  OpenAIWhisperSpeechRecognizer
     }
 
+    PROCESSOR_TYPE_TO_CLASS = {
+        'captions':  CaptionsResourceProcessor,
+        'hybrid': HybridResourceProcessor,
+        'ai':  AiResourceProcessor,
+    }
+
     def __init__(self, language_code, recognizer='google', captions=False):
         self.language_code = language_code
         self.recognizer_class = RecognizerData.RECOGNIZER_TYPE_TO_CLASS[recognizer or 'google']
-        self._captions = captions or False
-
-    def are_captions_requested(self):
-        return self._captions
+        self.processor_class = RecognizerData.PROCESSOR_TYPE_TO_CLASS[RecognizerData._processor_requested(
+            captions)]
 
     def __str__(self):
         attributes_str = ''
@@ -31,5 +38,16 @@ class RecognizerData:
 
     def __eq__(self, other):
         if isinstance(other, RecognizerData):
-            return self.recognizer_class == other.recognizer_class and self.language_code == other.language_code
+            return self.recognizer_class == other.recognizer_class \
+                and self.language_code == other.language_code \
+                and self.processor_class == other.processor_class
         return False
+
+    @staticmethod
+    def _processor_requested(captions):
+        if captions == True:
+            return 'captions'
+        elif captions == 'try':
+            return 'hybrid'
+        else:
+            return 'ai'

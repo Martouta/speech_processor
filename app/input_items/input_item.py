@@ -23,9 +23,10 @@ class InputItem(ABC):
         filepath = self.__filepath(self.recognition_id, self.extension)
         self.download(filepath)
         return filepath
-
-    def are_captions_requested(self):
-        return self.recognizer_data.are_captions_requested()
+    
+    def call_resource_processor(self):
+        processor_class = self.recognizer_data.processor_class
+        return processor_class(self).call()
 
     def language_code(self):
         return self.recognizer_data.language_code

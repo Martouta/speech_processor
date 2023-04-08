@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from unittest.mock import patch
 from app.input_items.input_item import InputItem
 from app.input_items.recognizer_data import RecognizerData
 
@@ -34,19 +35,18 @@ class TestInputItem:
         )
         assert dummy_string == expected_output
 
-    def test_are_captions_requested(self):
-        recognizer_data = RecognizerData(language_code='en-US')
-        item_without_captions = TestInputItem.InputItemDummy(
-            resource_id=1, recognizer_data=recognizer_data)
-        assert not item_without_captions.are_captions_requested()
-
-        recognizer_data = RecognizerData(language_code='en-US', captions=True)
-        item_without_captions = TestInputItem.InputItemDummy(
-            resource_id=1, recognizer_data=recognizer_data)
-        assert item_without_captions.are_captions_requested()
-
     def test_language_code(self):
         recognizer_data = RecognizerData(language_code='en-US')
         dummy = TestInputItem.InputItemDummy(
             resource_id=1, recognizer_data=recognizer_data)
         assert dummy.language_code() == 'en-US'
+
+    def test_call_resource_processor(self):
+        recognizer_data = RecognizerData(language_code='en-US', captions='try')
+        dummy = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=recognizer_data)
+
+        with patch('app.services.resource_processors.hybrid_resource_processor.HybridResourceProcessor.call') as mock_call:
+            mock_call.return_value = 'Processed resource'
+            assert dummy.call_resource_processor() == 'Processed resource'
+            mock_call.assert_called_once_with()

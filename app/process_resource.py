@@ -10,11 +10,7 @@ def process_resource(msg):
     try:
         json = resource_message_to_json(msg)
         input_item = resource_json_to_input_item(json)
-        if input_item.are_captions_requested():
-            resource_processor_class = CaptionsResourceProcessor
-        else:
-            resource_processor_class = AiResourceProcessor
-        return resource_processor_class(input_item).call()
+        return input_item.call_resource_processor()
     except Exception as exc:
         message = __error_msg((type(exc), exc, traceback.format_exc()))
         logging.getLogger(__name__).error(message)
