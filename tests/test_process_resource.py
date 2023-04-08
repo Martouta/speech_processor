@@ -222,3 +222,50 @@ class TestProcessResource:
                          caplog.text, re.MULTILINE)
         assert re.search(re.escape('Captions fetch failed'),
                          caplog.text, re.MULTILINE)
+
+    def test_process_resource_hybrid_correctly(self):
+        video_id = 'zWQJqt_D-vo'
+        json_parsed = {
+            'integration': 'youtube',
+            'id': video_id,
+            'language_code': 'ar',
+            'resource_id': TestProcessResource.RESOURCE_ID,
+            'captions': 'try'
+        }
+
+        with mock.patch('app.services.resource_processors.hybrid_resource_processor.HybridResourceProcessor.call') as hybrid_processor_mock:
+            # Mock the hybrid processing behavior to return a successful response
+            hybrid_processor_mock.return_value = {'status': 'ok'}
+
+            # Call the process_resource function
+            processed_resource = process_resource(json_parsed)
+
+        assert 'ok' == processed_resource['status']
+
+    def test_process_resource_hybrid_error(self, caplog):
+        video_id = 'zWQJqt_D-vo'
+        json_parsed = {
+            'integration': 'youtube',
+            'id': video_id,
+            'language_code': 'ar',
+            'resource_id': TestProcessResource.RESOURCE_ID,
+            'captions': 'try'
+        }
+
+        with mock.patch('app.services.resource_processors.hybrid_resource_processor.HybridResourceProcessor.call') as hybrid_processor_mock:
+            # Mock the hybrid processing behavior to raise an exception
+            hybrid_processor_mock.side_effect = Exception(
+                'Hybrid processing failed')
+
+            # Call the process_resource function and expect an error
+            resp = process_resource(json_parsed)
+
+        assert resp['status'] == 'error'
+        assert type(resp['error']) == Exception
+        assert str(resp['error']) == "Hybrid processing failed"
+
+        assert re.search(r"Traceback", caplog.text, re.MULTILINE)
+        assert re.search(r".*File.*line \d+, in process_resource",
+                         caplog.text, re.MULTILINE)
+        assert re.search(re.escape('Hybrid processing failed'),
+                         caplog.text, re.MULTILINE)

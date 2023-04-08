@@ -1,4 +1,7 @@
 import pytest
+from app.services.resource_processors.ai_resource_processor import AiResourceProcessor
+from app.services.resource_processors.captions_resource_processor import CaptionsResourceProcessor
+from app.services.resource_processors.hybrid_resource_processor import HybridResourceProcessor
 from app.input_items.recognizer_data import RecognizerData
 from app.services.speech_recognizers.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
 from app.services.speech_recognizers.gladia_speech_recognizer import GladiaSpeechRecognizer
@@ -33,18 +36,9 @@ class TestRecognizerData:
             f"<class '{RecognizerData.__module__}.{RecognizerData.__name__}'>\n\n"
             'language_code = en-US\n'
             "recognizer_class = <class 'app.services.speech_recognizers.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
-            '_captions = False'
+            "processor_class = <class 'app.services.resource_processors.ai_resource_processor.AiResourceProcessor'>"
         )
         assert str(recognizer_data) == expected_str
-
-    @pytest.mark.parametrize("captions, expected", [
-        (True, True),
-        (False, False),
-        (None, False),
-    ])
-    def test_are_captions_requested(self, captions, expected):
-        recognizer_data = RecognizerData('en-US', captions=captions)
-        assert recognizer_data.are_captions_requested() == expected
 
     def test_invalid_recognizer_type(self):
         with pytest.raises(KeyError):
@@ -72,3 +66,31 @@ class TestRecognizerData:
     def test_eq_different_class(self):
         recognizer_data = RecognizerData('en-US', 'google')
         assert recognizer_data != 'some_string'
+
+    def test_eq_different_processor_class(self):
+        recognizer_data1 = RecognizerData('en-US', 'google', captions=True)
+        recognizer_data2 = RecognizerData('en-US', 'google', captions=False)
+        assert recognizer_data1 != recognizer_data2
+
+    @pytest.mark.parametrize("captions, expected_processor_class", [
+        (True, CaptionsResourceProcessor),
+        ('try', HybridResourceProcessor),
+        (False, AiResourceProcessor),
+    ])
+    def test_processor_class(self, captions, expected_processor_class):
+        recognizer_data = RecognizerData('en-US', captions=captions)
+        assert recognizer_data.processor_class == expected_processor_class
+
+    def test_default_processor_class(self):
+        recognizer_data = RecognizerData('en-US')
+        assert recognizer_data.processor_class == AiResourceProcessor
+
+    def test_str_representation_with_captions_processor(self):
+        recognizer_data = RecognizerData('en-US', 'google', captions=True)
+        expected_str = (
+            f"<class '{RecognizerData.__module__}.{RecognizerData.__name__}'>\n\n"
+            'language_code = en-US\n'
+            "recognizer_class = <class 'app.services.speech_recognizers.google_speech_recognizer.GoogleSpeechRecognizer'>\n"
+            "processor_class = <class 'app.services.resource_processors.captions_resource_processor.CaptionsResourceProcessor'>"
+        )
+        assert str(recognizer_data) == expected_str

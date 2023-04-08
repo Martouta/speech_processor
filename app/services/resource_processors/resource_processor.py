@@ -18,7 +18,3 @@ class ResourceProcessor(ABC):
     @abstractmethod
     def call(self):
         pass
-
-    @abstractmethod
-    def log_step(self, step_number):
-        pass
