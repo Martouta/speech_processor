@@ -1,6 +1,6 @@
-from app import GoogleSpeechRecognizer
-from app import ResourceAudio
 import glob
+from app.models.resource_audio import ResourceAudio
+from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
 import httpretty
 import os
 import re

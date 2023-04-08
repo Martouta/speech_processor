@@ -23,7 +23,7 @@ class TestYoutubeCaptionsFetcher:
             language=self.language,
         )
 
-        with patch("app.services.youtube_captions_fetcher.YouTubeTranscriptApi") as mock_youtube_api:
+        with patch('app.services.youtube_captions_fetcher.YouTubeTranscriptApi') as mock_youtube_api:
             mock_transcript = MagicMock()
             mock_transcript.language_code = self.language[:2]
             mock_transcript.is_generated = False
@@ -39,7 +39,7 @@ class TestYoutubeCaptionsFetcher:
         assert subtitle == expected_subtitle
 
     def test_call_no_manual_captions(self):
-        with patch("app.services.youtube_captions_fetcher.YouTubeTranscriptApi") as mock_youtube_api:
+        with patch('app.services.youtube_captions_fetcher.YouTubeTranscriptApi') as mock_youtube_api:
             mock_transcript = MagicMock()
             mock_transcript.language_code = self.language[:2]
             mock_transcript.is_generated = True
@@ -53,7 +53,7 @@ class TestYoutubeCaptionsFetcher:
             exc_info.value) == f"No manual captions found for video ID {self.video_id} and language {self.language}"
 
     def test_call_wrong_language(self):
-        with patch("app.services.youtube_captions_fetcher.YouTubeTranscriptApi") as mock_youtube_api:
+        with patch('app.services.youtube_captions_fetcher.YouTubeTranscriptApi') as mock_youtube_api:
             mock_transcript = MagicMock()
             mock_transcript.language_code = "es"
             mock_transcript.is_generated = False

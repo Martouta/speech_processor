@@ -3,10 +3,10 @@ import logging
 import os
 import glob
 import shutil
+from app.services.speech_recognizers.gladia_speech_recognizer import GladiaSpeechRecognizer
 import httpretty
 import pytest
 from unittest import mock
-from app import GladiaSpeechRecognizer
 
 
 class TestGladiaSpeechRecognizer:

@@ -1,6 +1,7 @@
-import app
 import os
 from unittest import mock
+from app.config_loaders.kafka_consumer_configured import kafka_consumer_configured
+from app.fetch_input_messages import fetch_input_messages
 
 
 class TestFetchInputMessages:
@@ -8,7 +9,7 @@ class TestFetchInputMessages:
 
     @mock.patch.dict(os.environ, {'INPUT_FILE': INPUT_FILE})
     def test_fetch_input_msgs_from_input_file(self):
-        messages = app.fetch_input_messages()
+        messages = fetch_input_messages()
 
         assert messages[0]['integration'] == 'youtube'
         assert messages[0]['id'] == 'zWQJqt_D-vo'
@@ -41,5 +42,5 @@ class TestFetchInputMessages:
         assert messages[5]['resource_id'] == 6
 
     def test_fetch_input_msgs_from_kafka(self):
-        messages = app.fetch_input_messages()
-        assert type(messages) == type(app.kafka_consumer_configured())
+        messages = fetch_input_messages()
+        assert type(messages) == type(kafka_consumer_configured())

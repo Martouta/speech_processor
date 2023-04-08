@@ -1,6 +1,6 @@
-from app import Duration
 import re
 import os
+from app.models.duration import Duration
 
 
 class TestDuration:

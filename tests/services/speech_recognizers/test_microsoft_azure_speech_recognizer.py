@@ -1,10 +1,10 @@
 import glob
 import os
 import shutil
+from app.services.speech_recognizers.microsoft_azure_speech_recognizer import MicrosoftAzureSpeechRecognizer
 import pytest
 import httpretty
 from unittest.mock import ANY, patch
-from app import MicrosoftAzureSpeechRecognizer
 import speech_recognition as sr
 
 

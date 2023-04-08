@@ -1,9 +1,9 @@
 import os
 import shutil
 import glob
+from app.services.speech_recognizers.assembly_ai_speech_recognizer import AssemblyAiSpeechRecognizer
 import httpretty
 from unittest.mock import patch
-from app import AssemblyAiSpeechRecognizer
 
 
 class TestAssemblyAiSpeechRecognizer:

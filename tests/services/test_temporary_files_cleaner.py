@@ -1,6 +1,6 @@
-import app
 import os
 import shutil
+from app.models.resource_audio import ResourceAudio
 from app.services.temporary_files_cleaner import TemporaryFilesCleaner
 
 
@@ -36,7 +36,7 @@ class TestTemporaryFilesCleaner:
             TestTemporaryFilesCleaner.VIDEO_FIXTURE_FILE_PATH, downloaded_multimedia_path)
         assert os.path.exists(downloaded_multimedia_path)
 
-        app.ResourceAudio.save_as_wav(
+        ResourceAudio.save_as_wav(
             recognition_id, downloaded_multimedia_path)
         generated_audio_path = f"{os.getcwd()}/resources/multimedia/test/{multimedia_name}.wav"
         assert os.path.exists(generated_audio_path)

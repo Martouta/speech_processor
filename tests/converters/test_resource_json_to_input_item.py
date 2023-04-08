@@ -1,5 +1,9 @@
-import app
-from app.services.speech_recognizers.google_speech_recognizer import GoogleSpeechRecognizer
+from app.converters.resource_json_to_input_item import resource_json_to_input_item
+from app.input_items.input_item_hosted import InputItemHosted
+from app.input_items.input_item_local import InputItemLocal
+from app.input_items.input_item_tiktok import InputItemTiktok
+from app.input_items.input_item_youtube import InputItemYoutube
+from app.input_items.recognizer_data import RecognizerData
 import pytest
 
 
@@ -11,8 +15,8 @@ class TestResourceJSONToInputItem:
             'resource_id': 42,
             'language_code': 'ar'
         }
-        input_item = app.resource_json_to_input_item(params)
-        assert type(input_item) == app.InputItemLocal
+        input_item = resource_json_to_input_item(params)
+        assert type(input_item) == InputItemLocal
         self.assert_params(input_item, params)
 
     def test_resource_json_to_input_item_hosted(self):
@@ -23,8 +27,8 @@ class TestResourceJSONToInputItem:
             'language_code': 'es',
             'recognizer': 'gladia'
         }
-        input_item = app.resource_json_to_input_item(params)
-        assert type(input_item) == app.InputItemHosted
+        input_item = resource_json_to_input_item(params)
+        assert type(input_item) == InputItemHosted
         self.assert_params(input_item, params)
 
     def test_resource_json_to_input_item_tiktok(self):
@@ -34,8 +38,8 @@ class TestResourceJSONToInputItem:
             'resource_id': 42,
             'language_code': 'en'
         }
-        input_item = app.resource_json_to_input_item(params)
-        assert type(input_item) == app.InputItemTiktok
+        input_item = resource_json_to_input_item(params)
+        assert type(input_item) == InputItemTiktok
         self.assert_params(input_item, params)
 
     def test_resource_json_to_input_item_youtube(self):
@@ -45,19 +49,19 @@ class TestResourceJSONToInputItem:
             'resource_id': 42,
             'language_code': 'ar'
         }
-        input_item = app.resource_json_to_input_item(params)
-        assert type(input_item) == app.InputItemYoutube
+        input_item = resource_json_to_input_item(params)
+        assert type(input_item) == InputItemYoutube
         self.assert_params(input_item, params)
 
     def test_resource_json_to_input_item_unsupported(self):
         with pytest.raises(KeyError) as exception:
-            app.resource_json_to_input_item({'integration': 'unsupported'})
+            resource_json_to_input_item({'integration': 'unsupported'})
         assert exception.match(r"^'unsupported'$")
 
     def assert_params(self, input_item, params):
         recognizer = params['recognizer'] if 'recognizer' in params else None
         language_code = params['language_code']
-        assert input_item.recognizer_data == app.RecognizerData(
+        assert input_item.recognizer_data == RecognizerData(
             recognizer=recognizer, language_code=language_code)
         for key in params:
             if key not in ['language_code', 'recognizer', 'integration']:
