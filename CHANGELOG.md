@@ -1,8 +1,109 @@
 # Changelog
 
-## [v2.0.0](https://github.com/martouta/speech_processor/tree/v2.0.0) (2022-06-16)
+## [v3.0.0](https://github.com/Martouta/speech_processor/tree/v3.0.0) (2023-04-08)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.7...v2.0.0)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v2.0.1...v3.0.0)
+
+**Fixed bugs:**
+
+- \[Bug\] Error trying to download tiktok - Browser closed unexpectedly [\#103](https://github.com/Martouta/speech_processor/issues/103)
+- 🐛 🐞 Fix bugs of \#61 [\#184](https://github.com/Martouta/speech_processor/pull/184) ([Martouta](https://github.com/Martouta))
+
+**Closed issues:**
+
+- Do not save subtitles if the whole thing is empty 😂 [\#161](https://github.com/Martouta/speech_processor/issues/161)
+- Support audio .m4a [\#135](https://github.com/Martouta/speech_processor/issues/135)
+- Support webm [\#130](https://github.com/Martouta/speech_processor/issues/130)
+- Allow to run resources with local paths [\#129](https://github.com/Martouta/speech_processor/issues/129)
+- For YouTube, get the subtitles/captions when they are already in Youtube [\#61](https://github.com/Martouta/speech_processor/issues/61)
+- Save timestamp in subtitles [\#57](https://github.com/Martouta/speech_processor/issues/57)
+- Remove support for Google Cloud Speech-To-Text if they carry on with Project Nimbus \(apartheid support\) 🇵🇸 💪🏽 [\#15](https://github.com/Martouta/speech_processor/issues/15)
+- Add support for other Speech-to-Text AI platforms 🗣️  [\#14](https://github.com/Martouta/speech_processor/issues/14)
+
+**Merged pull requests:**
+
+- Make ResourceAudio.save\_as\_wav more memory-friendly 🐘 [\#189](https://github.com/Martouta/speech_processor/pull/189) ([Martouta](https://github.com/Martouta))
+- Import only very minimal stuff if \_\_init\_\_ to 'app' [\#186](https://github.com/Martouta/speech_processor/pull/186) ([Martouta](https://github.com/Martouta))
+- Allow for "captions" to try if present manual captions, otherwise go for IA 🏗️ [\#185](https://github.com/Martouta/speech_processor/pull/185) ([Martouta](https://github.com/Martouta))
+- Bump google-cloud-speech from 2.18.0 to 2.19.0 [\#180](https://github.com/Martouta/speech_processor/pull/180) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pytube from 12.1.2 to 12.1.3 [\#179](https://github.com/Martouta/speech_processor/pull/179) ([dependabot[bot]](https://github.com/apps/dependabot))
+- \[Refactor\] Clean up issue \#61 [\#177](https://github.com/Martouta/speech_processor/pull/177) ([Martouta](https://github.com/Martouta))
+- Add \_\_eq\_\_ to Subtitle and RecognitionLine [\#176](https://github.com/Martouta/speech_processor/pull/176) ([Martouta](https://github.com/Martouta))
+- Get the manual subtitles/captions from Youtube \(optionally\) - if not present, do nothing [\#175](https://github.com/Martouta/speech_processor/pull/175) ([Martouta](https://github.com/Martouta))
+- Save timestamps in MongoDB [\#174](https://github.com/Martouta/speech_processor/pull/174) ([Martouta](https://github.com/Martouta))
+- Don't save Subtitles with empty lines [\#173](https://github.com/Martouta/speech_processor/pull/173) ([Martouta](https://github.com/Martouta))
+- Use PyTube 12.1.2 [\#172](https://github.com/Martouta/speech_processor/pull/172) ([Martouta](https://github.com/Martouta))
+- \[Snyk\] Security upgrade setuptools from 39.0.1 to 65.5.1 [\#171](https://github.com/Martouta/speech_processor/pull/171) ([Martouta](https://github.com/Martouta))
+- \[Snyk\] Security upgrade setuptools from 39.0.1 to 65.5.1 [\#170](https://github.com/Martouta/speech_processor/pull/170) ([Martouta](https://github.com/Martouta))
+- Support language param in Speech Recognizer\(s\) [\#169](https://github.com/Martouta/speech_processor/pull/169) ([Martouta](https://github.com/Martouta))
+- \[Refactor\] Fix LoD in TestResourceJSONToInputItem [\#168](https://github.com/Martouta/speech_processor/pull/168) ([Martouta](https://github.com/Martouta))
+- Add Microsoft Azure Speech Recognizer [\#167](https://github.com/Martouta/speech_processor/pull/167) ([Martouta](https://github.com/Martouta))
+- \[Doc\] Rename ASSEMBLYAI\_SECRET\_KEY -\> ASSEMBLYAI\_API\_KEY [\#166](https://github.com/Martouta/speech_processor/pull/166) ([Martouta](https://github.com/Martouta))
+- \[Doc\] Add support for other Speech-to-Text AI platforms [\#165](https://github.com/Martouta/speech_processor/pull/165) ([Martouta](https://github.com/Martouta))
+- Add AssemblyAI Speech Recognizer [\#164](https://github.com/Martouta/speech_processor/pull/164) ([Martouta](https://github.com/Martouta))
+- Add OpenAI Whisper Speech Recognizer [\#163](https://github.com/Martouta/speech_processor/pull/163) ([Martouta](https://github.com/Martouta))
+- Add Gladia Speech Recognizer [\#162](https://github.com/Martouta/speech_processor/pull/162) ([Martouta](https://github.com/Martouta))
+- Add RecognizerData [\#160](https://github.com/Martouta/speech_processor/pull/160) ([Martouta](https://github.com/Martouta))
+- Rename SpeechProcessor -\> GoogleSpeechProcessor [\#159](https://github.com/Martouta/speech_processor/pull/159) ([Martouta](https://github.com/Martouta))
+- Add support for other Speech-to-Text AI platforms 🗣️  [\#158](https://github.com/Martouta/speech_processor/pull/158) ([Martouta](https://github.com/Martouta))
+- Bump pytest from 7.2.1 to 7.2.2 [\#155](https://github.com/Martouta/speech_processor/pull/155) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.17.3 to 2.18.0 [\#154](https://github.com/Martouta/speech_processor/pull/154) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.17.2 to 2.17.3 [\#151](https://github.com/Martouta/speech_processor/pull/151) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.17.1 to 2.17.2 [\#150](https://github.com/Martouta/speech_processor/pull/150) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.17.0 to 2.17.1 [\#149](https://github.com/Martouta/speech_processor/pull/149) ([dependabot[bot]](https://github.com/apps/dependabot))
+- \[Doc\] Add docstring descriptions to the public functions in RecognitionLine Model [\#147](https://github.com/Martouta/speech_processor/pull/147) ([Martouta](https://github.com/Martouta))
+- \[Doc\] Add docstring descriptions to the public functions in 'resource\_message\_to\_json' converter [\#146](https://github.com/Martouta/speech_processor/pull/146) ([Martouta](https://github.com/Martouta))
+- \[Doc\] Add docstring descriptions to the public functions in InputItemLocal [\#144](https://github.com/Martouta/speech_processor/pull/144) ([Martouta](https://github.com/Martouta))
+- \[Doc\] Add docstring descriptions to the public functions in Duration model [\#143](https://github.com/Martouta/speech_processor/pull/143) ([Martouta](https://github.com/Martouta))
+- \[Refactor\] Extract Network requests into a Service class [\#142](https://github.com/Martouta/speech_processor/pull/142) ([Martouta](https://github.com/Martouta))
+- Do not save empty lines in subs [\#141](https://github.com/Martouta/speech_processor/pull/141) ([Martouta](https://github.com/Martouta))
+- Add models Duration & RecognitionLine [\#140](https://github.com/Martouta/speech_processor/pull/140) ([Martouta](https://github.com/Martouta))
+- Bump google-cloud-speech from 2.16.2 to 2.17.0 [\#139](https://github.com/Martouta/speech_processor/pull/139) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Save timestamp in SRT subtitles \(in files\) - even empty lines 😂 [\#138](https://github.com/Martouta/speech_processor/pull/138) ([Martouta](https://github.com/Martouta))
+- Support any extension/format allowed by AudioSegment [\#136](https://github.com/Martouta/speech_processor/pull/136) ([Martouta](https://github.com/Martouta))
+- Bump pytest from 7.2.0 to 7.2.1 [\#134](https://github.com/Martouta/speech_processor/pull/134) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Decrease ResourceAudio's min\_silence\_len 500-\>400 [\#133](https://github.com/Martouta/speech_processor/pull/133) ([Martouta](https://github.com/Martouta))
+- Allow to run resources with local paths [\#131](https://github.com/Martouta/speech_processor/pull/131) ([Martouta](https://github.com/Martouta))
+- Bump speechrecognition from 3.8.1 to 3.9.0 [\#127](https://github.com/Martouta/speech_processor/pull/127) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Revert "\[Doc\] It does not require a headless browser" [\#126](https://github.com/Martouta/speech_processor/pull/126) ([Martouta](https://github.com/Martouta))
+- \[Doc\] It does not require a headless browser [\#125](https://github.com/Martouta/speech_processor/pull/125) ([Martouta](https://github.com/Martouta))
+- Bump mako from 1.2.3 to 1.2.4 [\#124](https://github.com/Martouta/speech_processor/pull/124) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pymongo from 4.3.2 to 4.3.3 [\#123](https://github.com/Martouta/speech_processor/pull/123) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Update Python to 3.11 [\#122](https://github.com/Martouta/speech_processor/pull/122) ([Martouta](https://github.com/Martouta))
+- Bump pytest from 7.1.3 to 7.2.0 [\#121](https://github.com/Martouta/speech_processor/pull/121) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pymongo from 4.2.0 to 4.3.2 [\#120](https://github.com/Martouta/speech_processor/pull/120) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.16.1 to 2.16.2 [\#119](https://github.com/Martouta/speech_processor/pull/119) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.16.0 to 2.16.1 [\#118](https://github.com/Martouta/speech_processor/pull/118) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add .coverage to .gitignore [\#117](https://github.com/Martouta/speech_processor/pull/117) ([Martouta](https://github.com/Martouta))
+- Bump google-cloud-speech from 2.15.1 to 2.16.0 [\#116](https://github.com/Martouta/speech_processor/pull/116) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump coverage from 6.4.4 to 6.5.0 [\#115](https://github.com/Martouta/speech_processor/pull/115) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump mako from 1.2.2 to 1.2.3 [\#114](https://github.com/Martouta/speech_processor/pull/114) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump pytest from 7.1.2 to 7.1.3 [\#113](https://github.com/Martouta/speech_processor/pull/113) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump mako from 1.2.1 to 1.2.2 [\#112](https://github.com/Martouta/speech_processor/pull/112) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump requests-mock from 1.9.3 to 1.10.0 [\#111](https://github.com/Martouta/speech_processor/pull/111) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump coverage from 6.4.3 to 6.4.4 [\#110](https://github.com/Martouta/speech_processor/pull/110) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.15.0 to 2.15.1 [\#109](https://github.com/Martouta/speech_processor/pull/109) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump coverage from 6.4.2 to 6.4.3 [\#108](https://github.com/Martouta/speech_processor/pull/108) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v2.0.1](https://github.com/Martouta/speech_processor/tree/v2.0.1) (2022-07-28)
+
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v2.0.0...v2.0.1)
+
+**Fixed bugs:**
+
+- \[Bugfix\] Error trying to download tiktok - Browser closed unexpectedly [\#107](https://github.com/Martouta/speech_processor/pull/107) ([Martouta](https://github.com/Martouta))
+
+**Merged pull requests:**
+
+- Bump pymongo from 4.1.1 to 4.2.0 [\#106](https://github.com/Martouta/speech_processor/pull/106) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump google-cloud-speech from 2.14.1 to 2.15.0 [\#105](https://github.com/Martouta/speech_processor/pull/105) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump coverage from 6.4.1 to 6.4.2 [\#104](https://github.com/Martouta/speech_processor/pull/104) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump mako from 1.2.0 to 1.2.1 [\#102](https://github.com/Martouta/speech_processor/pull/102) ([dependabot[bot]](https://github.com/apps/dependabot))
+- \[Docker Compose\] Remove ports from SpeechProcessor [\#101](https://github.com/Martouta/speech_processor/pull/101) ([Martouta](https://github.com/Martouta))
+
+## [v2.0.0](https://github.com/Martouta/speech_processor/tree/v2.0.0) (2022-06-16)
+
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.7...v2.0.0)
 
 **Fixed bugs:**
 
@@ -54,9 +155,9 @@
 - Bump protobuf from 3.20.1 to 4.21.1 [\#62](https://github.com/Martouta/speech_processor/pull/62) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump google-cloud-speech from 2.13.1 to 2.14.0 [\#60](https://github.com/Martouta/speech_processor/pull/60) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-## [v1.0.7](https://github.com/martouta/speech_processor/tree/v1.0.7) (2022-05-14)
+## [v1.0.7](https://github.com/Martouta/speech_processor/tree/v1.0.7) (2022-05-14)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.6...v1.0.7)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.6...v1.0.7)
 
 **Closed issues:**
 
@@ -67,9 +168,9 @@
 - Download only audio for YouTube [\#58](https://github.com/Martouta/speech_processor/pull/58) ([Martouta](https://github.com/Martouta))
 - Bump google-cloud-speech from 2.12.0 to 2.13.1 [\#45](https://github.com/Martouta/speech_processor/pull/45) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-## [v1.0.6](https://github.com/martouta/speech_processor/tree/v1.0.6) (2022-05-09)
+## [v1.0.6](https://github.com/Martouta/speech_processor/tree/v1.0.6) (2022-05-09)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.5...v1.0.6)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.5...v1.0.6)
 
 **Merged pull requests:**
 
@@ -84,9 +185,9 @@
 - Bump mako from 1.1.6 to 1.2.0 [\#46](https://github.com/Martouta/speech_processor/pull/46) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump pymongo from 4.0.1 to 4.0.2 [\#44](https://github.com/Martouta/speech_processor/pull/44) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-## [v1.0.5](https://github.com/martouta/speech_processor/tree/v1.0.5) (2022-02-15)
+## [v1.0.5](https://github.com/Martouta/speech_processor/tree/v1.0.5) (2022-02-15)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.4...v1.0.5)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.4...v1.0.5)
 
 **Fixed bugs:**
 
@@ -98,9 +199,9 @@
 - Bump pytest from 7.0.0 to 7.0.1 [\#41](https://github.com/Martouta/speech_processor/pull/41) ([dependabot[bot]](https://github.com/apps/dependabot))
 - \[Documentation\] Use local user's Python [\#40](https://github.com/Martouta/speech_processor/pull/40) ([Martouta](https://github.com/Martouta))
 
-## [v1.0.4](https://github.com/martouta/speech_processor/tree/v1.0.4) (2022-02-07)
+## [v1.0.4](https://github.com/Martouta/speech_processor/tree/v1.0.4) (2022-02-07)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.3...v1.0.4)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.3...v1.0.4)
 
 **Closed issues:**
 
@@ -113,17 +214,17 @@
 - Bump google-cloud-speech from 2.11.1 to 2.12.0 [\#36](https://github.com/Martouta/speech_processor/pull/36) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump protobuf from 3.19.1 to 3.19.3 [\#35](https://github.com/Martouta/speech_processor/pull/35) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-## [v1.0.3](https://github.com/martouta/speech_processor/tree/v1.0.3) (2021-12-16)
+## [v1.0.3](https://github.com/Martouta/speech_processor/tree/v1.0.3) (2021-12-16)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.2...v1.0.3)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.2...v1.0.3)
 
 **Merged pull requests:**
 
 - Bump pytube from 11.0.1 to 11.0.2 [\#34](https://github.com/Martouta/speech_processor/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-## [v1.0.2](https://github.com/martouta/speech_processor/tree/v1.0.2) (2021-12-13)
+## [v1.0.2](https://github.com/Martouta/speech_processor/tree/v1.0.2) (2021-12-13)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.1...v1.0.2)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.1...v1.0.2)
 
 **Merged pull requests:**
 
@@ -131,9 +232,9 @@
 - Bump pymongo from 3.12.1 to 4.0 [\#31](https://github.com/Martouta/speech_processor/pull/31) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump mako from 1.1.5 to 1.1.6 [\#30](https://github.com/Martouta/speech_processor/pull/30) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-## [v1.0.1](https://github.com/martouta/speech_processor/tree/v1.0.1) (2021-11-03)
+## [v1.0.1](https://github.com/Martouta/speech_processor/tree/v1.0.1) (2021-11-03)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/v1.0.0...v1.0.1)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/v1.0.0...v1.0.1)
 
 **Fixed bugs:**
 
@@ -162,9 +263,9 @@
 - Bump pymongo from 3.12.0 to 3.12.1 [\#18](https://github.com/Martouta/speech_processor/pull/18) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump protobuf from 3.18.1 to 3.19.0 [\#17](https://github.com/Martouta/speech_processor/pull/17) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-## [v1.0.0](https://github.com/martouta/speech_processor/tree/v1.0.0) (2021-10-15)
+## [v1.0.0](https://github.com/Martouta/speech_processor/tree/v1.0.0) (2021-10-15)
 
-[Full Changelog](https://github.com/martouta/speech_processor/compare/45f9872db26596ebd386332a6ec8ef3cd358ef3d...v1.0.0)
+[Full Changelog](https://github.com/Martouta/speech_processor/compare/45f9872db26596ebd386332a6ec8ef3cd358ef3d...v1.0.0)
 
 **Fixed bugs:**
 
