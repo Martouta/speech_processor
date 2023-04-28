@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import os
+import re
 from unittest.mock import patch
 from app.input_items.input_item import InputItem
 from app.input_items.recognizer_data import RecognizerData
@@ -13,13 +15,30 @@ class TestInputItem:
             super().__init__(resource_id=resource_id,
                              recognizer_data=recognizer_data)
 
-        def download(self, dir_path, filename):
+        def download(self, filename):
             pass
+
+    def test_save(self):
+        recognizer_data = RecognizerData(language_code='en-US')
+        dummy = TestInputItem.InputItemDummy(
+            resource_id=1, recognizer_data=recognizer_data)
+        expected_filepath_regexp = r'^' + re.escape(f"{os.getcwd()}/") \
+            + re.escape('resources/multimedia/') \
+            + re.escape(os.environ['SPEECH_ENV']) \
+            + '/' \
+            + r'\d+-1-' \
+            + r'\d{2}-\d{2}\.\d{2}:\d{2}:\d+\.None$'
+
+        with patch.object(dummy, 'download', autospec=True) as mock_download:
+            mock_download.return_value = None
+            filepath = dummy.save()
+            assert re.match(expected_filepath_regexp, filepath)
+            mock_download.assert_called_once_with(filepath)
 
     def test_download(self):
         dummy = TestInputItem.InputItemDummy(
             resource_id=1, recognizer_data=RecognizerData(language_code='en-US'))
-        assert dummy.download(dir_path='.', filename='example.txt') is None
+        assert dummy.download(filename='./example.txt') is None
 
     def test_str(self):
         recognizer_data = RecognizerData(language_code='en-US')
