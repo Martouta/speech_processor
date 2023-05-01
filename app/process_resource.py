@@ -1,7 +1,5 @@
 import logging
 import traceback
-from app.services.resource_processors.ai_resource_processor import AiResourceProcessor
-from app.services.resource_processors.captions_resource_processor import CaptionsResourceProcessor
 from .converters.resource_json_to_input_item import resource_json_to_input_item
 from .converters.resource_message_to_json import resource_message_to_json
 

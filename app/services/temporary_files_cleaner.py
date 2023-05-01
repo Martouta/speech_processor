@@ -3,6 +3,7 @@ import re
 import shutil
 from pathlib import Path
 
+
 class TemporaryFilesCleaner:
     @staticmethod
     def call(recognition_id, downloaded_multimedia_path):
@@ -15,7 +16,7 @@ class TemporaryFilesCleaner:
 
         speech_env = os.environ['SPEECH_ENV']
         sp_path = Path(__file__).resolve().parent.parent.parent
-        name = re.match("^.*\\/([^/]*)\\.(mp\\d+|wav)$",
+        name = re.match(r"^.*?([^/]*?)(\.(?![^/]*\.)[^/.]*)$",
                         downloaded_multimedia_path).group(1)
         wav_path = f"{sp_path}/resources/multimedia/{speech_env}/{name}.wav"
 
