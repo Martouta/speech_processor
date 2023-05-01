@@ -10,11 +10,17 @@ class TestTemporaryFilesCleaner:
     def test_cleanup_temporary_files_when_they_exist_for_video_mp4(self):
         self.assert_cleanup_temporary_files_when_they_exist('mp4')
 
+    def test_cleanup_temporary_files_when_they_exist_for_video_webm(self):
+        self.assert_cleanup_temporary_files_when_they_exist('webm')
+
     def test_cleanup_temporary_files_when_they_exist_for_audio_mp3(self):
         self.assert_cleanup_temporary_files_when_they_exist('mp3')
 
     def test_cleanup_temporary_files_when_they_exist_for_audio_wav(self):
         self.assert_cleanup_temporary_files_when_they_exist('wav')
+
+    def test_cleanup_temporary_files_when_they_exist_for_audio_m4a(self):
+        self.assert_cleanup_temporary_files_when_they_exist('m4a')
 
     def test_cleanup_temporary_files_when_they_do_not_exist(self):
         recognition_id = 'recognition_id'
