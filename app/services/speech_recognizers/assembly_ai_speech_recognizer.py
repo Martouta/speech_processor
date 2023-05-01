@@ -2,6 +2,7 @@ import logging
 import time
 import requests
 import os
+from app.muted_stdout_stderr import muted_stdout_stderr
 
 
 class AssemblyAiSpeechRecognizer:
@@ -12,17 +13,18 @@ class AssemblyAiSpeechRecognizer:
     @staticmethod
     def call(filepath, language):
         try:
-            headers = AssemblyAiSpeechRecognizer._get_headers()
-            upload_response = AssemblyAiSpeechRecognizer._upload_file(
-                filepath, headers)
-            transcript_response = AssemblyAiSpeechRecognizer._request_transcript(
-                upload_response, headers, language)
-            polling_endpoint = AssemblyAiSpeechRecognizer._create_polling_endpoint(
-                transcript_response)
-            AssemblyAiSpeechRecognizer._wait_for_completion(
-                polling_endpoint, headers)
-            transcribed_text = AssemblyAiSpeechRecognizer._get_transcribed_text(
-                polling_endpoint, headers)
+            with muted_stdout_stderr():
+                headers = AssemblyAiSpeechRecognizer._get_headers()
+                upload_response = AssemblyAiSpeechRecognizer._upload_file(
+                    filepath, headers)
+                transcript_response = AssemblyAiSpeechRecognizer._request_transcript(
+                    upload_response, headers, language)
+                polling_endpoint = AssemblyAiSpeechRecognizer._create_polling_endpoint(
+                    transcript_response)
+                AssemblyAiSpeechRecognizer._wait_for_completion(
+                    polling_endpoint, headers)
+                transcribed_text = AssemblyAiSpeechRecognizer._get_transcribed_text(
+                    polling_endpoint, headers)
 
         except Exception as e:
             logging.getLogger(__name__).error(f"Error occurred: {e}")

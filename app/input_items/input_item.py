@@ -3,6 +3,7 @@ from pathlib import Path
 import threading
 import os
 from abc import ABC, abstractmethod
+from app.muted_stdout_stderr import muted_stdout_stderr
 
 
 class InputItem(ABC):
@@ -21,9 +22,10 @@ class InputItem(ABC):
 
     def save(self):
         filepath = self.__filepath(self.recognition_id, self.extension)
-        self.download(filepath)
+        with muted_stdout_stderr():
+            self.download(filepath)
         return filepath
-    
+
     def call_resource_processor(self):
         processor_class = self.recognizer_data.processor_class
         return processor_class(self).call()

@@ -1,16 +1,16 @@
 from app.models.duration import Duration
 from app.models.recognition_line import RecognitionLine
 from app.models.subtitle import Subtitle
+from app.muted_stdout_stderr import muted_stdout_stderr
 from youtube_transcript_api import YouTubeTranscriptApi
 
 
 class YoutubeCaptionsFetcher:
     @staticmethod
     def call(recognition_id, video_id, language):
-        captions_list = YoutubeCaptionsFetcher._get_available_captions(
-            video_id)
-        manual_captions = YoutubeCaptionsFetcher._manual_captions(
-            captions_list, language)
+        with muted_stdout_stderr():
+            captions_list = YoutubeCaptionsFetcher._get_available_captions(video_id)
+            manual_captions = YoutubeCaptionsFetcher._manual_captions(captions_list, language)
 
         if manual_captions is None:
             raise ValueError(
