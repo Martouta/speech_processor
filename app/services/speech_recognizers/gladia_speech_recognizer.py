@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from app.muted_stdout_stderr import muted_stdout_stderr
 import pycountry
 import requests
 
@@ -22,7 +23,8 @@ class GladiaSpeechRecognizer:
             'language_behaviour': (None, 'automatic multiple languages'),
         }
 
-        response = requests.post(url, headers=headers, files=files)
+        with muted_stdout_stderr():
+            response = requests.post(url, headers=headers, files=files)
 
         if response.status_code == 200:
             json_body = json.loads(response.text)
