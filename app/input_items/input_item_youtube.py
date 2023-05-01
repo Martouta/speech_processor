@@ -1,5 +1,5 @@
-from pytube import YouTube
 from .input_item import InputItem
+import yt_dlp
 
 
 class InputItemYoutube(InputItem):
@@ -9,15 +9,9 @@ class InputItemYoutube(InputItem):
         self.extension = 'mp4'
 
     def download(self, filepath):
-        YouTube(f"youtube.com/watch?v={self.id}") \
-            .streams \
-            .filter(only_audio=True, file_extension=self.extension) \
-            .order_by('abr') \
-            .desc() \
-            .first() \
-            .download(**InputItemYoutube.downloads_params(filepath))
-
-    @staticmethod
-    def downloads_params(filepath):
-        output_path, filename = filepath.rsplit('/', 1)
-        return {'output_path': output_path, 'filename': filename}
+        ydl_opts = {
+            'format': 'worstvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
+            'outtmpl': filepath,
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([f"https://www.youtube.com/watch?v={self.id}"])

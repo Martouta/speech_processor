@@ -32,7 +32,7 @@ class InputItem(ABC):
         return self.recognizer_data.language_code
 
     @abstractmethod
-    def download(self, dir_path, filename):
+    def download(self, filename):
         pass
 
     def __filepath(self, file_name, extension):
