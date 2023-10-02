@@ -1,7 +1,7 @@
 google-cloud-speech==2.21.0
 kafka-python==2.0.2
 mako==1.2.4
-openai==0.27.0
+openai==0.28.1
 pycountry==22.3.5
 pydub==0.25.1
 pymongo==4.5.0
