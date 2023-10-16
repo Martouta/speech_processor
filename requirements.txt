@@ -10,4 +10,4 @@ pyyaml==6.0.1
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 SpeechRecognition==3.9.0
 youtube-transcript-api==0.6.1
-yt-dlp==2023.10.7
+yt-dlp==2023.10.13
