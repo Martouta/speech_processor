@@ -4,7 +4,7 @@ mako==1.2.4
 openai==0.27.0
 pycountry==22.3.5
 pydub==0.25.1
-pymongo==4.5.0
+pymongo==4.6.0
 PyTikTokAPI @ git+https://github.com/martouta/TikTokAPI-Python@v0.0.5-martouta-1
 pyyaml==6.0.1
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
