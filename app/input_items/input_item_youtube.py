@@ -1,8 +1,11 @@
 from .input_item import InputItem
 import yt_dlp
+import threading
 
 
 class InputItemYoutube(InputItem):
+    download_lock = threading.Lock()
+
     def __init__(self, *, resource_id, id, recognizer_data):
         super().__init__(resource_id=resource_id, recognizer_data=recognizer_data)
         self.id = id
@@ -13,5 +16,7 @@ class InputItemYoutube(InputItem):
             'format': 'worstvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
             'outtmpl': filepath,
         }
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([f"https://www.youtube.com/watch?v={self.id}"])
+
+        with InputItemYoutube.download_lock:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([f"https://www.youtube.com/watch?v={self.id}"])
