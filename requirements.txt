@@ -11,3 +11,4 @@ setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerabil
 SpeechRecognition==3.9.0
 youtube-transcript-api==0.6.1
 yt-dlp==2023.11.16
+aiohttp>=3.9.0 # not directly required, pinned by Snyk to avoid a vulnerability
