@@ -8,7 +8,7 @@ pymongo==4.6.1
 PyTikTokAPI @ git+https://github.com/martouta/TikTokAPI-Python@v0.0.5-martouta-1
 pyyaml==6.0.1
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
-SpeechRecognition==3.9.0
+SpeechRecognition==3.10.1
 youtube-transcript-api==0.6.1
 yt-dlp==2023.11.16
 aiohttp>=3.9.0 # not directly required, pinned by Snyk to avoid a vulnerability
