@@ -12,3 +12,4 @@ SpeechRecognition==3.9.0
 youtube-transcript-api==0.6.2
 yt-dlp==2023.12.30
 aiohttp>=3.9.0 # not directly required, pinned by Snyk to avoid a vulnerability
+dnspython>=2.6.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
