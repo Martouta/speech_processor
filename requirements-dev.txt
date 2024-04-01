@@ -16,7 +16,7 @@ coverage==6.5.0
 coveralls==3.3.1
 httpretty==1.1.4
 pytest==8.1.1
-requests-mock==1.11.0
+requests-mock==1.12.1
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 aiohttp>=3.9.0 # not directly required, pinned by Snyk to avoid a vulnerability
 certifi>=2023.7.22 # not directly required, pinned by Snyk to avoid a vulnerability
