@@ -10,6 +10,6 @@ pyyaml==6.0.1
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 SpeechRecognition==3.9.0
 youtube-transcript-api==0.6.2
-yt-dlp==2024.3.10
+yt-dlp==2024.4.9
 aiohttp>=3.9.0 # not directly required, pinned by Snyk to avoid a vulnerability
 dnspython>=2.6.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
